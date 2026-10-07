@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>โซนประตูหน้ามอ — Dorm Space</title>
+
+  <!-- Google Fonts: Fraunces + DM Sans + Noto Sans Thai -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/zone.css" />
+</head>
+<body>
+
+  <!-- แสงไฟตามเมาส์ -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <!-- ==================== FLOATING PILL NAVBAR ==================== -->
+  <header class="navbar-wrapper">
+    <nav class="pill-navbar">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-mark">
+          <span class="mark-circle blush"></span>
+          <span class="mark-circle butter"></span>
+        </div>
+        <span class="brand-text">Dorm Space</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="zone01.html" class="nav-link active">โซนหน้ามอ</a>
+        <a href="zone02.html" class="nav-link active">โซนประตูวิศวะ</a>
+        <a href="zone03.html" class="nav-link active">โซนหลิงหมื่น</a>
+      </div>
+
+      <div class="nav-actions">
+        <a href="index.html" class="btn-primary">
+          <span>กลับหน้าหลัก</span>
+          <div class="btn-arrow">➜</div>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ==================== HERO SECTION ==================== -->
+    <section class="zone-hero">
+      <div class="container">
+
+        <div class="zone-badge-pill">
+          <span>ZONE 01 • ทำเลยอดฮิตอันดับ 1</span>
+        </div>
+
+        <h1 class="zone-title">
+          โซนประตูหน้ามอ <br />
+          <span>สะดวกสบาย ใจกลางแหล่งของกิน</span>
+        </h1>
+
+        <p class="zone-desc">
+          เหมาะสำหรับนักศึกษาที่ต้องการความคล่องตัวสูง โดยเฉพาะผู้ที่ไม่มีรถส่วนตัว เพราะตั้งอยู่ใกล้ประตูทางเข้าหลักของมหาวิทยาลัย คึกคักตลอดทั้งวัน เดินทางไปเรียนได้ง่ายและประหยัดเวลาที่สุด
+        </p>
+
+        <!-- Mini Stats Badges -->
+        <div class="zone-meta-pills">
+          <div class="meta-pill">🏙️ ความหนาแน่น: <strong>หนาแน่นสูง</strong></div>
+          <div class="meta-pill">💰 ราคาเฉลี่ย: <strong>3,000 - 5,500 ฿</strong></div>
+          <div class="meta-pill">🚶‍♂️ การเดินทาง: <strong>เดินเท้าสะดวกมาก</strong></div>
+        </div>
+
+        <!-- Pro Tip -->
+        <div class="zone-protip">
+          💡 <strong>Pro-Tip:</strong> ช่วงเย็นโซนนี้คนจะเยอะมาก หากต้องการซื้อของกินที่กาดโซนเหลือง แนะนำให้เผื่อเวลาอย่างน้อย 15-20 นาทีนะคะ
+        </div>
+
+        <!-- Google Maps Cookie Frame -->
+        <div class="zone-map-container">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15099.044628319793!2d99.00160059839263!3d18.8976741175334!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sth!2sth!4v1771137538521!5m2!1sth!2sth" loading="lazy" allowfullscreen></iframe>
+        </div>
+
+        <!-- Category Filter Tabs -->
+        <div class="places-filter-wrapper">
+          <button class="place-filter-btn active" data-target="all">✨ ดูสถานที่ทั้งหมด</button>
+          <button class="place-filter-btn" data-target="cat-food">🍴 ของอร่อยหน้ามอ</button>
+          <button class="place-filter-btn" data-target="cat-service">🛍️ จุดบริการ & ของใช้</button>
+          <button class="place-filter-btn" data-target="cat-cafe">🍦 กาแฟ & ของหวาน</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== หมวด 1: ของอร่อย ==================== -->
+    <section class="places-section" id="cat-food">
+      <div class="container">
+        <div class="section-head-row">
+          <div>
+            <span class="section-label">Street Food & Dining</span>
+            <h2 class="section-heading">🍴 พิกัดของอร่อยหน้ามอ</h2>
+          </div>
+          <div class="carousel-nav-arrows">
+            <button class="arrow-btn" onclick="document.getElementById('food-slider').scrollBy({left: -300, behavior: 'smooth'})">‹</button>
+            <button class="arrow-btn" onclick="document.getElementById('food-slider').scrollBy({left: 300, behavior: 'smooth'})">›</button>
+          </div>
+        </div>
+
+        <div class="places-slider" id="food-slider">
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://resizer.iproimg.com/unsafe/768x/filters:format(webp):quality(75):max_bytes(102400)/https://assets.iprofesional.com/assets/jpg/2025/12/608257.jpg" alt="KFC" loading="lazy" />
+              <span class="card-mini-tag">FAST FOOD</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>KFC</h4>
+              <p>ไก่ทอดสูตรต้นตำรับ จุดนัดพบยอดฮิตที่มีเมนูประหยัดสำหรับนักศึกษาตลอดปี</p>
+            </div>
+          </div>
+
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://cdn.marketingoops.com/wp-content/uploads/2020/01/Thailand-Street-food-Market-2020.jpg" alt="กาดโซนเหลือง" loading="lazy" />
+              <span class="card-mini-tag">NIGHT MARKET</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>กาดโซนเหลือง</h4>
+              <p>ตลาดนัดสตรีทฟู้ดขนาดใหญ่ที่มีอาหารคาว-หวานให้เลือกในราคาย่อมเยา</p>
+            </div>
+          </div>
+
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://api2.krua.co/wp-content/uploads/2020/06/SlideBanner1140x507-266.jpg" alt="บะหมี่โหน่ง" loading="lazy" />
+              <span class="card-mini-tag">NOODLES</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>บะหมี่โหน่ง</h4>
+              <p>บะหมี่ชามยักษ์รสชาติเข้มข้นที่เป็นขวัญใจคนนอนดึกในย่านหน้ามอ</p>
+            </div>
+          </div>
+
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2f/f1/d7/34/new-york-steak.jpg" alt="สเต็กเด็กแนว" loading="lazy" />
+              <span class="card-mini-tag">STEAK</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>สเต็กเด็กแนว</h4>
+              <p>สเต็กจานร้อนราคานักศึกษาที่มีเมนูให้เลือกมิกซ์ได้หลากหลายตามใจชอบ</p>
+            </div>
+          </div>
+
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://img.wongnai.com/p/1920x0/2021/04/20/a3e95d20d86c483192d4d69b4e7a37f5.jpg" alt="อาหารตามสั่ง" loading="lazy" />
+              <span class="card-mini-tag">LOCAL FOOD</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>อาหารตามสั่ง</h4>
+              <p>ร้านอาหารจานด่วนที่ทำเร็ว รสชาติมาตรฐาน ใกล้ประตูมหาวิทยาลัยที่สุด</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== หมวด 2: จุดบริการ ==================== -->
+    <section class="places-section" id="cat-service">
+      <div class="container">
+        <div class="section-head-row">
+          <div>
+            <span class="section-label">Essentials & Daily Needs</span>
+            <h2 class="section-heading">🛍️ จุดบริการและของใช้จำเป็น</h2>
+          </div>
+          <div class="carousel-nav-arrows">
+            <button class="arrow-btn" onclick="document.getElementById('service-slider').scrollBy({left: -300, behavior: 'smooth'})">‹</button>
+            <button class="arrow-btn" onclick="document.getElementById('service-slider').scrollBy({left: 300, behavior: 'smooth'})">›</button>
+          </div>
+        </div>
+
+        <div class="places-slider" id="service-slider">
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://storage.googleapis.com/tatstar-org-prod-assets-public/users/4443/company/logo/1752909979094.jpg" alt="แจ่มฟ้าเซฟมาร์ท" loading="lazy" />
+              <span class="card-mini-tag">SUPERMARKET</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>แจ่มฟ้าเซฟมาร์ท</h4>
+              <p>ซูเปอร์มาร์เก็ตท้องถิ่นที่ขายของใช้และของกินในราคาส่ง ช่วยประหยัดค่าใช้จ่ายได้ดีเยี่ยม</p>
+            </div>
+          </div>
+
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://storage.googleapis.com/jobfinfin_etl_image/1665713051727-cde97937-72db-4898-96e9-ff3241bf9577.jpg" alt="Lotus’s Go Fresh" loading="lazy" />
+              <span class="card-mini-tag">GROCERY</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>Lotus’s Go Fresh</h4>
+              <p>แหล่งรวมของสดและของใช้จำเป็นในชีวิตประจำวัน พร้อมโปรโมชั่นสมาชิกที่คุ้มค่า</p>
+            </div>
+          </div>
+
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://images.contentstack.io/v3/assets/blt79dc99fad342cc45/bltaea3ad03c180ee64/633f08d845693810d212c437/7_Eleven_Horizontal_2022_RGB_thumb_1639377127_8824.png" alt="7-Eleven" loading="lazy" />
+              <span class="card-mini-tag">24 HOURS</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>7-Eleven</h4>
+              <p>ร้านสะดวกซื้อ 24 ชั่วโมงที่มีสินค้าครบครันและบริการชำระบิลต่างๆ</p>
+            </div>
+          </div>
+
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://mms.img.susercontent.com/th-11134210-7r991-llx0pziayrrb20" alt="ร้านเครื่องเขียน" loading="lazy" />
+              <span class="card-mini-tag">STATIONERY</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>ร้านเครื่องเขียนหน้ามอ</h4>
+              <p>แหล่งรวมอุปกรณ์การเรียน ครบเครื่องเรื่องงานโปรเจกต์และรายงาน</p>
+            </div>
+          </div>
+
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://st4.depositphotos.com/36736796/38353/v/450/depositphotos_383534962-stock-illustration-medical-center-or-drugstore-logo.jpg" alt="ร้านขายยา" loading="lazy" />
+              <span class="card-mini-tag">PHARMACY</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>ร้านขายยาบางเขน</h4>
+              <p>มีเภสัชกรให้คำปรึกษา พร้อมยาสามัญประจำบ้านสำหรับเด็กหอ</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== หมวด 3: คาเฟ่ & ของหวาน ==================== -->
+    <section class="places-section" id="cat-cafe">
+      <div class="container">
+        <div class="section-head-row">
+          <div>
+            <span class="section-label">Sweet & Cafe Moments</span>
+            <h2 class="section-heading">🍦 มุมกาแฟและของหวาน</h2>
+          </div>
+          <div class="carousel-nav-arrows">
+            <button class="arrow-btn" onclick="document.getElementById('sweet-slider').scrollBy({left: -300, behavior: 'smooth'})">‹</button>
+            <button class="arrow-btn" onclick="document.getElementById('sweet-slider').scrollBy({left: 300, behavior: 'smooth'})">›</button>
+          </div>
+        </div>
+
+        <div class="places-slider" id="sweet-slider">
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://img.salehere.co.th/p/1200x0/2024/03/27/unxjfeyku4s7.jpg" alt="Dairy Queen" loading="lazy" />
+              <span class="card-mini-tag">ICE CREAM</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>Dairy Queen</h4>
+              <p>ไอศกรีมบลิซซาร์ดและซอฟต์เสิร์ฟหลากรสชาติ เหมาะสำหรับแวะเติมความหวาน</p>
+            </div>
+          </div>
+
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://image.bangkokbiznews.com/uploads/images/md/2024/11/anxu483fIGM856kXbVC3.webp" alt="Amazon Coffee" loading="lazy" />
+              <span class="card-mini-tag">COFFEE</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>Amazon Coffee</h4>
+              <p>ร้านกาแฟแบรนด์ดังบรรยากาศดี มีพื้นที่ให้นั่งพักผ่อนระหว่างรอเรียน</p>
+            </div>
+          </div>
+
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://inwfile.com/s-k/1uciac.jpg" alt="ร้านน้ำปั่นผลไม้สด" loading="lazy" />
+              <span class="card-mini-tag">SMOOTHIE</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>น้ำปั่นผลไม้สด</h4>
+              <p>แหล่งรวมเมนูเพื่อสุขภาพที่มีผลไม้ตามฤดูกาลให้เลือกปั่นแบบสดๆ</p>
+            </div>
+          </div>
+
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://lh5.googleusercontent.com/proxy/J-z6BFMhSyO0Yxg2lc2TVqtaT_6D32B8byCrqcHd_LatMz75CggJMpGA2jxuexJ19lZyunU0m9_y00gNO5QB1lERAUYwlg" alt="ร้านเครปญี่ปุ่น" loading="lazy" />
+              <span class="card-mini-tag">DESSERT</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>เครปญี่ปุ่นหน้ามอ</h4>
+              <p>เครปไส้แน่น แป้งกรอบ มีให้เลือกทั้งไส้หวานและไส้คาว</p>
+            </div>
+          </div>
+
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://enfgc8w7uek.exactdn.com/wp-content/uploads/2020/11/15215457/SQ_EAS07143-1024x1024.jpg?strip=all&amp;lossy=1&amp;ssl=1" alt="ปังปิ้งเนยนม" loading="lazy" />
+              <span class="card-mini-tag">TOAST</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>ปังปิ้งเนยนม</h4>
+              <p>ขนมปังปิ้งเตาถ่านหอมๆ ราดนมข้นฉ่ำๆ ราคาเริ่มต้นเพียงหลักสิบ</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================== FOOTER (3 COLUMNS THEMED ROSE) ==================== -->
+  <footer class="footer-themed">
+    <div class="footer-wave-top">
+      <svg viewBox="0 0 1200 40" preserveAspectRatio="none">
+        <path fill="var(--accent-rose, #d9577a)" d="M 0,40 L 0,20 Q 300,40 600,20 T 1200,20 L 1200,40 Z"></path>
+      </svg>
+    </div>
+
+    <div class="footer-inner">
+      <div class="container footer-centered-container">
+        <div class="footer-columns-balanced">
+          
+          <div class="footer-col-item">
+            <div class="col-head">
+              <span class="brand-text">Dorm Space</span>
+              <div class="live-pill">
+                <span class="live-pulse-dot"></span>
+                <span>ONLINE</span>
+              </div>
+            </div>
+            <p class="col-desc">
+              แพลตฟอร์มค้นหาและเปรียบเทียบหอพักรอบมหาวิทยาลัยแม่โจ้ <br />
+              เพื่อให้เด็กแม่โจ้ได้อยู่หอพักที่สบายใจที่สุด
+            </p>
+
+            <div class="footer-nav-icons">
+              <a href="mailto:DormSpace.official@mju.com" class="icon-link-circle" title="ส่งอีเมลหาเรา">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              </a>
+              <a href="tel:053873000" class="icon-link-circle" title="โทรหาเรา">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+              </a>
+              <a href="https://lin.ee/uOEUb7G" target="_blank" rel="noopener noreferrer" class="icon-link-circle" title="ติดต่อผ่าน Line">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M12 2C6.48 2 2 5.92 2 10.75c0 2.97 1.7 5.6 4.34 7.22-.19.7-.68 2.54-.78 2.93-.12.49.18.48.38.35.26-.18 3.58-2.43 4.14-2.82.61.08 1.25.12 1.92.12 5.52 0 10-3.92 10-8.75S17.52 2 12 2zm-3.5 11h-1.5c-.28 0-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v3.5h1c.28 0 .5.22.5.5s-.22.5-.5.5zm2.5-.5c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v4zm4.5.5h-1c-.28 0-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v2.8l1.65-2.97c.1-.19.3-.33.53-.33.28 0 .5.22.5.5v4c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-2.8l-1.68 3zm4-1.5h-1v-2h1c.28 0 .5-.22.5-.5s-.22-.5-.5-.5h-1.5c-.28 0-.5.22-.5.5v4c0 .28.22.5.5.5H20c.28 0 .5-.22.5-.5s-.22-.5-.5-.5z"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="footer-col-item">
+            <div class="col-head">
+              <h4 class="col-title">เวลาทำการ</h4>
+            </div>
+            <div class="col-info-block">
+              <p class="info-text">
+                <strong>จันทร์ - ศุกร์:</strong> 08:30 - 16:30 น.<br />
+                <small>(ปิดทำการเสาร์ - อาทิตย์ และวันหยุด)</small>
+              </p>
+            </div>
+            <div class="online-24h-tag">
+              🌐 ค้นหาหอพักออนไลน์ได้ตลอด 24 ชม.
+            </div>
+          </div>
+
+          <div class="footer-col-item">
+            <div class="col-head">
+              <h4 class="col-title">ที่ตั้งสำนักงาน</h4>
+            </div>
+            <div class="col-info-block">
+              <p class="info-text">สำนักบริหารและพัฒนาวิชาการ<br />มหาวิทยาลัยแม่โจ้ จ.เชียงใหม่ 50290</p>
+              <span class="info-sub">🏛 อาคารอำนวย ยศสุข</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="footer-bottom-bar-center">
+          <p>© 2026 Dorm Space • Maejo Community Living Platform</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script Filter & Glow -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const glow = document.getElementById("cursorGlow");
+      if (glow) {
+        window.addEventListener("mousemove", (e) => {
+          glow.style.left = `${e.clientX}px`;
+          glow.style.top = `${e.clientY}px`;
+        });
+      }
+
+      const filterBtns = document.querySelectorAll(".place-filter-btn");
+      const sections = document.querySelectorAll(".places-section");
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+          filterBtns.forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          const target = btn.getAttribute("data-target");
+
+          sections.forEach(sec => {
+            if (target === "all" || sec.id === target) {
+              sec.classList.remove("is-hidden");
+            } else {
+              sec.classList.add("is-hidden");
+            }
+          });
+        });
+      });
+    });
+  </script>
+
+  <script src="js/script.js"></script>
+  <script src="js/sound02.js"></script>
+
+</body>
+</html>

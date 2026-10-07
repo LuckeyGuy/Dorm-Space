@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ข่าวสาร & โปรโมชัน — Dorm Space</title>
+
+  <!-- Google Fonts: Fraunces + DM Sans + Noto Sans Thai + Fragment Mono -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fragment+Mono&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/news.css" />
+</head>
+<body>
+
+  <!-- ==================== FLOATING PILL NAVBAR ==================== -->
+  <header class="navbar-wrapper">
+    <nav class="pill-navbar">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-mark">
+          <span class="mark-circle blush"></span>
+          <span class="mark-circle butter"></span>
+        </div>
+        <span class="brand-text">Dorm Space</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="zone01.html" class="nav-link">โซนยอดฮิต</a>
+        <a href="news.html" class="nav-link active">ข่าวสาร</a>
+        <a href="aboutus.html" class="nav-link">เกี่ยวกับเรา</a>
+      </div>
+
+      <div class="nav-actions">
+        <a href="index.html" class="btn-primary">
+          <span>กลับหน้าหลัก</span>
+          <div class="btn-arrow">➜</div>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="news-page-main">
+    <div class="container">
+
+      <!-- ==================== HERO HEADER ==================== -->
+      <section class="news-hero-header">
+        <div class="news-badge-pill">
+          <span class="news-live-dot"></span>
+          <span>WEEKLY UPDATES & SPECIAL DEALS</span>
+        </div>
+        <h1 class="news-main-title">
+          ข่าวสาร  <span class="accent-text">อัปเดตห้องว่าง</span>
+        </h1>
+        <p class="news-subtitle">
+          เช็คพิกัดห้องว่างหลุดจองล่าสุด สิทธิพิเศษเฉพาะเด็กแม่โจ้ และข้อควรรู้ก่อนตัดสินใจเข้าอยู่
+        </p>
+      </section>
+
+      <!-- ==================== SECTION 1: รวมลิสต์ห้องว่างประจำสัปดาห์ ==================== -->
+      <section class="news-section-block">
+        <div class="section-title-wrap">
+          <div>
+            <span class="section-label">Fresh Updates</span>
+            <h2 class="section-heading">รวมลิสต์หอพักยอดฮิต! รอบรั้วแม่โจ้</h2>
+          </div>
+          <span class="update-date-badge">อัปเดตล่าสุด: ประจำสัปดาห์นี้</span>
+        </div>
+
+        <p class="section-intro-text">
+          <b>ไม่อยากพลาดทำเลทอง ต้องรีบเช็ค!</b> ทีมงาน <b>Dorm Space</b> รวบรวมพิกัดห้อพักยอดฮิตมาให้แล้ว มีครบทั้งห้องแอร์และพัดลมราคาประหยัด รีบจองก่อนเต็มนะคะ!
+        </p>
+
+        <!-- การ์ดห้องว่าง 2 โซน -->
+        <div class="vacancy-cards-grid">
+          
+          <!-- Card 1: หน้ามอ -->
+          <details class="vacancy-card card-accent-pink">
+            <summary class="vacancy-summary">
+              <div class="vacancy-info-left">
+                <div class="vacancy-zone-title">
+                  <a href="dorm_detail/dorm_11.html" style="text-decoration: none; color: inherit; display: block; cursor: pointer;">
+                    <span>🚪 โซนหน้ามอ</span>
+                    <span class="tag-status-danger">⚡ หลุดจอง</span>
+                  </a>  
+                </div>
+                <div class="vacancy-count-row">
+                  <strong class="count-number">ว่าง 1 ห้อง</strong>
+                  <span class="count-note">สุดท้าย</span>
+                </div>
+                <p class="vacancy-brief">ทำเลทอง เดินไปเรียนได้สบาย ใกล้แหล่งของกินและประตูมหาวิทยาลัย</p>
+              </div>
+              <div class="toggle-pill-btn">คลิกดูรายละเอียด ▾</div>
+            </summary>
+            <div class="vacancy-expand-body">
+              <div class="expand-line">▫️ <b>ประเภทห้อง :</b> แอร์พร้อมเฟอร์นิเจอร์ครบชุด (เตียง ตู้ โต๊ะเขียนหนังสือ)</div>
+              <div class="expand-line">▫️ <b>ราคา :</b> 4,500 บาท/เดือน</div>
+              <div class="expand-line">▫️ <b>จุดเด่น :</b> ติดถนนใหญ่ ปลอดภัย มีกล้อง CCTV ลิฟต์โดยสาร และ รปภ. ดูแล</div>
+            </div>
+          </details>
+
+          <!-- Card 2: หลิ่งมื่น -->
+          <details class="vacancy-card card-accent-green">
+            <summary class="vacancy-summary">
+              <div class="vacancy-info-left">
+                <div class="vacancy-zone-title">
+                  <a href="dorm_detail/dorm_04.html" style="text-decoration: none; color: inherit; display: block; cursor: pointer;">
+                    <span>🌿 โซนหลิ่งมื่น</span>
+                    <span class="tag-status-success">🐾 เลี้ยงสัตว์ได้</span>
+                  </a>
+                </div>
+                <div class="vacancy-count-row">
+                  <strong class="count-number">ว่าง 3 ห้อง</strong>
+                  <span class="count-note"> แอร์ </span>
+                </div>
+                <p class="vacancy-brief">บรรยากาศเงียบสงบ เป็นส่วนตัว เหมาะกับการอ่านหนังสือและพักผ่อน</p>
+              </div>
+              <div class="toggle-pill-btn">คลิกดูรายละเอียด ▾</div>
+            </summary>
+            <div class="vacancy-expand-body">
+              <div class="expand-line">▫️ <b>ประเภทห้อง :</b> ห้องแอร์ 1 ห้อง (มีระเบียงกว้าง)</div>
+              <div class="expand-line">▫️ <b>ราคา :</b> 3,600 บาท/เดือน</div>
+              <div class="expand-line">▫️️ <b>จุดเด่น :</b> ที่จอดรถยนต์กว้างขวาง ฟรี Wi-Fi ใกล้คาเฟ่และร้านอาหาร</div>
+            </div>
+          </details>
+
+        </div>
+      </section>
+
+      <!-- ==================== SECTION 2: โปรแรงต้อนรับเพื่อนใหม่ ==================== -->
+      <section class="deal-highlight-section">
+        <div class="deal-card-container">
+          <div class="deal-top-row">
+            <span class="gift-icon">🎁</span>
+            <div>
+              <h3 class="deal-title-text">โปรแรงเพื่อเพื่อนใหม่! ส่วนลดพิเศษเฉพาะเด็กแม่โจ้</h3>
+              <p class="deal-subtitle-text">ต้อนรับนักศึกษาใหม่สู่รั้วอินทนิล! <b>Dorm Space</b> จับมือเจ้าของหอพักใจดี จัดดีลพิเศษให้เฉพาะผู้ที่จองผ่านเว็บไซต์ของเราเท่านั้น:</p>
+            </div>
+          </div>
+
+          <div class="deal-content-grid">
+            <!-- Box โค้ดส่วนลด (คลิกเปิดซองจดหมาย) -->
+            <div class="deal-code-box">
+              <span class="deal-label">ส่วนลดหอพัก</span>
+              <!-- เมื่อคลิกปุ่มนี้จะเปิด Envelope Popup -->
+              <button type="button" class="deal-price-btn" id="openEnvelopeBtn" title="คลิกเปิดจดหมายรับโค้ด">
+                <span>ลดทันที 10%</span>
+                <span class="btn-mail-tag">💌 คลิกเปิดจดหมาย</span>
+              </button>
+
+              <div class="code-direct-wrap">
+                <span class="code-summary-btn" id="openEnvelopeBtn2">🎟️ โค้ดส่วนลด 10.10 (คลิกเพื่อรับสิทธิ์)</span>
+              </div>
+            </div>
+
+            <!-- Box เงื่อนไข -->
+            <div class="deal-terms-box">
+              <div class="terms-header">📌 <strong>เงื่อนไขการใช้โค้ด 10.10</strong></div>
+              <ul class="terms-ul">
+                <li>ยอดจองขั้นต่ำ 3,500 บาทขึ้นไป</li>
+                <li>รับส่วนลด 10% ทันที (เฉพาะลูกค้าใหม่)</li>
+                <li>สิทธิ์มีจำนวนจำกัดเพียง 10 ท่านแรกเท่านั้น</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="deal-bottom-hint">
+            💡 ดูรายชื่อหอพักที่เข้าร่วมโครงการได้ที่เมนู <b>"รายการห้องพัก"</b> ได้เลยนะคะ
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== SECTION 3: เช็คลิสต์ "ต้องรู้" ก่อนเซ็นสัญญา (ROPE CURVE CAROUSEL) ==================== -->
+      <section class="checklist-section-block">
+        <div class="section-title-wrap" style="text-align: center; display: block;">
+          <span class="section-label">Before Signing The Lease</span>
+          <h2 class="section-heading">⚠️ เช็คลิสต์ "ต้องรู้" ก่อนเซ็นสัญญาจองหอ!</h2>
+        </div>
+        <p class="section-intro-text" style="text-align: center; max-width: 680px; margin: 0 auto 12px;">
+          จะย้ายเข้าหอทั้งที อย่าเพิ่งรีบเซ็น! <b>Dorm Space</b> สรุปจุดสำคัญ 5 ข้อที่น้องๆ ต้องถามเจ้าของหอพักให้เคลียร์ก่อนตัดสินใจค่ะ
+        </p>
+
+        <div style="text-align: center; margin-bottom: 8px;">
+          <span class="drag-hint-pill">👈 เลื่อนเพื่อดูคำแนะนำ 👉</span>
+        </div>
+      </section>
+
+    </div><!-- /.container -->
+
+    <!-- VIEWPORT ROPE CURVE CAROUSEL -->
+    <div class="rope-carousel-viewport" id="ropeCarousel">
+      <svg class="rope-svg-line" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M 0,25 Q 600,105 1200,25" fill="none" stroke="rgba(217, 87, 122, 0.45)" stroke-width="2.5" stroke-dasharray="6,4"></path>
+      </svg>
+
+      <div class="rope-track-stage" id="ropeTrack">
+        <!-- Card 1: ค่าน้ำ / ไฟ -->
+        <div class="hanging-card-item" data-index="0" data-title="ค่าน้ำ / ไฟ" data-detail="💡 ค่าน้ำ/ไฟ: คิดตามมิเตอร์หลวง หรือเป็นเรทเหมาจ่ายของหอพัก? (หน่วยละกี่บาท มีขั้นต่ำรายเดือนหรือไม่)">
+          <svg class="hanging-strap" viewBox="0 0 18 50">
+            <path d="M4 0 H14 A2 2 0 0 1 16 2 V47 A3 3 0 0 1 13 50 H5 A3 3 0 0 1 2 47 V2 A2 2 0 0 1 4 0 Z" fill="#d9577a"/>
+            <rect x="0.5" y="19" width="17" height="6" rx="2" fill="#fae498"/>
+          </svg>
+          <div class="hanging-card-face card-pink">
+            <div class="check-icon-circle">⚡</div>
+            <h4 class="card-rope-title">ค่าน้ำ / ไฟ</h4>
+            <span class="check-hint">คลิกดูรายละเอียด ▾</span>
+            <p class="card-rope-desc">คิดตามมิเตอร์หลวง หรือเรทเหมาจ่ายของหอพัก</p>
+          </div>
+        </div>
+
+        <!-- Card 2: ความปลอดภัย -->
+        <div class="hanging-card-item" data-index="1" data-title="ความปลอดภัย" data-detail="💡 ความปลอดภัย: มีกล้องวงจรปิดครอบคลุมทางเดินไหม?  ทางเข้า-ออกเป็นคีย์การ์ดหรือสแกนลายนิ้วมือ?">
+          <svg class="hanging-strap" viewBox="0 0 18 50">
+            <path d="M4 0 H14 A2 2 0 0 1 16 2 V47 A3 3 0 0 1 13 50 H5 A3 3 0 0 1 2 47 V2 A2 2 0 0 1 4 0 Z" fill="#eab308"/>
+            <rect x="0.5" y="19" width="17" height="6" rx="2" fill="#ffdce5"/>
+          </svg>
+          <div class="hanging-card-face card-yellow">
+            <div class="check-icon-circle">🛡️</div>
+            <h4 class="card-rope-title">ความปลอดภัย</h4>
+            <span class="check-hint">คลิกดูรายละเอียด ▾</span>
+            <p class="card-rope-desc">กล้องวงจรปิด CCTV คีย์การ์ด หรือสแกนนิ้วมือ</p>
+          </div>
+        </div>
+
+        <!-- Card 3: เงินมัดจำ -->
+        <div class="hanging-card-item" data-index="2" data-title="เงินมัดจำ" data-detail="💡 เงินมัดจำ: มัดจำล่วงหน้ากี่เดือน? สัญญากี่เดือน/ปี? และเงื่อนไขการหักค่าทำความสะอาดเมื่อย้ายออกมีอะไรบ้าง?">
+          <svg class="hanging-strap" viewBox="0 0 18 50">
+            <path d="M4 0 H14 A2 2 0 0 1 16 2 V47 A3 3 0 0 1 13 50 H5 A3 3 0 0 1 2 47 V2 A2 2 0 0 1 4 0 Z" fill="#10b981"/>
+            <rect x="0.5" y="19" width="17" height="6" rx="2" fill="#fae498"/>
+          </svg>
+          <div class="hanging-card-face card-green">
+            <div class="check-icon-circle">💰</div>
+            <h4 class="card-rope-title">เงินมัดจำ</h4>
+            <span class="check-hint">คลิกดูรายละเอียด ▾</span>
+            <p class="card-rope-desc">มัดจำล่วงหน้ากี่เดือน และเงื่อนไขการย้ายออก</p>
+          </div>
+        </div>
+
+        <!-- Card 4: ที่จอดรถ -->
+        <div class="hanging-card-item" data-index="3" data-title="ที่จอดรถ" data-detail="💡 ที่จอดรถ: มีพื้นที่เพียงพอสำหรับรถของเราไหม? มีหลังคากันแดดกันฝน หรือต้องเสียค่าบริการจอดเพิ่มไหม?">
+          <svg class="hanging-strap" viewBox="0 0 18 50">
+            <path d="M4 0 H14 A2 2 0 0 1 16 2 V47 A3 3 0 0 1 13 50 H5 A3 3 0 0 1 2 47 V2 A2 2 0 0 1 4 0 Z" fill="#8b5cf6"/>
+            <rect x="0.5" y="19" width="17" height="6" rx="2" fill="#ffdce5"/>
+          </svg>
+          <div class="hanging-card-face card-purple">
+            <div class="check-icon-circle">🛵</div>
+            <h4 class="card-rope-title">ที่จอดรถ</h4>
+            <span class="check-hint">คลิกดูรายละเอียด ▾</span>
+            <p class="card-rope-desc">พื้นที่จอดเพียงพอไหม มีหลังคา หรือคิดค่าบริการเพิ่ม</p>
+          </div>
+        </div>
+
+        <!-- Card 5: กฎเหล็ก -->
+        <div class="hanging-card-item" data-index="4" data-title="กฎเหล็ก" data-detail="💡 กฎเหล็ก: อนุญาตให้เลี้ยงสัตว์ได้ไหม? หรือมีกฎเรื่องช่วงเวลาปิดประตูหอและห้ามส่งเสียงดังอย่างไร?">
+          <svg class="hanging-strap" viewBox="0 0 18 50">
+            <path d="M4 0 H14 A2 2 0 0 1 16 2 V47 A3 3 0 0 1 13 50 H5 A3 3 0 0 1 2 47 V2 A2 2 0 0 1 4 0 Z" fill="#ec4899"/>
+            <rect x="0.5" y="19" width="17" height="6" rx="2" fill="#d1fae5"/>
+          </svg>
+          <div class="hanging-card-face card-pink">
+            <div class="check-icon-circle">🐾</div>
+            <h4 class="card-rope-title">กฎเหล็ก</h4>
+            <span class="check-hint">คลิกดูรายละเอียด ▾</span>
+            <p class="card-rope-desc">การเลี้ยงสัตว์ เวลาปิดประตูหอ และการส่งเสียงดัง</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ==================== WOW FEATURE: TESTIMONIAL LOOM PRO ENVELOPE MODAL ==================== -->
+  <div class="envelope-modal-backdrop" id="envelopeModal">
+    <div class="envelope-modal-wrap">
+      <button class="envelope-close-btn" id="btnEnvelopeClose" title="ปิดหน้าต่าง">✕</button>
+
+      <!-- ซองจดหมายแอนิเมชัน Unfold -->
+      <div class="envelope-stage" id="envelopeStage">
+        <div class="env-back"></div>
+
+        <div class="env-flap">
+          <div class="env-flap-front">
+            <svg viewBox="0 0 500 160" preserveAspectRatio="none">
+              <polygon points="0,0 500,0 250,160" fill="#e8d5be" stroke="rgba(0,0,0,0.06)" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <div class="env-flap-back"></div>
+        </div>
+
+        <div class="env-letter" id="envLetter">
+          <div class="letter-inner">
+            <div class="letter-head-row">
+              <div class="letter-stars">★★★★★</div>
+              <span class="letter-date">DORM SPACE PRIVILEGE</span>
+            </div>
+
+            <div class="letter-body-quote">
+              "ยินดีต้อนรับสู่รั้วอินทนิล! นำโค้ดนี้ไปแจ้งเจ้าของหอพักในเครือ เพื่อรับส่วนลดค่าห้อง 10% ได้ทันทีนะคะ"
+            </div>
+
+            <div class="letter-coupon-action">
+              <div class="coupon-code-display" id="targetCouponCode">NewCustomer10.10</div>
+              <button type="button" class="btn-copy-instant" id="btnInstantCopy">
+                <span id="copyBtnText">คัดลอกโค้ด 📋</span>
+              </button>
+            </div>
+
+            <div class="letter-footer-row">
+              <div class="letter-badge-circle">
+                <span class="stamp-txt">MJU SPECIAL</span>
+                <span class="stamp-sub">10.10 DEAL</span>
+              </div>
+              <div class="letter-meta-txt">
+                <strong>สำหรับเด็กแม่โจ้</strong>
+                <small>เฉพาะลูกค้าใหม่ 10 ท่านแรก</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="env-pocket">
+          <svg viewBox="0 0 500 280" preserveAspectRatio="none">
+            <polygon points="0,0 250,150 500,0 500,280 0,280" fill="#eddac3" stroke="rgba(0,0,0,0.08)" stroke-width="1.5"/>
+          </svg>
+          <div class="env-pocket-stamp">
+            <span>DORM SPACE OFFICIAL</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="envelope-bottom-guide">
+        ✨ จดหมายเปิดแล้ว! ระบบคัดลอกโค้ด <b>NewCustomer10.10</b> ให้คุณเรียบร้อยแล้วค่ะ
+      </p>
+    </div>
+  </div>
+
+  <!-- POPUP MODAL สำหรับเช็คลิสต์ -->
+  <div class="checklist-modal-backdrop" id="checklistModal">
+    <div class="checklist-modal-card">
+      <button class="modal-close-btn" id="btnModalClose">✕</button>
+      <div class="check-icon-circle" id="modalIcon" style="margin: 0 auto 12px; width: 60px; height: 60px; font-size: 26px;">✨</div>
+      <h3 style="font-size: 20px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px;" id="modalTitle">หัวข้อ</h3>
+      <div class="news-badge-pill" style="margin-bottom: 16px;">
+        <span class="news-live-dot"></span>
+        <span>คำแนะนำจาก DORM SPACE</span>
+      </div>
+      <p id="modalDetail" style="font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 22px; text-align: left; background: var(--bg-main); padding: 16px 18px; border-radius: 20px; border: 1px solid var(--border-color);"></p>
+      <button class="btn-primary" id="btnModalConfirm" style="width: 100%; justify-content: center; cursor: pointer;">
+        <span>รับทราบข้อแนะนำ ♡</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== FOOTER (เหมือนหน้า INDEX และ ABOUTUS 100%) ==================== -->
+  <footer class="footer-themed">
+    <div class="footer-wave-top">
+      <svg viewBox="0 0 1200 40" preserveAspectRatio="none">
+        <path fill="var(--accent-rose, #d9577a)" d="M 0,40 L 0,20 Q 300,40 600,20 T 1200,20 L 1200,40 Z"></path>
+      </svg>
+    </div>
+
+    <div class="footer-inner">
+      <div class="container footer-centered-container">
+        <div class="footer-columns-balanced">
+          
+          <!-- Column 1: ข้อมูลแพลตฟอร์ม & ลิงก์ติดต่อ -->
+          <div class="footer-col-item">
+            <div class="col-head">
+              <span class="brand-text">Dorm Space</span>
+              <div class="live-pill">
+                <span class="live-pulse-dot"></span>
+                <span>ONLINE</span>
+              </div>
+            </div>
+            <p class="col-desc">
+              แพลตฟอร์มค้นหาและเปรียบเทียบหอพักรอบมหาวิทยาลัยแม่โจ้ <br />
+              เพื่อให้เด็กแม่โจ้ได้อยู่หอพักที่สบายใจที่สุด
+            </p>
+
+            <div class="footer-nav-icons">
+              <a href="mailto:DormSpace.official@mju.com" class="icon-link-circle" title="ส่งอีเมลหาเรา">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              </a>
+              <a href="tel:053873000" class="icon-link-circle" title="โทรหาเรา">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+              </a>
+              <a href="https://lin.ee/uOEUb7G" target="_blank" rel="noopener noreferrer" class="icon-link-circle" title="ติดต่อผ่าน Line">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M12 2C6.48 2 2 5.92 2 10.75c0 2.97 1.7 5.6 4.34 7.22-.19.7-.68 2.54-.78 2.93-.12.49.18.48.38.35.26-.18 3.58-2.43 4.14-2.82.61.08 1.25.12 1.92.12 5.52 0 10-3.92 10-8.75S17.52 2 12 2zm-3.5 11h-1.5c-.28 0-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v3.5h1c.28 0 .5.22.5.5s-.22.5-.5.5zm2.5-.5c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v4zm4.5.5h-1c-.28 0-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v2.8l1.65-2.97c.1-.19.3-.33.53-.33.28 0 .5.22.5.5v4c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-2.8l-1.68 3zm4-1.5h-1v-2h1c.28 0 .5-.22.5-.5s-.22-.5-.5-.5h-1.5c-.28 0-.5.22-.5.5v4c0 .28.22.5.5.5H20c.28 0 .5-.22.5-.5s-.22-.5-.5-.5z"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Column 2: เวลาทำการ -->
+          <div class="footer-col-item">
+            <div class="col-head">
+              <h4 class="col-title">เวลาทำการ</h4>
+            </div>
+            <div class="col-info-block">
+              <p class="info-text">
+                <strong>จันทร์ - ศุกร์:</strong> 08:30 - 16:30 น.<br />
+                <small>(ปิดทำการเสาร์ - อาทิตย์ และวันหยุด)</small>
+              </p>
+            </div>
+            <div class="online-24h-tag">
+              🌐 ค้นหาหอพักออนไลน์ได้ตลอด 24 ชม.
+            </div>
+          </div>
+
+          <!-- Column 3: ที่ตั้งสำนักงาน -->
+          <div class="footer-col-item">
+            <div class="col-head">
+              <h4 class="col-title">ที่ตั้งสำนักงาน</h4>
+            </div>
+            <div class="col-info-block">
+              <p class="info-text">สำนักบริหารและพัฒนาวิชาการ<br />มหาวิทยาลัยแม่โจ้ จ.เชียงใหม่ 50290</p>
+              <span class="info-sub">🏛 อาคารอำนวย ยศสุข</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="footer-bottom-bar-center">
+          <p>© 2026 Dorm Space • Maejo Community Living Platform</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT ฟิสิกส์ ROPE CAROUSEL + ENVELOPE MODAL + CLICK SOUND -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // 1. Accordion ควบคุมให้เปิดทีละ 1 ใบ
+      const vacancyCards = document.querySelectorAll(".vacancy-card");
+      vacancyCards.forEach((card) => {
+        card.addEventListener("toggle", () => {
+          if (card.open) {
+            vacancyCards.forEach((other) => {
+              if (other !== card) other.open = false;
+            });
+          }
+        });
+      });
+
+      // 2. ENVELOPE MODAL INTERACTION
+      const envelopeModal = document.getElementById("envelopeModal");
+      const envelopeStage = document.getElementById("envelopeStage");
+      const openBtn1 = document.getElementById("openEnvelopeBtn");
+      const openBtn2 = document.getElementById("openEnvelopeBtn2");
+      const closeBtn = document.getElementById("btnEnvelopeClose");
+      const copyBtn = document.getElementById("btnInstantCopy");
+      const copyBtnText = document.getElementById("copyBtnText");
+      const couponCode = "NewCustomer10.10";
+
+      const openEnvelope = () => {
+        envelopeModal.classList.add("open");
+        setTimeout(() => {
+          envelopeStage.classList.add("is-unfolded");
+        }, 150);
+
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(couponCode).then(() => {
+            copyBtnText.textContent = "คัดลอกแล้ว! ✓";
+            setTimeout(() => { copyBtnText.textContent = "คัดลอกโค้ด 📋"; }, 2500);
+          }).catch(() => {});
+        }
+      };
+
+      const closeEnvelope = () => {
+        envelopeStage.classList.remove("is-unfolded");
+        setTimeout(() => {
+          envelopeModal.classList.remove("open");
+        }, 250);
+      };
+
+      if (openBtn1) openBtn1.addEventListener("click", openEnvelope);
+      if (openBtn2) openBtn2.addEventListener("click", openEnvelope);
+      if (closeBtn) closeBtn.addEventListener("click", closeEnvelope);
+      envelopeModal.addEventListener("click", (e) => {
+        if (e.target === envelopeModal) closeEnvelope();
+      });
+
+      if (copyBtn) {
+        copyBtn.addEventListener("click", () => {
+          navigator.clipboard.writeText(couponCode).then(() => {
+            copyBtnText.textContent = "คัดลอกสำเร็จ! ✨";
+            setTimeout(() => { copyBtnText.textContent = "คัดลอกโค้ด 📋"; }, 2000);
+          });
+        });
+      }
+
+      // 3. ระบบฟิสิกส์ Rope Curve Carousel
+      const viewport = document.getElementById("ropeCarousel");
+      const cards = Array.from(document.querySelectorAll(".hanging-card-item"));
+      const CARD_WIDTH = 270;
+      const CURVE_DEPTH = 55;
+      const TOTAL_CARDS = cards.length;
+
+      let currentScroll = 0;
+      let targetScroll = 0;
+      let isDragging = false;
+      let startX = 0;
+      let lastX = 0;
+      let velocity = 0;
+
+      const updateCardPositions = () => {
+        currentScroll += (targetScroll - currentScroll) * 0.12;
+        const viewportCenter = viewport.offsetWidth / 2;
+
+        cards.forEach((card, idx) => {
+          const cardX = (idx * CARD_WIDTH) - currentScroll;
+          const normDist = cardX / (viewportCenter * 0.95);
+          const cardY = Math.pow(normDist, 2) * -CURVE_DEPTH;
+          const cardRot = normDist * 14; 
+          const scale = Math.max(0.85, 1 - Math.abs(normDist) * 0.12);
+          const opacity = Math.max(0.4, 1 - Math.abs(normDist) * 0.55);
+
+          card.style.transform = `translate3d(${cardX}px, ${cardY}px, 0) rotate(${cardRot}deg) scale(${scale})`;
+          card.style.opacity = opacity;
+        });
+
+        requestAnimationFrame(updateCardPositions);
+      };
+
+      updateCardPositions();
+
+      const maxScroll = (TOTAL_CARDS - 1) * CARD_WIDTH;
+      const minScroll = 0;
+      const clampScroll = (val) => Math.max(-100, Math.min(val, maxScroll + 100));
+
+      viewport.addEventListener("pointerdown", (e) => {
+        isDragging = true;
+        startX = e.clientX;
+        lastX = e.clientX;
+        velocity = 0;
+      });
+
+      window.addEventListener("pointermove", (e) => {
+        if (!isDragging) return;
+        const deltaX = e.clientX - lastX;
+        lastX = e.clientX;
+        velocity = deltaX;
+        targetScroll = clampScroll(targetScroll - deltaX * 1.3);
+      });
+
+      window.addEventListener("pointerup", () => {
+        if (!isDragging) return;
+        isDragging = false;
+        targetScroll = clampScroll(targetScroll - velocity * 6);
+        if (targetScroll < minScroll) targetScroll = minScroll;
+        if (targetScroll > maxScroll) targetScroll = maxScroll;
+      });
+
+      viewport.addEventListener("wheel", (e) => {
+        const delta = e.deltaX !== 0 ? e.deltaX : e.deltaY;
+        targetScroll = clampScroll(targetScroll + delta * 0.85);
+        if (targetScroll < minScroll) targetScroll = minScroll;
+        if (targetScroll > maxScroll) targetScroll = maxScroll;
+      }, { passive: true });
+
+      // 4. Modal Popup เมื่อคลิกการ์ดเช็คลิสต์
+      const modal = document.getElementById("checklistModal");
+      const modalTitle = document.getElementById("modalTitle");
+      const modalIcon = document.getElementById("modalIcon");
+      const modalDetail = document.getElementById("modalDetail");
+      const btnModalClose = document.getElementById("btnModalClose");
+      const btnModalConfirm = document.getElementById("btnModalConfirm");
+
+      cards.forEach(card => {
+        card.addEventListener("click", () => {
+          if (Math.abs(velocity) < 3) {
+            modalTitle.textContent = card.getAttribute("data-title");
+            modalDetail.textContent = card.getAttribute("data-detail");
+            modalIcon.textContent = card.querySelector(".check-icon-circle").textContent;
+            modal.classList.add("open");
+          }
+        });
+      });
+
+      const closeModal = () => modal.classList.remove("open");
+      btnModalClose.addEventListener("click", closeModal);
+      btnModalConfirm.addEventListener("click", closeModal);
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal();
+      });
+    });
+  </script>
+
+  <!-- สคริปต์ UI Core และเสียงคลิก click02.mp3 -->
+  <script src="js/script.js"></script>
+  <script src="js/sound02.js"></script>
+</body>
+</html>

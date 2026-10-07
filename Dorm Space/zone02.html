@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>โซนประตูวิศวะ — Dorm Space</title>
+
+  <!-- Google Fonts: Fraunces + DM Sans + Noto Sans Thai -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/zone.css" />
+</head>
+<body>
+
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <!-- ==================== FLOATING PILL NAVBAR ==================== -->
+  <header class="navbar-wrapper">
+    <nav class="pill-navbar">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-mark">
+          <span class="mark-circle blush"></span>
+          <span class="mark-circle butter"></span>
+        </div>
+        <span class="brand-text">Dorm Space</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="zone01.html" class="nav-link active">โซนหน้ามอ</a>
+        <a href="zone02.html" class="nav-link active">โซนประตูวิศวะ</a>
+        <a href="zone03.html" class="nav-link active">โซนหลิงหมื่น</a>
+      </div>
+
+      <div class="nav-actions">
+        <a href="index.html" class="btn-primary">
+          <span>กลับหน้าหลัก</span>
+          <div class="btn-arrow">➜</div>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ==================== HERO SECTION ==================== -->
+    <section class="zone-hero">
+      <div class="container">
+
+        <div class="zone-badge-pill" style="color: #4338ca;">
+          <span>ZONE 02 • เงียบสงบ เป็นส่วนตัว</span>
+        </div>
+
+        <h1 class="zone-title">
+          โซนประตูวิศวะ <br />
+          <span style="color: #4f46e5;">บรรยากาศเงียบสงบ ราคามิตรภาพ</span>
+        </h1>
+
+        <p class="zone-desc">
+          พื้นที่แถบเส้นป่าเหมือดและหลังฟาร์ม ขึ้นชื่อเรื่องหอพักราคาประหยัด พื้นที่ห้องกว้างขวาง และมีที่จอดรถเพียงพอ เหมาะอย่างยิ่งสำหรับผู้ที่มีรถส่วนตัวและต้องการเลี่ยงความวุ่นวาย
+        </p>
+
+        <!-- Mini Stats Badges -->
+        <div class="zone-meta-pills">
+          <div class="meta-pill">🏙️ ความหนาแน่น: <strong>ปานกลาง - น้อย</strong></div>
+          <div class="meta-pill">💰 ราคาเฉลี่ย: <strong>2,200 - 4,500 ฿</strong></div>
+          <div class="meta-pill">🛵 การเดินทาง: <strong>ควรมีรถส่วนตัว</strong></div>
+        </div>
+
+        <!-- Pro Tip -->
+        <div class="zone-protip" style="border-color: #c7d2fe; background: linear-gradient(135deg, #ffffff, #e0e7ff);">
+          💡 <strong>Pro-Tip:</strong> โซนนี้ตอนกลางคืนค่อนข้างเงียบและทางเข้าบางช่วงอาจจะมืด แนะนำให้ตรวจสอบระบบรักษาความปลอดภัยของหอพักและไฟส่องสว่างก่อนตัดสินใจนะคะ
+        </div>
+
+        <!-- Google Maps Cookie Frame -->
+        <div class="zone-map-container">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d60398.16908608866!2d98.98057264723933!3d18.892157080810197!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30da23cc2848875f%3A0x4eccd7e55a6305be!2sMaejo%20University%20Faculty%20of%20Engineering!5e0!3m2!1sth!2sth!4v1790973541803!5m2!1sth!2sth" 
+            loading="lazy" 
+            allowfullscreen 
+            referrerpolicy="strict-origin-when-cross-origin">
+          </iframe>
+        </div>
+
+        <!-- Category Filter Tabs -->
+        <div class="places-filter-wrapper">
+          <button class="place-filter-btn active" data-target="all">✨ ดูสถานที่ทั้งหมด</button>
+          <button class="place-filter-btn" data-target="cat-food-2">🍴 ร้านอาหารราคามิตรภาพ</button>
+          <button class="place-filter-btn" data-target="cat-service-2">🛍️ ร้านค้าใกล้ที่พัก</button>
+          <button class="place-filter-btn" data-target="cat-cafe-2">🍦 กาแฟ & ของหวาน</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== หมวด 1: ร้านอาหาร ==================== -->
+    <section class="places-section" id="cat-food-2">
+      <div class="container">
+        <div class="section-head-row">
+          <div>
+            <span class="section-label">Pocket-Friendly Bites</span>
+            <h2 class="section-heading">🍴 ร้านอาหารราคามิตรภาพ</h2>
+          </div>
+          <div class="carousel-nav-arrows">
+            <button class="arrow-btn" onclick="document.getElementById('food-slider-2').scrollBy({left: -300, behavior: 'smooth'})">‹</button>
+            <button class="arrow-btn" onclick="document.getElementById('food-slider-2').scrollBy({left: 300, behavior: 'smooth'})">›</button>
+          </div>
+        </div>
+
+        <div class="places-slider" id="food-slider-2">
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://img.wongnai.com/p/1920x0/2026/07/01/105e7459734347db9418de83d425e556.jpg" alt="ป้าแดง" loading="lazy" />
+              <span class="card-mini-tag">LOCAL LEGEND</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>ตามสั่งป้าแดง</h4>
+              <p>ร้านในตำนานที่ให้เยอะจนอิ่มถึงเย็น เมนูเด็ดคือกระเพราหมูกรอบ</p>
+            </div>
+          </div>
+
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://f.ptcdn.info/796/079/000/rpv3un2wo1G4728tOwxX-o.jpg" alt="ก๋วยเตี๋ยวเรือ" loading="lazy" />
+              <span class="card-mini-tag">BOAT NOODLES</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>เตี๋ยวเรือเส้นป่าเหมือด</h4>
+              <p>รสชาติเข้มข้นแบบไม่ต้องปรุง พร้อมผักสดฟรีแบบจัดเต็ม</p>
+            </div>
+          </div>
+
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://www.unileverfoodsolutions.co.th/dam/global-ufs/mcos/SEA/calcmenu/recipes/TH-recipes/salads/%E0%B8%AA%E0%B9%89%E0%B8%A1%E0%B8%95%E0%B8%B3%E0%B9%84%E0%B8%97%E0%B8%A2/%E0%B8%AA%E0%B9%89%E0%B8%A1%E0%B8%95%E0%B8%B3%E0%B9%84%E0%B8%97%E0%B8%A2_header.jpg" alt="ส้มตำ" loading="lazy" />
+              <span class="card-mini-tag">ISAN FOOD</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>ร้านส้มตำข้างมอ</h4>
+              <p>แหล่งรวมเมนูอีสานแซ่บๆ ทั้งส้มตำ ลาบ และไก่ย่างวิเชียรบุรี</p>
+            </div>
+          </div>
+
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://img.wongnai.com/p/1920x0/2021/11/04/16e27b0cd535457b906185077b5369e7.jpg" alt="ราดหน้า" loading="lazy" />
+              <span class="card-mini-tag">STREET BITES</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>ราดหน้ายอดผัก</h4>
+              <p>ราดหน้าน้ำข้นรสกลมกล่อมและผัดซีอิ๊วหอมกลิ่นกระทะในราคาประหยัด</p>
+            </div>
+          </div>
+
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://assets.unileversolutions.com/recipes-v2/117867.jpg" alt="ข้าวไข่เจียว" loading="lazy" />
+              <span class="card-mini-tag">QUICK MEAL</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>ข้าวไข่เจียวทรงเครื่อง</h4>
+              <p>เมนูง่ายๆ ที่เลือกเครื่องได้ไม่อั้น อิ่มอร่อยได้ในราคาสบายกระเป๋า</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== หมวด 2: ร้านค้า ==================== -->
+    <section class="places-section" id="cat-service-2">
+      <div class="container">
+        <div class="section-head-row">
+          <div>
+            <span class="section-label">Nearby Convenient Shops</span>
+            <h2 class="section-heading">🛍 ร้านค้าใกล้ที่พัก</h2>
+          </div>
+          <div class="carousel-nav-arrows">
+            <button class="arrow-btn" onclick="document.getElementById('service-slider-2').scrollBy({left: -300, behavior: 'smooth'})">‹</button>
+            <button class="arrow-btn" onclick="document.getElementById('service-slider-2').scrollBy({left: 300, behavior: 'smooth'})">›</button>
+          </div>
+        </div>
+
+        <div class="places-slider" id="service-slider-2">
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://cdn.britannica.com/54/258254-050-81813A2E/7-eleven-convenience-store-Melbourne-Australia.jpg" alt="7-Eleven" loading="lazy" />
+              <span class="card-mini-tag">CONVENIENT</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>7-Eleven วิศวะ</h4>
+              <p>สาขาที่ใกล้ตึกเรียนวิศวกรรมศาสตร์ที่สุด ตอบโจทย์ช่วงพักเบรกสั้นๆ</p>
+            </div>
+          </div>
+
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://www.มิตรแท้โชห่วย.com/img_article/article/article-25/TAT00200.jpg" alt="ของชำป้าใจ" loading="lazy" />
+              <span class="card-mini-tag">COMMUNITY</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>ร้านของชำป้าใจ</h4>
+              <p>ร้านค้าชุมชนที่มีของจุกจิกครบถ้วน และเป็นกันเองกับนักศึกษา</p>
+            </div>
+          </div>
+
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://www.mbk-center.co.th/images/gallery/images/5_2(3).webp" alt="ถ่ายเอกสาร" loading="lazy" />
+              <span class="card-mini-tag">PRINTING</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>ถ่ายเอกสารข้างมอ</h4>
+              <p>บริการปริ้นงาน เข้าเล่ม และทำรายงานด่วนในราคานักศึกษา</p>
+            </div>
+          </div>
+
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://www.smethailandclub.com/images/image/1551946291.png" alt="ซ่อมมอเตอร์ไซค์" loading="lazy" />
+              <span class="card-mini-tag">REPAIR</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>ซ่อมมอเตอร์ไซค์ข้างมอ</h4>
+              <p>บริการตรวจเช็คสภาพรถ ถ่ายน้ำมันเครื่อง และซ่อมด่วนทันใจ</p>
+            </div>
+          </div>
+
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://www.marketingoops.com/wp-content/uploads/2022/06/otteri-OR3.jpg" alt="ซักรีด" loading="lazy" />
+              <span class="card-mini-tag">LAUNDRY</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>ร้านซักรีดข้างมอ</h4>
+              <p>บริการซักอบรีดที่ช่วยประหยัดเวลาให้เด็กหอในช่วงสัปดาห์สอบ</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== หมวด 3: คาเฟ่ ==================== -->
+    <section class="places-section" id="cat-cafe-2">
+      <div class="container">
+        <div class="section-head-row">
+          <div>
+            <span class="section-label">Cozy Hangouts</span>
+            <h2 class="section-heading">🍦 มุมกาแฟและของหวาน</h2>
+          </div>
+          <div class="carousel-nav-arrows">
+            <button class="arrow-btn" onclick="document.getElementById('sweet-slider-2').scrollBy({left: -300, behavior: 'smooth'})">‹</button>
+            <button class="arrow-btn" onclick="document.getElementById('sweet-slider-2').scrollBy({left: 300, behavior: 'smooth'})">›</button>
+          </div>
+        </div>
+
+        <div class="places-slider" id="sweet-slider-2">
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1a/cf/9c/13/cat-n-a-cup-cat-cafe.jpg?w=600&amp;h=600&amp;s=1" alt="หรรษา คาเฟ่" loading="lazy" />
+              <span class="card-mini-tag">CAT CAFE</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>หรรษา คาเฟ่</h4>
+              <p>คาเฟ่บรรยากาศดี เหมาะสำหรับการถ่ายรูป และยังมีบอร์ดเกมน่าสนใจ</p>
+            </div>
+          </div>
+
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://www.ryoiireview.com/upload/article/202304/1681731156_d018557a4a10aed6c8f450ad0db6d60d.jpg" alt="คาเฟ่ใต้หอพัก" loading="lazy" />
+              <span class="card-mini-tag">COZY CAFE</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>คาเฟ่ใต้หอพัก</h4>
+              <p>ร้านกาแฟเล็กๆ บรรยากาศเงียบสงบ เหมาะกับการทำงานเงียบๆ</p>
+            </div>
+          </div>
+
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://www.ryoiireview.com/upload/article/201805/1527478158_d48fb11885cf5d86419709d9588e9f93.jpg" alt="บอร์ดเกม" loading="lazy" />
+              <span class="card-mini-tag">BOARD GAME</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>ร้านบอร์ดเกม</h4>
+              <p>พื้นที่ทำกิจกรรมร่วมกับกลุ่มเพื่อน มีเกมให้เลือกเล่นหลากหลาย</p>
+            </div>
+          </div>
+
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVXpJMNoYVK2IPDBTnV-9nnBSXb1wTbVYnrhFB4agMBqJ89pWXJJ3zrIQP&amp;s=10" alt="ชาบูเสียบไม้" loading="lazy" />
+              <span class="card-mini-tag">SKEWER</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>ร้านชาบูเสียบไม้</h4>
+              <p>เมนูทานเล่นยามเย็นที่ราคาเริ่มต้นเพียงไม้ละ 10 บาท</p>
+            </div>
+          </div>
+
+          <div class="arch-place-card">
+            <div class="arch-image-wrap">
+              <img src="https://img.wongnai.com/p/l/2017/09/01/043f283153e24dda8b8e9ae1b8cc305c.jpg" alt="สมูทตี้โยเกิร์ต" loading="lazy" />
+              <span class="card-mini-tag">YOGURT</span>
+            </div>
+            <div class="arch-card-info">
+              <h4>สมูทตี้โยเกิร์ต</h4>
+              <p>เครื่องดื่มเพื่อสุขภาพรสชาติกลมกล่อมขวัญใจสายเฮลตี้</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================== FOOTER (3 COLUMNS THEMED ROSE) ==================== -->
+  <footer class="footer-themed">
+    <div class="footer-wave-top">
+      <svg viewBox="0 0 1200 40" preserveAspectRatio="none">
+        <path fill="var(--accent-rose, #d9577a)" d="M 0,40 L 0,20 Q 300,40 600,20 T 1200,20 L 1200,40 Z"></path>
+      </svg>
+    </div>
+
+    <div class="footer-inner">
+      <div class="container footer-centered-container">
+        <div class="footer-columns-balanced">
+          
+          <div class="footer-col-item">
+            <div class="col-head">
+              <span class="brand-text">Dorm Space</span>
+              <div class="live-pill">
+                <span class="live-pulse-dot"></span>
+                <span>ONLINE</span>
+              </div>
+            </div>
+            <p class="col-desc">
+              แพลตฟอร์มค้นหาและเปรียบเทียบหอพักรอบมหาวิทยาลัยแม่โจ้ <br />
+              เพื่อให้เด็กแม่โจ้ได้อยู่หอพักที่สบายใจที่สุด
+            </p>
+
+            <div class="footer-nav-icons">
+              <a href="mailto:DormSpace.official@mju.com" class="icon-link-circle" title="ส่งอีเมลหาเรา">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              </a>
+              <a href="tel:053873000" class="icon-link-circle" title="โทรหาเรา">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+              </a>
+              <a href="https://lin.ee/uOEUb7G" target="_blank" rel="noopener noreferrer" class="icon-link-circle" title="ติดต่อผ่าน Line">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M12 2C6.48 2 2 5.92 2 10.75c0 2.97 1.7 5.6 4.34 7.22-.19.7-.68 2.54-.78 2.93-.12.49.18.48.38.35.26-.18 3.58-2.43 4.14-2.82.61.08 1.25.12 1.92.12 5.52 0 10-3.92 10-8.75S17.52 2 12 2zm-3.5 11h-1.5c-.28 0-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v3.5h1c.28 0 .5.22.5.5s-.22.5-.5.5zm2.5-.5c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v4zm4.5.5h-1c-.28 0-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v2.8l1.65-2.97c.1-.19.3-.33.53-.33.28 0 .5.22.5.5v4c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-2.8l-1.68 3zm4-1.5h-1v-2h1c.28 0 .5-.22.5-.5s-.22-.5-.5-.5h-1.5c-.28 0-.5.22-.5.5v4c0 .28.22.5.5.5H20c.28 0 .5-.22.5-.5s-.22-.5-.5-.5z"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="footer-col-item">
+            <div class="col-head">
+              <h4 class="col-title">เวลาทำการ</h4>
+            </div>
+            <div class="col-info-block">
+              <p class="info-text">
+                <strong>จันทร์ - ศุกร์:</strong> 08:30 - 16:30 น.<br />
+                <small>(ปิดทำการเสาร์ - อาทิตย์ และวันหยุด)</small>
+              </p>
+            </div>
+            <div class="online-24h-tag">
+              🌐 ค้นหาหอพักออนไลน์ได้ตลอด 24 ชม.
+            </div>
+          </div>
+
+          <div class="footer-col-item">
+            <div class="col-head">
+              <h4 class="col-title">ที่ตั้งสำนักงาน</h4>
+            </div>
+            <div class="col-info-block">
+              <p class="info-text">สำนักบริหารและพัฒนาวิชาการ<br />มหาวิทยาลัยแม่โจ้ จ.เชียงใหม่ 50290</p>
+              <span class="info-sub">🏛 อาคารอำนวย ยศสุข</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="footer-bottom-bar-center">
+          <p>© 2026 Dorm Space • Maejo Community Living Platform</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const glow = document.getElementById("cursorGlow");
+      if (glow) {
+        window.addEventListener("mousemove", (e) => {
+          glow.style.left = `${e.clientX}px`;
+          glow.style.top = `${e.clientY}px`;
+        });
+      }
+
+      const filterBtns = document.querySelectorAll(".place-filter-btn");
+      const sections = document.querySelectorAll(".places-section");
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+          filterBtns.forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          const target = btn.getAttribute("data-target");
+
+          sections.forEach(sec => {
+            if (target === "all" || sec.id === target) {
+              sec.classList.remove("is-hidden");
+            } else {
+              sec.classList.add("is-hidden");
+            }
+          });
+        });
+      });
+    });
+  </script>
+
+  <script src="js/script.js"></script>
+  <script src="js/sound02.js"></script>
+</body>
+</html>

@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dorm Space — ค้นหาหอพัก มหาวิทยาลัยแม่โจ้</title>
+
+  <!-- Google Fonts: Fraunces + DM Sans + Noto Sans Thai + Fragment Mono -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fragment+Mono&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Supabase JS Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    /* ==================== HERO SPLIT (สไตล์ภาพที่ 2 ฝั่งซ้ายชิดขอบ ฝั่งขวาภาพบ้าน) ==================== */
+    .hero-section {
+      padding-top: 130px;
+      padding-bottom: 25px;
+    }
+
+    .hero-split-grid {
+      display: grid !important;
+      grid-template-columns: 1.1fr 0.9fr !important;
+      align-items: center !important;
+      gap: 36px !important;
+    }
+
+    /* ฝั่งซ้าย: จัดชิดซ้ายแบบรูปตัวอย่าง */
+    .hero-left-content {
+      text-align: left !important;
+    }
+
+    .hero-left-content .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border: 1px solid #f0dfd8;
+      padding: 5px 16px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #d9577a;
+      margin-bottom: 18px;
+      box-shadow: 0 2px 8px rgba(59, 42, 47, 0.04);
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      background: #d9577a;
+      border-radius: 50%;
+    }
+
+    .hero-left-content .hero-title {
+      font-family: 'DM Sans', 'Noto Sans Thai', sans-serif !important;
+      font-size: clamp(36px, 4.2vw, 52px) !important;
+      font-weight: 800 !important;
+      line-height: 1.18 !important;
+      color: #2d2426 !important;
+      margin-bottom: 16px !important;
+      letter-spacing: -0.02em !important;
+      text-align: left !important;
+    }
+
+    .accent-text {
+      color: #d9577a !important;
+      font-style: normal !important;
+    }
+
+    .hero-left-content .hero-desc {
+      font-size: 15px !important;
+      color: #7a6e71 !important;
+      line-height: 1.75 !important;
+      margin-bottom: 26px !important;
+      max-width: 520px !important;
+      text-align: left !important;
+    }
+
+    .hero-action-row {
+      margin-bottom: 30px !important;
+      text-align: left !important;
+    }
+
+    .btn-hero-primary {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+      background: #2d2426 !important;
+      color: #ffffff !important;
+      padding: 12px 32px !important;
+      border-radius: 999px !important;
+      font-size: 14.5px !important;
+      font-weight: 600 !important;
+      text-decoration: none !important;
+      box-shadow: 0 6px 18px rgba(45, 36, 38, 0.18) !important;
+      transition: all 0.25s ease !important;
+    }
+
+    .btn-hero-primary:hover {
+      background: #110e0f !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 8px 24px rgba(45, 36, 38, 0.25) !important;
+    }
+
+    .btn-arrow-icon {
+      font-size: 13px !important;
+      transition: transform 0.2s ease !important;
+    }
+
+    .btn-hero-primary:hover .btn-arrow-icon {
+      transform: translateX(4px) !important;
+    }
+
+    /* แถบสถิติ 3 ตัวเลขชิดซ้าย */
+    .hero-stats-left-grid {
+      display: grid !important;
+      grid-template-columns: repeat(3, max-content) !important;
+      gap: 34px !important;
+      padding-top: 22px !important;
+      border-top: 1.5px solid rgba(240, 223, 216, 0.8) !important;
+      text-align: left !important;
+    }
+
+    .stat-col {
+      display: flex !important;
+      flex-direction: column !important;
+    }
+
+    .stat-big-num {
+      font-size: 32px !important;
+      font-weight: 800 !important;
+      color: #2d2426 !important;
+      line-height: 1.1 !important;
+      letter-spacing: -0.02em !important;
+    }
+
+    .stat-sub-text {
+      font-size: 12.5px !important;
+      color: #7a6e71 !important;
+      margin-top: 4px !important;
+    }
+
+    /* ==================== ฝั่งขวา: การ์ดบ้าน 3D PASTEL HOUSE SHOWCASE ==================== */
+    .hero-right-visual {
+      position: relative !important;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      width: 100% !important;
+    }
+
+    .house-visual-card {
+      position: relative !important;
+      background: linear-gradient(145deg, #ffffff 40%, #fff7f9 100%) !important;
+      border: 2px solid rgba(240, 223, 216, 0.95) !important;
+      border-radius: 42px !important;
+      padding: 24px 22px 22px !important;
+      width: 100% !important;
+      max-width: 440px !important;
+      box-shadow: 0 16px 40px rgba(217, 87, 122, 0.12), 0 4px 12px rgba(59, 42, 47, 0.04) !important;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease !important;
+    }
+
+    .house-visual-card:hover {
+      transform: translateY(-5px) !important;
+      box-shadow: 0 24px 50px rgba(217, 87, 122, 0.2) !important;
+    }
+
+    /* กรอบภาพบ้านด้านบน */
+    .house-art-banner {
+      position: relative !important;
+      width: 100% !important;
+      height: 230px !important;
+      border-radius: 30px !important;
+      background: linear-gradient(135deg, #ffdce5 0%, #fae498 55%, #d1fae5 100%) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      overflow: hidden !important;
+      margin-bottom: 18px !important;
+      box-shadow: inset 0 0 18px rgba(255, 255, 255, 0.6) !important;
+    }
+
+    .house-emoji-hero {
+      font-size: 105px !important;
+      line-height: 1 !important;
+      filter: drop-shadow(0 16px 24px rgba(217, 87, 122, 0.28)) !important;
+      animation: houseGentleFloat 4s ease-in-out infinite !important;
+      user-select: none !important;
+    }
+
+    @keyframes houseGentleFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-7px) rotate(2deg); }
+    }
+
+    .house-tag-top {
+      position: absolute !important;
+      top: 14px !important;
+      left: 14px !important;
+      background: rgba(255, 255, 255, 0.95) !important;
+      backdrop-filter: blur(8px) !important;
+      padding: 5px 14px !important;
+      border-radius: 999px !important;
+      font-size: 11px !important;
+      font-weight: 700;
+      color: #d9577a !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06) !important;
+    }
+
+    .house-price-tag {
+      position: absolute !important;
+      bottom: 14px !important;
+      right: 14px !important;
+      background: rgba(45, 36, 38, 0.9) !important;
+      backdrop-filter: blur(8px) !important;
+      color: #ffffff !important;
+      padding: 5px 14px !important;
+      border-radius: 999px !important;
+      font-size: 12px !important;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+    }
+
+    .house-info-box {
+      text-align: left !important;
+      padding: 0 6px !important;
+    }
+
+    .house-category-label {
+      font-size: 11px !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.08em !important;
+      color: #d9577a !important;
+      text-transform: uppercase !important;
+      display: block !important;
+      margin-bottom: 4px !important;
+    }
+
+    .house-name-text {
+      font-size: 20px !important;
+      font-weight: 700 !important;
+      color: #2d2426 !important;
+      margin-bottom: 6px !important;
+    }
+
+    .house-desc-text {
+      font-size: 13px !important;
+      color: #7a6e71 !important;
+      line-height: 1.55 !important;
+      margin-bottom: 16px !important;
+    }
+
+    .house-perks-wrap {
+      display: flex !important;
+      gap: 6px !important;
+      flex-wrap: wrap !important;
+      margin-bottom: 18px !important;
+    }
+
+    .house-perk-item {
+      font-size: 11.5px !important;
+      font-weight: 600 !important;
+      background: #fcf9f6 !important;
+      border: 1px solid #f0dfd8 !important;
+      color: #7a6e71 !important;
+      padding: 4px 12px !important;
+      border-radius: 999px !important;
+    }
+
+    .btn-house-explore {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      background: #2d2426 !important;
+      color: #ffffff !important;
+      padding: 10px 18px 10px 22px !important;
+      border-radius: 999px !important;
+      font-size: 13.5px !important;
+      font-weight: 600 !important;
+      text-decoration: none !important;
+      transition: all 0.25s ease !important;
+      box-shadow: 0 4px 14px rgba(45, 36, 38, 0.15) !important;
+    }
+
+    .btn-house-explore:hover {
+      background: #d9577a !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 8px 20px rgba(217, 87, 122, 0.25) !important;
+    }
+
+    .btn-house-explore .arrow-ball {
+      width: 26px !important;
+      height: 26px !important;
+      background: rgba(255, 255, 255, 0.2) !important;
+      border-radius: 50% !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font-size: 11px !important;
+      transition: transform 0.2s ease !important;
+    }
+
+    .btn-house-explore:hover .arrow-ball {
+      transform: translateX(3px) !important;
+    }
+
+    /* Dropdown Profile */
+    .user-dropdown-container { position: relative; display: inline-block; }
+    .user-pill-btn {
+      display: inline-flex; align-items: center; gap: 8px; background: #ffffff;
+      border: 1.5px solid #f0dfd8; padding: 7px 18px; border-radius: 999px;
+      font-size: 13.5px; font-weight: 600; color: #2d2426; cursor: pointer;
+      box-shadow: 0 2px 10px rgba(59, 42, 47, 0.04); transition: all 0.25s ease;
+    }
+    .user-pill-btn:hover { border-color: #d9577a; transform: translateY(-1px); }
+    .user-dropdown-menu {
+      position: absolute; top: calc(100% + 10px); right: 0; width: 200px;
+      background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(16px);
+      border: 1.5px solid #f0dfd8; border-radius: 20px; padding: 8px;
+      box-shadow: 0 14px 34px rgba(59, 42, 47, 0.12); display: none;
+      flex-direction: column; gap: 4px; z-index: 1000;
+    }
+    .user-dropdown-menu.show { display: flex; }
+    .dropdown-link-item {
+      display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+      border-radius: 14px; font-size: 13.5px; font-weight: 600; color: #2d2426;
+      text-decoration: none; border: none; background: transparent; width: 100%;
+      text-align: left; cursor: pointer; transition: all 0.2s ease;
+    }
+    .dropdown-link-item:hover { background: #fcf9f6; color: #d9577a; }
+    .dropdown-link-item.logout { color: #b91c1c; border-top: 1px dashed #f0dfd8; border-radius: 0 0 14px 14px; margin-top: 4px; padding-top: 10px; }
+    .dropdown-link-item.logout:hover { background: #fee2e2; color: #991b1b; }
+
+    @media (max-width: 992px) {
+      .hero-split-grid { grid-template-columns: 1fr !important; gap: 36px !important; text-align: center !important; }
+      .hero-left-content { text-align: center !important; }
+      .hero-left-content .hero-title { text-align: center !important; }
+      .hero-left-content .hero-desc { margin: 0 auto 24px !important; text-align: center !important; }
+      .hero-action-row { text-align: center !important; }
+      .hero-stats-left-grid { justify-content: center !important; grid-template-columns: repeat(3, 1fr) !important; gap: 16px !important; text-align: center !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- แสงไฟเคลื่อนไหวตามเมาส์ -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <!-- ==================== 1. FLOATING PILL NAVBAR ==================== -->
+  <header class="navbar-wrapper">
+    <nav class="pill-navbar">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-mark">
+          <span class="mark-circle blush"></span>
+          <span class="mark-circle butter"></span>
+        </div>
+        <span class="brand-text">Dorm Space</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="zone01.html" class="nav-link">โซนยอดฮิต</a>
+        <a href="news.html" class="nav-link">ข่าวสาร</a>
+        <a href="aboutus.html" class="nav-link">เกี่ยวกับเรา</a>
+      </div>
+
+      <div class="nav-actions" id="userArea">
+        <a href="auth.html" class="btn-primary" id="btnAuth">
+          <span>เข้าสู่ระบบ</span>
+          <div class="btn-arrow">➜</div>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ==================== 2. HERO SECTION ==================== -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-split-grid">
+          
+          <!-- ฝั่งซ้าย: ข้อมูล ข้อความ และสถิติ ชิดซ้าย -->
+          <div class="hero-left-content">
+            <div class="badge-pill">
+              <span class="badge-dot"></span>
+              <span>DORM SPACE • MAEJO UNIVERSITY</span>
+            </div>
+
+            <h1 class="hero-title">
+              ค้นหาหอพักที่ใช่ <br />
+              <span class="accent-text">ใกล้มหาวิทยาลัยแม่โจ้</span>
+            </h1>
+
+            <p class="hero-desc">
+              เราไม่ได้ช่วยคุณแค่ “หาหอพัก” แต่ช่วยให้คุณรู้จักพื้นที่รอบมหาวิทยาลัย  <br/>และเลือกสถานที่ที่เหมาะกับไลฟ์สไตล์ของคุณมากที่สุด
+            </p>
+
+              <div class="hero-action-row">
+                <a href="catalog.html" class="btn-hero-primary">
+                  <span>ค้นหาหอพักเลย</span>
+                  <span class="btn-arrow-icon">➜</span>
+                </a>
+              </div>
+
+            <!-- สถิติ 3 ช่องชิดซ้าย -->
+            <div class="hero-stats-left-grid">
+              <div class="stat-col">
+                <span class="stat-big-num">3+</span>
+                <span class="stat-sub-text">โซนยอดฮิตรอบมอ</span>
+              </div>
+              <div class="stat-col">
+                <span class="stat-big-num">100%</span>
+                <span class="stat-sub-text">คัดกรองความปลอดภัย</span>
+              </div>
+              <div class="stat-col">
+                <span class="stat-big-num">24 ชม.</span>
+                <span class="stat-sub-text">พร้อมค้นหาออนไลน์</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ฝั่งขวา: การ์ดบ้านพาสเทล 3D (นำป้ายลอยออกแล้ว) -->
+          <div class="hero-right-visual">
+            <div class="house-visual-card">
+              
+              <!-- กรอบภาพบ้านด้านบน -->
+              <div class="house-art-banner">
+                <span class="house-tag-top">🏡 หอพักแนะนำรอบแม่โจ้</span>
+                <div class="house-emoji-hero">🏡</div>
+                <span class="house-price-tag">เริ่มต้น ฿2,500/ด.</span>
+              </div>
+
+              <!-- รายละเอียดด้านล่าง -->
+              <div class="house-info-box">
+                <span class="house-category-label">MAEJO RESIDENCE • ZONE 01-03</span>
+                <h3 class="house-name-text">บ้านหอพักอบอุ่น สไตล์เด็กแม่โจ้</h3>
+                <p class="house-desc-text">รวมหอพักคุณภาพดีรอบ ม.แม่โจ้ ทั้งโซนหน้ามอ ประตูวิศวะ และหลิ่งมื่น <br/>เดินทางสะดวก ปลอดภัย อุ่นใจเหมือนอยู่บ้าน</p>
+                
+                <div class="house-perks-wrap">
+                  <span class="house-perk-item">🔒 คีย์การ์ด & CCTV</span>
+                  <span class="house-perk-item">📶 Wi-Fi ฟรี</span>
+                  <span class="house-perk-item">🛵 ที่จอดรถสะดวก</span>
+                </div>
+
+                <a href="dorm_detail/dorm_01.html" class="btn-hero-primary">
+                  <span>เลือกดูหอพักแนะนำ</span>
+                  <span class="arrow-ball">➜</span>
+                </a>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 3. TICKER BAR ==================== -->
+    <section class="ticker-section">
+      <div class="ticker-track">
+        <a href="zone01.html" style="text-decoration: none; display: inline-block; cursor: pointer;">
+          <div class="ticker-item color-pink">ประตูหน้ามอ ✿</div></a>
+        <a href="zone02.html" style="text-decoration: none; display: inline-block; cursor: pointer;">
+          <div class="ticker-item color-green">ประตูวิศวะ ✿</div></a>
+        <a href="zone03.html" style="text-decoration: none; display: inline-block; cursor: pointer;">
+          <div class="ticker-item color-purple">โซนหลิ่งมื่น ✿</div></a>
+        <div class="ticker-item color-yellow">ฟรี Wi-Fi ✿</div>
+        <div class="ticker-item color-orange">มีที่จอดรถยนต์ ✿</div>
+        <div class="ticker-item color-pink">บรรยากาศเงียบสงบ ✿</div>
+        <a href="zone01.html" style="text-decoration: none; display: inline-block; cursor: pointer;">
+          <div class="ticker-item color-pink">ประตูหน้ามอ ✿</div></a>
+        <a href="zone02.html" style="text-decoration: none; display: inline-block; cursor: pointer;">
+          <div class="ticker-item color-green">ประตูวิศวะ ✿</div></a>
+        <a href="zone03.html" style="text-decoration: none; display: inline-block; cursor: pointer;">
+          <div class="ticker-item color-purple">โซนหลิ่งมื่น ✿</div></a>
+        <div class="ticker-item color-yellow">ฟรี Wi-Fi ✿</div>
+        <div class="ticker-item color-orange">มีที่จอดรถยนต์ ✿</div>
+        <div class="ticker-item color-pink">บรรยากาศเงียบสงบ ✿</div>
+      </div>
+    </section>
+
+    <!-- ==================== 4. LIFESTYLE TILES (FRAMER SERVICE TILES) ==================== -->
+    <section class="zones-section" id="zones">
+      <div class="container">
+        <div class="section-header-center">
+          <span class="sub-label">Select Your Lifestyle</span>
+          <h2 class="section-title">ไลฟ์สไตล์ที่ชอบ ทำเลที่ใช่</h2>
+          <p class="section-desc">คลิกเลือกไลฟ์สไตล์ที่คุณต้องการเพื่อดูโซนที่แนะนำ หรือคลิกที่การ์ดเพื่อดูรายละเอียด</p>
+        </div>
+
+        <div class="lifestyle-filter-bar">
+          <button type="button" class="filter-pill-btn active" data-filter="all">✨ ทั้งหมด (3 โซน)</button>
+          <button type="button" class="filter-pill-btn" data-filter="zone-food">🍔 สายกิน & เดินไปเรียน</button>
+          <button type="button" class="filter-pill-btn" data-filter="zone-quiet">🌿 สายสงบ & มีที่จอดรถ</button>
+          <button type="button" class="filter-pill-btn" data-filter="zone-cafe">☕ สายคาเฟ่ & เลี้ยงสัตว์ได้</button>
+        </div>
+
+        <div class="st-grid">
+          
+          <!-- Tile 01: โซนประตูหน้ามอ -->
+          <a class="st-card" data-category="zone-food" href="zone01.html" style="--st-accent: #f6c9d0;">
+            <div class="st-media">
+              <div class="st-image-placeholder front-bg">
+                <span class="st-icon-preview">🚪</span>
+              </div>
+              <span class="st-number">01</span>
+            </div>
+            <div class="st-body">
+              <div class="st-eyebrow">
+                <span class="st-dot"></span>
+                <span>CAMPUS FRONT GATE</span>
+              </div>
+              <h3 class="st-title">โซนประตูหน้ามอ</h3>
+              <p class="st-description">
+                ครบจบเรื่องของกินและธนาคาร ไปเรียนง่ายที่สุด <br/>เดินทางเป็นต่อ สะดวกสบาย ไม่ต้องมีรถส่วนตัวก็อยู่ได้สบาย
+              </p>
+              <div class="st-tags">
+                <span class="st-tag">สายกิน</span>
+                <span class="st-tag">เดินไปเรียน</span>
+                <span class="st-tag">ใกล้ของกิน</span>
+              </div>
+              <div class="st-footer">
+                <div class="st-detail">สะดวก · ใกล้มหาวิทยาลัย</div>
+                <div class="st-cta">
+                  <span class="st-cta-label">สำรวจโซนหน้ามอ</span>
+                  <span class="st-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <path d="M5 12H19M13 6L19 12L13 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <!-- Tile 02: โซนประตูวิศวะ -->
+          <a class="st-card" data-category="zone-quiet" href="zone02.html" style="--st-accent: #fae498;">
+            <div class="st-media">
+              <div class="st-image-placeholder eng-bg">
+                <span class="st-icon-preview">🏠</span>
+              </div>
+              <span class="st-number">02</span>
+            </div>
+            <div class="st-body">
+              <div class="st-eyebrow">
+                <span class="st-dot"></span>
+                <span>ENGINEERING GATE</span>
+              </div>
+              <h3 class="st-title">โซนประตูวิศวะ</h3>
+              <p class="st-description">
+                บรรยากาศโปร่งสบาย ใกล้ฝั่งคณะวิศวกรรมศาสตร์<br/> มีที่จอดรถกว้างขวาง ราคาเป็นมิตร 
+              </p>
+              <div class="st-tags">
+                <span class="st-tag">สายสงบ</span>
+                <span class="st-tag">มีที่จอดรถ</span>
+                <span class="st-tag">ราคาประหยัด</span>
+              </div>
+              <div class="st-footer">
+                <div class="st-detail">ที่จอดรถสะดวก · ราคาสบายกระเป๋า</div>
+                <div class="st-cta">
+                  <span class="st-cta-label">สำรวจโซนวิศวะ</span>
+                  <span class="st-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <path d="M5 12H19M13 6L19 12L13 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <!-- Tile 03: โซนหลิ่งมื่น -->
+          <a class="st-card" data-category="zone-cafe" href="zone03.html" style="--st-accent: #d1fae5;">
+            <div class="st-media">
+              <div class="st-image-placeholder ling-bg">
+                <span class="st-icon-preview">☕</span>
+              </div>
+              <span class="st-number">03</span>
+            </div>
+            <div class="st-body">
+              <div class="st-eyebrow">
+                <span class="st-dot"></span>
+                <span>LING MUEN ZONE</span>
+              </div>
+              <h3 class="st-title">โซนหลิ่งมื่น</h3>
+              <p class="st-description">
+                ทำเลยอดฮิตสำหรับสายชิล ใกล้คาเฟ่และร้านอาหารน่านั่ง บรรยากาศเงียบสงบ เป็นส่วนตัว 
+              </p>
+              <div class="st-tags">
+                <span class="st-tag">สายคาเฟ่</span>
+                <span class="st-tag">เลี้ยงสัตว์ได้</span>
+                <span class="st-tag">บรรยากาศชิล</span>
+              </div>
+              <div class="st-footer">
+                <div class="st-detail">เงียบสงบ · คาเฟ่เพียบ</div>
+                <div class="st-cta">
+                  <span class="st-cta-label">สำรวจโซนหลิ่งมื่น</span>
+                  <span class="st-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <path d="M5 12H19M13 6L19 12L13 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 5. MAP SECTION ==================== -->
+    <section class="map-section" id="map">
+      <div class="container">
+        <div class="map-header">
+          <div>
+            <span class="sub-label">Visit Our Campus Office</span>
+            <h3 class="map-title">🗺️ แผนที่เดินทางมายังสำนักงาน</h3>
+            <p class="map-sub">มหาวิทยาลัยแม่โจ้ อ.สันทราย จ.เชียงใหม่</p>
+          </div>
+          <span class="map-badge">อาคารอำนวย ยศสุข</span>
+        </div>
+        <div class="map-cookie-wrapper">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3774.8297601984286!2d99.00828667520086!3d18.894632082273016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30da3cca984ecc69%3A0x2980791c600add52!2z4Lih4Lir4Liy4Lin4Li04LiX4Lii4Liy4Lil4Lix4Lii4LmB4Lih4LmI4LmC4LiI4LmJ!5e0!3m2!1sth!2sth!4v1771159581689!5m2!1sth!2sth" 
+            loading="lazy" 
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================== 6. THEMED FOOTER ==================== -->
+  <footer class="footer-themed" id="contact-footer">
+    <div class="footer-wave-top">
+      <svg viewBox="0 0 1200 40" preserveAspectRatio="none">
+        <path fill="#d9577a" d="M 0,40 L 0,20 Q 300,40 600,20 T 1200,20 L 1200,40 Z"></path>
+      </svg>
+    </div>
+
+    <div class="footer-inner">
+      <div class="container footer-centered-container">
+        <div class="footer-columns-balanced">
+          
+          <div class="footer-col-item">
+            <div class="col-head">
+              <span class="brand-text">Dorm Space</span>
+              <div class="live-pill">
+                <span class="live-pulse-dot"></span>
+                <span>ONLINE</span>
+              </div>
+            </div>
+            <p class="col-desc">
+              แพลตฟอร์มค้นหาและเปรียบเทียบหอพักรอบมหาวิทยาลัยแม่โจ้ <br/>
+              เพื่อให้เด็กแม่โจ้ได้อยู่หอพักที่สบายใจที่สุด
+            </p>
+
+            <div class="footer-nav-icons">
+              <a href="mailto:DormSpace.official@mju.com" class="icon-link-circle" title="ส่งอีเมลหาเรา" aria-label="Mail">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              </a>
+              <a href="tel:053873000" class="icon-link-circle" title="โทรหาเรา" aria-label="Phone">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+              </a>
+              <a href="https://lin.ee/uOEUb7G" target="_blank" rel="noopener noreferrer" class="icon-link-circle" title="ติดต่อผ่าน Line" aria-label="Line">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M12 2C6.48 2 2 5.92 2 10.75c0 2.97 1.7 5.6 4.34 7.22-.19.7-.68 2.54-.78 2.93-.12.49.18.48.38.35.26-.18 3.58-2.43 4.14-2.82.61.08 1.25.12 1.92.12 5.52 0 10-3.92 10-8.75S17.52 2 12 2zm-3.5 11h-1.5c-.28 0-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v3.5h1c.28 0 .5.22.5.5s-.22.5-.5.5zm2.5-.5c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v4zm4.5.5h-1c-.28 0-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v2.8l1.65-2.97c.1-.19.3-.33.53-.33.28 0 .5.22.5.5v4c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-2.8l-1.68 3zm4-1.5h-1v-2h1c.28 0 .5-.22.5-.5s-.22-.5-.5-.5h-1.5c-.28 0-.5.22-.5.5v4c0 .28.22.5.5.5H20c.28 0 .5-.22.5-.5s-.22-.5-.5-.5z"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="footer-col-item">
+            <div class="col-head">
+              <h4 class="col-title">เวลาทำการ</h4>
+            </div>
+            <div class="col-info-block">
+              <p class="info-text">
+                <strong>จันทร์ - ศุกร์:</strong> 08:30 - 16:30 น.<br />
+                <small class="text-muted">(ปิดทำการเสาร์ - อาทิตย์ และวันหยุด)</small>
+              </p>
+            </div>
+            <div class="online-24h-tag">
+              🌐 ค้นหาหอพักออนไลน์ได้ตลอด 24 ชม.
+            </div>
+          </div>
+
+          <div class="footer-col-item">
+            <div class="col-head">
+              <h4 class="col-title">ที่ตั้งสำนักงาน</h4>
+            </div>
+            <div class="col-info-block">
+              <p class="info-text">สำนักบริหารและพัฒนาวิชาการ<br />มหาวิทยาลัยแม่โจ้ จ.เชียงใหม่ 50290</p>
+              <span class="info-sub">🏛️ อาคารอำนวย ยศสุข</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="footer-bottom-bar-center">
+          <p>© 2026 Dorm Space • Maejo Community Living Platform</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="sound02.js"></script>
+
+  <!-- Script เชื่อมต่อ Supabase & Interactive Filter -->
+  <script>
+    const SUPABASE_URL = 'https://auivtzjrgurdrohibexh.supabase.co';
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF1aXZ0empyZ3VyZHJvaGliZXhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEwMDg3NzcsImV4cCI6MjEwNjU4NDc3N30.95xqR45D0g61DGiAbh02AvwhRf9IwEJfmU5j7uIitNY';
+
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    const userArea = document.getElementById('userArea');
+
+    async function checkAuthSession() {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+
+      if (session && session.user) {
+        let nickname = session.user.user_metadata?.nickname || 'เพื่อน';
+
+        const { data: profile } = await supabaseClient
+          .from('profiles')
+          .select('nickname')
+          .eq('id', session.user.id)
+          .single();
+
+        if (profile && profile.nickname) {
+          nickname = profile.nickname;
+        }
+
+        const currentAvatar = localStorage.getItem('dorm_user_avatar') || '🌸';
+
+        userArea.innerHTML = `
+          <div class="user-dropdown-container">
+            <button class="user-pill-btn" id="userMenuBtn">
+              <span>${currentAvatar} ${nickname}</span>
+              <span style="font-size: 10px; opacity: 0.6;">▾</span>
+            </button>
+            <div class="user-dropdown-menu" id="userDropdownMenu">
+              <a href="profile.html" class="dropdown-link-item">
+                <span>บัญชีของฉัน</span>
+              </a>
+              <a href="appointment.html" class="dropdown-link-item">
+                <span>การจองของฉัน</span>
+              </a>
+              <button class="dropdown-link-item logout" id="btnLogoutMenu">
+                <span>🚪 ออกจากระบบ</span>
+              </button>
+            </div>
+          </div>
+        `;
+
+        const userMenuBtn = document.getElementById('userMenuBtn');
+        const userDropdownMenu = document.getElementById('userDropdownMenu');
+        const btnLogoutMenu = document.getElementById('btnLogoutMenu');
+
+        userMenuBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          userDropdownMenu.classList.toggle('show');
+        });
+
+        document.addEventListener('click', (e) => {
+          if (!userDropdownMenu.contains(e.target) && !userMenuBtn.contains(e.target)) {
+            userDropdownMenu.classList.remove('show');
+          }
+        });
+
+        btnLogoutMenu.addEventListener('click', async () => {
+          await supabaseClient.auth.signOut();
+          window.location.reload();
+        });
+
+      } else {
+        userArea.innerHTML = `
+          <a href="auth.html" class="btn-primary">
+            <span>เข้าสู่ระบบ</span>
+            <div class="btn-arrow">➜</div>
+          </a>
+        `;
+      }
+    }
+
+    checkAuthSession();
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const filterBtns = document.querySelectorAll(".filter-pill-btn");
+      const cards = document.querySelectorAll(".st-card");
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+          filterBtns.forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+
+          const filterValue = btn.getAttribute("data-filter");
+          cards.forEach(card => {
+            if (filterValue === "all" || card.getAttribute("data-category") === filterValue) {
+              card.style.display = "flex";
+            } else {
+              card.style.display = "none";
+            }
+          });
+        });
+      });
+    });
+  </script>
+
+  <script src="js/script.js"></script>
+  <script src="js/sound02.js"></script>
+
+</body>
+</html>

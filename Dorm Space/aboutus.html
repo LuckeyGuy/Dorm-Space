@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>เกี่ยวกับเรา — Dorm Space</title>
+
+  <!-- Google Fonts: Fraunces + DM Sans + Noto Sans Thai + Fragment Mono -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fragment+Mono&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/about.css" />
+</head>
+<body>
+
+  <!-- ==================== FLOATING PILL NAVBAR (เหมือน NEWS.HTML 100%) ==================== -->
+  <header class="navbar-wrapper">
+    <nav class="pill-navbar">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-mark">
+          <span class="mark-circle blush"></span>
+          <span class="mark-circle butter"></span>
+        </div>
+        <span class="brand-text">Dorm Space</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="zone01.html" class="nav-link">โซนยอดฮิต</a>
+        <a href="news.html" class="nav-link">ข่าวสาร</a>
+        <a href="aboutus.html" class="nav-link active">เกี่ยวกับเรา</a>
+      </div>
+
+      <div class="nav-actions">
+        <a href="index.html" class="btn-primary">
+          <span>กลับหน้าหลัก</span>
+          <div class="btn-arrow">➜</div>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="about-page-main">
+    <div class="container">
+
+      <!-- ==================== HEADER ==================== -->
+      <section class="about-hero-header">
+        <div class="about-badge-pill">
+          <span class="about-live-dot"></span>
+          <span>MAEJO COMMUNITY LIVING</span>
+        </div>
+        <h1 class="about-main-title">
+          รู้จักกับ <span class="accent-text">Dorm Space</span>
+        </h1>
+        <p class="about-subtitle">เรื่องราว แรงบันดาลใจ และความตั้งใจที่อยากให้เด็กแม่โจ้มีที่พักที่ดีที่สุด</p>
+      </section>
+
+      <!-- ==================== STORY CARD ==================== -->
+      <section class="story-card-wrapper">
+        <div class="story-card">
+          <div class="story-card-head">
+            <span class="story-star">🌟</span>
+            <h2>แรงบันดาลใจจากความลำบาก สู่ทางออกของเด็กหอ</h2>
+          </div>
+          
+          <p class="story-p">
+            เราเข้าใจดีว่าการหาหอพักรอบมหาวิทยาลัยแม่โจ้นั้นไม่ใช่เรื่องง่าย ข้อมูลที่กระจัดกระจาย ราคาที่ไม่ชัดเจน และทำเลที่เลือกยาก ทำให้เราเกิดคำถามขึ้นมาในใจ
+          </p>
+
+          <!-- Highlight Quote Box -->
+          <div class="story-quote-box">
+            <span class="quote-mark">“</span>
+            <p>จะเป็นไปได้ไหม? ถ้าเรามีพื้นที่เดียวที่รวมทุกอย่างไว้ให้เพื่อนๆ นักศึกษา</p>
+          </div>
+
+          <p class="story-p" style="margin-bottom: 0;">
+            <b>Dorm Space</b> สร้างขึ้นจากความตั้งใจที่เป็นตัวกลางในการเชื่อมต่อระหว่าง <b>“เจ้าของหอพัก”</b> และ <b>“นักศึกษา”</b> เพื่อให้การหาที่พักไม่ใช่เรื่องน่าปวดหัวอีกต่อไปค่ะ
+          </p>
+        </div>
+      </section>
+
+      <!-- ==================== WHY DORM SPACE (CENTER AUTO-OPEN ENVELOPE CAROUSEL) ==================== -->
+      <section class="why-section">
+        <div class="why-header">
+          <span class="why-label">Core Values & Highlights</span>
+          <h2 class="why-title">ทำไมต้อง Dorm Space?</h2>
+          <p class="why-desc">เลื่อนดูจุดเด่นในแต่ละซองจดหมาย (เปิดอัตโนมัติเมื่ออยู่กึ่งกลาง)</p>
+        </div>
+
+        <!-- Carousel Track รวมซองจดหมายสีขาวเรืองแสง 7 ซอง -->
+        <div class="envelope-carousel-track" id="envelopeTrack">
+          
+          <!-- Card 1: ชมพู Glow -->
+          <div class="env-card-unit glow-pink" data-id="1">
+            <div class="env-box">
+              <div class="env-back-plate"></div>
+              
+              <!-- Letter Sheet ด้านใน -->
+              <div class="env-sheet">
+                <span class="sheet-category">FEATURE 01</span>
+                <h4 class="sheet-title">ค้นหาได้ง่าย</h4>
+                <p class="sheet-desc">รวมข้อมูลหอพักไว้ในที่เดียว ช่วยลดเวลาในการค้นหาและเปรียบเทียบห้องพักได้อย่างรวดเร็ว</p>
+                <div class="sheet-tag">DORM SPACE · MJU</div>
+              </div>
+
+              <!-- Pocket ด้านหน้า -->
+              <div class="env-front-pocket">
+                <div class="pocket-content-center">
+                  <div class="env-icon-badge">🔎</div>
+                  <h3 class="env-closed-title">ค้นหาได้ง่าย</h3>
+                </div>
+              </div>
+
+              <!-- Flap ฝาปิดซองจดหมาย -->
+              <div class="env-top-flap">
+                <svg viewBox="0 0 260 100" preserveAspectRatio="none">
+                  <polygon points="0,0 260,0 130,100" fill="#ffffff" stroke="rgba(240, 223, 216, 0.7)" stroke-width="1.2"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: เหลือง Glow -->
+          <div class="env-card-unit glow-yellow" data-id="2">
+            <div class="env-box">
+              <div class="env-back-plate"></div>
+              <div class="env-sheet">
+                <span class="sheet-category">FEATURE 02</span>
+                <h4 class="sheet-title">รู้จักทำเล</h4>
+                <p class="sheet-desc">เจาะลึกข้อมูลแต่ละโซนรอบรั้วแม่โจ้ <br/>พร้อมเข้าใจบรรยากาศและสิ่งอำนวยความสะดวกรอบพื้นที่</p>
+                <div class="sheet-tag">DORM SPACE · MJU</div>
+              </div>
+              <div class="env-front-pocket">
+                <div class="pocket-content-center">
+                  <div class="env-icon-badge">📍</div>
+                  <h3 class="env-closed-title">รู้จักทำเล</h3>
+                </div>
+              </div>
+              <div class="env-top-flap">
+                <svg viewBox="0 0 260 100" preserveAspectRatio="none">
+                  <polygon points="0,0 260,0 130,100" fill="#ffffff" stroke="rgba(240, 223, 216, 0.7)" stroke-width="1.2"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: เขียว Glow -->
+          <div class="env-card-unit glow-green" data-id="3">
+            <div class="env-box">
+              <div class="env-back-plate"></div>
+              <div class="env-sheet">
+                <span class="sheet-category">FEATURE 03</span>
+                <h4 class="sheet-title">ใส่ใจความปลอดภัย</h4>
+                <p class="sheet-desc">ตรวจเช็กระบบความปลอดภัย <br/> กล้อง CCTV และระบบคีย์การ์ด <br/> เพื่อความอุ่นใจก่อนตัดสินใจเข้าอยู่</p>
+                <div class="sheet-tag">DORM SPACE · MJU</div>
+              </div>
+              <div class="env-front-pocket">
+                <div class="pocket-content-center">
+                  <div class="env-icon-badge">🛡️</div>
+                  <h3 class="env-closed-title">ใส่ใจความปลอดภัย</h3>
+                </div>
+              </div>
+              <div class="env-top-flap">
+                <svg viewBox="0 0 260 100" preserveAspectRatio="none">
+                  <polygon points="0,0 260,0 130,100" fill="#ffffff" stroke="rgba(240, 223, 216, 0.7)" stroke-width="1.2"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4: ม่วง Glow -->
+          <div class="env-card-unit glow-purple" data-id="4">
+            <div class="env-box">
+              <div class="env-back-plate"></div>
+              <div class="env-sheet">
+                <span class="sheet-category">FEATURE 04</span>
+                <h4 class="sheet-title">เข้าใจไลฟ์สไตล์</h4>
+                <p class="sheet-desc">ไม่ได้ดูแค่ห้องพัก แต่แนะนำร้านอาหาร แหล่งของกิน คาเฟ่ และคอมมูนิตี้รอบตัวคุณ</p>
+                <div class="sheet-tag">DORM SPACE · MJU</div>
+              </div>
+              <div class="env-front-pocket">
+                <div class="pocket-content-center">
+                  <div class="env-icon-badge">☕</div>
+                  <h3 class="env-closed-title">เข้าใจไลฟ์สไตล์</h3>
+                </div>
+              </div>
+              <div class="env-top-flap">
+                <svg viewBox="0 0 260 100" preserveAspectRatio="none">
+                  <polygon points="0,0 260,0 130,100" fill="#ffffff" stroke="rgba(240, 223, 216, 0.7)" stroke-width="1.2"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 5: ส้ม Glow -->
+          <div class="env-card-unit glow-orange" data-id="5">
+            <div class="env-box">
+              <div class="env-back-plate"></div>
+              <div class="env-sheet">
+                <span class="sheet-category">FEATURE 05</span>
+                <h4 class="sheet-title">รวบรวมข้อมูลจริง</h4>
+                <p class="sheet-desc">ข้อมูลหอพักรอบแม่โจ้อัปเดตสม่ำเสมอ ครบทั้งโซนหน้ามอ วิศวะ และโซนหลิ่งมื่น</p>
+                <div class="sheet-tag">DORM SPACE · MJU</div>
+              </div>
+              <div class="env-front-pocket">
+                <div class="pocket-content-center">
+                  <div class="env-icon-badge">📋</div>
+                  <h3 class="env-closed-title">รวบรวมข้อมูลจริง</h3>
+                </div>
+              </div>
+              <div class="env-top-flap">
+                <svg viewBox="0 0 260 100" preserveAspectRatio="none">
+                  <polygon points="0,0 260,0 130,100" fill="#ffffff" stroke="rgba(240, 223, 216, 0.7)" stroke-width="1.2"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 6: ฟ้า Glow -->
+          <div class="env-card-unit glow-blue" data-id="6">
+            <div class="env-box">
+              <div class="env-back-plate"></div>
+              <div class="env-sheet">
+                <span class="sheet-category">FEATURE 06</span>
+                <h4 class="sheet-title">แนะนำแบบคนพื้นที่</h4>
+                <p class="sheet-desc">รีวิวร้านอาหาร คาเฟ่ลับ และพิกัดเด็ดในการใช้ชีวิตสไตล์เด็กแม่โจ้ตัวจริง</p>
+                <div class="sheet-tag">DORM SPACE · MJU</div>
+              </div>
+              <div class="env-front-pocket">
+                <div class="pocket-content-center">
+                  <div class="env-icon-badge">💡</div>
+                  <h3 class="env-closed-title">แนะนำแบบคนพื้นที่</h3>
+                </div>
+              </div>
+              <div class="env-top-flap">
+                <svg viewBox="0 0 260 100" preserveAspectRatio="none">
+                  <polygon points="0,0 260,0 130,100" fill="#ffffff" stroke="rgba(240, 223, 216, 0.7)" stroke-width="1.2"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 7: โรส Glow -->
+          <div class="env-card-unit glow-rose" data-id="7">
+            <div class="env-box">
+              <div class="env-back-plate"></div>
+              <div class="env-sheet">
+                <span class="sheet-category">FEATURE 07</span>
+                <h4 class="sheet-title">จองง่าย สบายใจ</h4>
+                <p class="sheet-desc">ระบบติดต่อสอบถามสะดวก <br/>พร้อมเช็คลิสต์สำคัญให้คุณตรวจทานก่อนเซ็นสัญญาเช่า</p>
+                <div class="sheet-tag">DORM SPACE · MJU</div>
+              </div>
+              <div class="env-front-pocket">
+                <div class="pocket-content-center">
+                  <div class="env-icon-badge">🤝</div>
+                  <h3 class="env-closed-title">จองง่าย สบายใจ</h3>
+                </div>
+              </div>
+              <div class="env-top-flap">
+                <svg viewBox="0 0 260 100" preserveAspectRatio="none">
+                  <polygon points="0,0 260,0 130,100" fill="#ffffff" stroke="rgba(240, 223, 216, 0.7)" stroke-width="1.2"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ==================== HOW IT WORKS ==================== -->
+      <section class="how-it-works-section">
+        <div class="why-header">
+          <span class="why-label">How It Works</span>
+          <h2 class="why-title">ใช้งานง่ายใน 3 ขั้นตอน</h2>
+          <p class="why-desc">เริ่มต้นค้นหาหอพักของคุณได้ง่ายๆ ภายในไม่กี่นาที</p>
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-card step-card-1">
+            <span class="step-badge">STEP 01</span>
+            <div class="step-icon">🔍</div>
+            <h3>เลือกโซน</h3>
+            <p>เลือกพื้นที่ที่เหมาะกับการเดินทาง<br/>และไลฟ์สไตล์การใช้ชีวิตของคุณ</p>
+          </div>
+
+          <div class="step-card step-card-2">
+            <span class="step-badge">STEP 02</span>
+            <div class="step-icon">📋</div>
+            <h3>เปรียบเทียบข้อมูล</h3>
+            <p>ดูรายละเอียดหอพัก ราคา ค่าน้ำค่าไฟ <br/> สิ่งอำนวยความสะดวก และรูปห้องจริง</p>
+          </div>
+
+          <div class="step-card step-card-3">
+            <span class="step-badge success">STEP 03</span>
+            <div class="step-icon">✅</div>
+            <h3>เลือกหอที่ใช่</h3>
+            <p>ตัดสินใจเลือกหอพักที่ตรงใจ<br/>และติดต่อนัดดูห้องจริงได้โดยตรง</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== SIGNATURE BANNER ==================== -->
+      <section class="about-signature-banner">
+        <h3>“ เราดูแลเรื่องหอพัก เพื่อให้คุณประหยัดเวลา ”</h3>
+        <p class="tagline">Dorm Space — พื้นที่สำหรับค้นหาที่พักที่ใช่ ในสไตล์ที่เป็นคุณ</p>
+        <span class="hashtags">#DormSpace #MJU #DormLife</span>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer-themed">
+    <div class="footer-wave-top">
+      <svg viewBox="0 0 1200 40" preserveAspectRatio="none">
+        <path fill="var(--accent-rose, #d9577a)" d="M 0,40 L 0,20 Q 300,40 600,20 T 1200,20 L 1200,40 Z"></path>
+      </svg>
+    </div>
+
+    <div class="footer-inner">
+      <div class="container footer-centered-container">
+        <div class="footer-columns-balanced">
+          
+          <div class="footer-col-item">
+            <div class="col-head">
+              <span class="brand-text">Dorm Space</span>
+              <div class="live-pill">
+                <span class="live-pulse-dot"></span>
+                <span>ONLINE</span>
+              </div>
+            </div>
+            <p class="col-desc">
+              แพลตฟอร์มค้นหาและเปรียบเทียบหอพักรอบมหาวิทยาลัยแม่โจ้ <br />
+              เพื่อให้เด็กแม่โจ้ได้อยู่หอพักที่สบายใจที่สุด
+            </p>
+
+            <div class="footer-nav-icons">
+              <a href="mailto:DormSpace.official@mju.com" class="icon-link-circle" title="ส่งอีเมลหาเรา">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              </a>
+              <a href="tel:053873000" class="icon-link-circle" title="โทรหาเรา">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+              </a>
+              <a href="https://lin.ee/uOEUb7G" target="_blank" rel="noopener noreferrer" class="icon-link-circle" title="ติดต่อผ่าน Line">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M12 2C6.48 2 2 5.92 2 10.75c0 2.97 1.7 5.6 4.34 7.22-.19.7-.68 2.54-.78 2.93-.12.49.18.48.38.35.26-.18 3.58-2.43 4.14-2.82.61.08 1.25.12 1.92.12 5.52 0 10-3.92 10-8.75S17.52 2 12 2zm-3.5 11h-1.5c-.28 0-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v3.5h1c.28 0 .5.22.5.5s-.22.5-.5.5zm2.5-.5c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v4zm4.5.5h-1c-.28 0-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v2.8l1.65-2.97c.1-.19.3-.33.53-.33.28 0 .5.22.5.5v4c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-2.8l-1.68 3zm4-1.5h-1v-2h1c.28 0 .5-.22.5-.5s-.22-.5-.5-.5h-1.5c-.28 0-.5.22-.5.5v4c0 .28.22.5.5.5H20c.28 0 .5-.22.5-.5s-.22-.5-.5-.5z"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="footer-col-item">
+            <div class="col-head">
+              <h4 class="col-title">เวลาทำการ</h4>
+            </div>
+            <div class="col-info-block">
+              <p class="info-text">
+                <strong>จันทร์ - ศุกร์:</strong> 08:30 - 16:30 น.<br />
+                <small>(ปิดทำการเสาร์ - อาทิตย์ และวันหยุด)</small>
+              </p>
+            </div>
+            <div class="online-24h-tag">
+              🌐 ค้นหาหอพักออนไลน์ได้ตลอด 24 ชม.
+            </div>
+          </div>
+
+          <div class="footer-col-item">
+            <div class="col-head">
+              <h4 class="col-title">ที่ตั้งสำนักงาน</h4>
+            </div>
+            <div class="col-info-block">
+              <p class="info-text">สำนักบริหารและพัฒนาวิชาการ<br />มหาวิทยาลัยแม่โจ้ จ.เชียงใหม่ 50290</p>
+              <span class="info-sub">🏛 อาคารอำนวย ยศสุข</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="footer-bottom-bar-center">
+          <p>© 2026 Dorm Space • Maejo Community Living Platform</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT CENTER AUTO-OPEN ENGINE -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const track = document.getElementById("envelopeTrack");
+      const units = Array.from(document.querySelectorAll(".env-card-unit"));
+      if (!track || units.length === 0) return;
+
+      let ticking = false;
+
+      const checkCenterCard = () => {
+        const trackRect = track.getBoundingClientRect();
+        const trackCenter = trackRect.left + trackRect.width / 2;
+
+        let closestUnit = null;
+        let minDistance = Infinity;
+
+        units.forEach(unit => {
+          const unitRect = unit.getBoundingClientRect();
+          const unitCenter = unitRect.left + unitRect.width / 2;
+          const distance = Math.abs(trackCenter - unitCenter);
+
+          if (distance < minDistance) {
+            minDistance = distance;
+            closestUnit = unit;
+          }
+        });
+
+        units.forEach(unit => {
+          if (unit === closestUnit) {
+            unit.classList.add("is-open");
+          } else {
+            unit.classList.remove("is-open");
+          }
+        });
+
+        ticking = false;
+      };
+
+      track.addEventListener("scroll", () => {
+        if (!ticking) {
+          window.requestAnimationFrame(checkCenterCard);
+          ticking = true;
+        }
+      }, { passive: true });
+
+      units.forEach(unit => {
+        unit.addEventListener("click", () => {
+          unit.scrollIntoView({
+            behavior: "smooth",
+            inline: "center",
+            block: "nearest"
+          });
+        });
+      });
+
+      setTimeout(checkCenterCard, 350);
+      window.addEventListener("resize", checkCenterCard);
+    });
+  </script>
+
+  <script src="js/script.js"></script>
+  <script src="js/sound02.js"></script>
+
+</body>
+</html>

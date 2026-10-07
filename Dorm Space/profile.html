@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>บัญชีของฉัน — Dorm Space</title>
+
+  <!-- Google Fonts: Fraunces + DM Sans + Noto Sans Thai -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Supabase JS Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    /* ==================== 1. FLOATING NAVBAR ==================== */
+    .navbar-wrapper {
+      position: fixed;
+      top: 20px;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      padding: 0 20px;
+    }
+
+    .pill-navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1.5px solid var(--border-color, #f0dfd8);
+      border-radius: 999px;
+      padding: 8px 14px 8px 24px;
+      width: 100%;
+      max-width: 980px;
+      box-shadow: 0 10px 30px rgba(59, 42, 47, 0.05);
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-mark {
+      display: flex;
+      gap: 4px;
+    }
+
+    .mark-circle {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .mark-circle.blush { background: var(--accent-rose, #d9577a); }
+    .mark-circle.butter { background: var(--pastel-yellow, #fae498); }
+
+    .brand-text {
+      font-family: var(--font-heading, 'Fraunces', serif);
+      font-size: 19px;
+      font-style: italic;
+      font-weight: 600;
+      color: var(--text-primary, #2d2426);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 22px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--text-secondary, #7a6e71);
+      transition: color 0.2s ease;
+      background: none !important;
+      padding: 0 !important;
+      border-radius: 0 !important;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--accent-rose, #d9577a);
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--text-primary, #2d2426);
+      color: #ffffff;
+      padding: 7px 18px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(45, 36, 38, 0.2);
+    }
+
+    .btn-arrow {
+      font-size: 11px;
+    }
+
+    /* ==================== 2. PROFILE MASTER CARD ==================== */
+    .profile-page-main {
+      padding: 130px 20px 70px;
+      min-height: 85vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .profile-master-card {
+      background: #ffffff;
+      border: 2px solid rgba(240, 223, 216, 0.95);
+      border-radius: 44px;
+      padding: 44px 38px 38px;
+      width: 100%;
+      max-width: 540px;
+      box-shadow: 
+        0 4px 6px -1px rgba(59, 42, 47, 0.03),
+        0 14px 34px -4px rgba(59, 42, 47, 0.09),
+        0 30px 60px -12px rgba(217, 87, 122, 0.15);
+      position: relative;
+      text-align: center;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .profile-master-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .digital-pass-header {
+      background: linear-gradient(135deg, rgba(254, 243, 245, 0.9) 0%, rgba(255, 248, 241, 0.95) 100%);
+      border: 1.5px dashed var(--pastel-pink, #ffdce5);
+      border-radius: 28px;
+      padding: 22px 20px;
+      margin-bottom: 26px;
+      position: relative;
+    }
+
+    .pass-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-secondary, #7a6e71);
+      letter-spacing: 0.08em;
+    }
+
+    .status-badge-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ffffff;
+      padding: 3px 10px;
+      border-radius: 999px;
+      color: #059669;
+      box-shadow: 0 2px 6px rgba(5, 150, 105, 0.1);
+    }
+
+    .live-dot-green {
+      width: 6px;
+      height: 6px;
+      background: #10b981;
+      border-radius: 50%;
+      animation: pulseGreen 1.8s infinite;
+    }
+
+    @keyframes pulseGreen {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+      70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    .avatar-wrapper {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+
+    .profile-avatar-bubble {
+      width: 90px;
+      height: 90px;
+      background: linear-gradient(145deg, #ffffff 20%, var(--pastel-pink, #ffdce5) 100%);
+      border: 3.5px solid #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+      box-shadow: 0 8px 22px rgba(217, 87, 122, 0.22);
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .profile-avatar-bubble:hover {
+      transform: scale(1.08) rotate(6deg);
+    }
+
+    .avatar-edit-tag {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      width: 26px;
+      height: 26px;
+      background: var(--text-primary, #2d2426);
+      color: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      border: 2px solid #ffffff;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    .avatar-picker-strip {
+      display: none;
+      gap: 8px;
+      justify-content: center;
+      background: #ffffff;
+      border: 1.5px solid var(--border-color, #f0dfd8);
+      padding: 6px 12px;
+      border-radius: 999px;
+      margin: 8px auto 14px;
+      width: fit-content;
+      box-shadow: 0 4px 14px rgba(59, 42, 47, 0.08);
+      animation: popIn 0.2s ease-out forwards;
+    }
+
+    .avatar-picker-strip.open {
+      display: flex;
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .picker-opt {
+      font-size: 20px;
+      cursor: pointer;
+      padding: 2px 4px;
+      border-radius: 50%;
+      transition: transform 0.15s ease;
+    }
+
+    .picker-opt:hover {
+      transform: scale(1.3);
+    }
+
+    .profile-name-title {
+      font-family: var(--font-heading, 'Fraunces', serif);
+      font-size: 26px;
+      font-weight: 600;
+      color: var(--text-primary, #2d2426);
+      margin-bottom: 4px;
+    }
+
+    .profile-nickname-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--pastel-yellow, #fae498);
+      color: var(--text-primary, #2d2426);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 4px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(59, 42, 47, 0.08);
+      box-shadow: 0 2px 8px rgba(250, 228, 152, 0.4);
+    }
+
+    .profile-details-list {
+      background: #fffdfb;
+      border: 1.5px solid var(--border-color, #f0dfd8);
+      border-radius: 26px;
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      text-align: left;
+      margin-bottom: 24px;
+    }
+
+    .detail-item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px dashed var(--border-color, #f0dfd8);
+    }
+
+    .detail-item-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .detail-label-text {
+      font-size: 13px;
+      color: var(--text-secondary, #7a6e71);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .detail-val-text {
+      font-size: 13.5px;
+      color: var(--text-primary, #2d2426);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .email-copy-pill {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      background: var(--bg-main, #fcf9f6);
+      border: 1px solid var(--border-color, #f0dfd8);
+      border-radius: 999px;
+      transition: all 0.2s;
+    }
+
+    .email-copy-pill:hover {
+      background: var(--pastel-pink, #ffdce5);
+      border-color: var(--pastel-pink, #ffdce5);
+    }
+
+    .password-display-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 12px;
+      background: var(--bg-main, #fcf9f6);
+      border: 1.5px solid var(--border-color, #f0dfd8);
+      border-radius: 999px;
+    }
+
+    .password-eye-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      opacity: 0.75;
+      transition: all 0.2s;
+    }
+
+    .password-eye-btn:hover {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+
+    .btn-profile-signout {
+      width: 100%;
+      padding: 13px 22px;
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1.5px solid #fca5a5;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(185, 28, 28, 0.08);
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-profile-signout:hover {
+      background: #ef4444;
+      color: #ffffff;
+      border-color: #ef4444;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(239, 68, 68, 0.25);
+    }
+
+    /* ==================== 3. FOOTER (THEMED ROSE & 3-COLUMN) ==================== */
+    .footer-themed {
+      position: relative;
+      background: var(--accent-rose, #d9577a);
+      margin-top: 60px;
+      color: #ffffff;
+    }
+
+    .footer-wave-top svg {
+      display: block;
+      width: 100%;
+      height: 35px;
+    }
+
+    .footer-wave-top path {
+      fill: var(--accent-rose, #d9577a) !important;
+    }
+
+    .footer-inner {
+      padding: 40px 0 25px;
+    }
+
+    .footer-columns-balanced {
+      display: grid;
+      grid-template-columns: 2fr 1.2fr 1.2fr;
+      gap: 36px;
+      margin-bottom: 30px;
+      text-align: left;
+    }
+
+    .footer-col-item .col-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .footer-col-item .brand-text {
+      color: #ffffff;
+      font-family: var(--font-heading, 'Fraunces', serif);
+      font-size: 19px;
+      font-style: italic;
+      font-weight: 600;
+    }
+
+    .live-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .live-pulse-dot {
+      width: 6px;
+      height: 6px;
+      background: #a7f3d0;
+      border-radius: 50%;
+    }
+
+    .col-desc {
+      font-size: 13.5px;
+      color: rgba(255, 255, 255, 0.9);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .footer-nav-icons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .icon-link-circle {
+      width: 38px;
+      height: 38px;
+      background: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .icon-link-circle:hover {
+      transform: translateY(-2px);
+      background: var(--text-primary, #2d2426);
+    }
+
+    .icon-link-circle:hover .svg-icon {
+      fill: #ffffff;
+    }
+
+    .svg-icon {
+      width: 16px;
+      height: 16px;
+      fill: var(--accent-rose, #d9577a);
+    }
+
+    .col-title {
+      font-family: var(--font-heading, 'Fraunces', serif);
+      font-size: 17px;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+
+    .info-text {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.9);
+      line-height: 1.6;
+    }
+
+    .info-text strong {
+      color: #ffffff;
+    }
+
+    .info-text small {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .online-24h-tag {
+      display: inline-block;
+      margin-top: 10px;
+      background: #ffffff;
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--accent-rose, #d9577a);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .info-sub {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.15);
+      padding: 2px 10px;
+      border-radius: 8px;
+    }
+
+    .footer-bottom-bar-center {
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.25);
+      padding-top: 20px;
+      font-size: 12.5px;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    @media (max-width: 768px) {
+      .footer-columns-balanced {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .footer-col-item .col-head,
+      .footer-nav-icons {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <!-- ==================== FLOATING PILL NAVBAR ==================== -->
+  <header class="navbar-wrapper">
+    <nav class="pill-navbar">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-mark">
+          <span class="mark-circle blush"></span>
+          <span class="mark-circle butter"></span>
+        </div>
+        <span class="brand-text">Dorm Space</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="zone01.html">โซนยอดฮิต</a>
+        <a href="news.html">ข่าวสาร & โปร</a>
+        <a href="aboutus.html">เกี่ยวกับเรา</a>
+      </div>
+
+      <div class="nav-actions">
+        <a href="index.html" class="btn-primary">
+          <span>กลับหน้าหลัก</span>
+          <div class="btn-arrow">➜</div>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="profile-page-main">
+    <div class="profile-master-card">
+      
+      <!-- ส่วนบัตรนักศึกษาดิจิทัล -->
+      <div class="digital-pass-header">
+        <div class="pass-top-bar">
+          <span>MAEJO RESIDENT PASS</span>
+          <div class="status-badge-live">
+            <span class="live-dot-green"></span>
+            <span>VERIFIED MEMBER</span>
+          </div>
+        </div>
+
+        <div class="avatar-wrapper">
+          <div class="profile-avatar-bubble" id="userAvatar" title="คลิกเพื่อเปลี่ยนไอคอน">🌸</div>
+          <div class="avatar-edit-tag" id="btnEditAvatar" title="เปลี่ยนไอคอน">✏️</div>
+        </div>
+
+        <div class="avatar-picker-strip" id="avatarPicker">
+          <span class="picker-opt" data-emoji="🌸">🌸</span>
+          <span class="picker-opt" data-emoji="🐱">🐱</span>
+          <span class="picker-opt" data-emoji="🍌">🍌</span>
+          <span class="picker-opt" data-emoji="🧸">🧸</span>
+          <span class="picker-opt" data-emoji="🎀">🎀</span>
+          <span class="picker-opt" data-emoji="🍓">🍓</span>
+        </div>
+
+        <h1 class="profile-name-title" id="dispFullName">กำลังโหลดข้อมูล...</h1>
+        <div class="profile-nickname-pill">
+          <span>🏷️</span>
+          <span id="dispNickname">ชื่อเล่น : -</span>
+        </div>
+      </div>
+
+      <!-- รายละเอียดบัญชีผู้ใช้ -->
+      <div class="profile-details-list">
+        <div class="detail-item-row">
+          <span class="detail-label-text">👤 ชื่อ - นามสกุล</span>
+          <span class="detail-val-text" id="valFullName">-</span>
+        </div>
+        <div class="detail-item-row">
+          <span class="detail-label-text">🌟 ชื่อเล่น</span>
+          <span class="detail-val-text" id="valNickname" style="color: var(--accent-rose, #d9577a);">-</span>
+        </div>
+        <div class="detail-item-row">
+          <span class="detail-label-text">✉️ อีเมลสมาชิก</span>
+          <span class="detail-val-text">
+            <span class="email-copy-pill" id="copyEmailBtn" title="คลิกเพื่อคัดลอกอีเมล">
+              <span id="valEmail">-</span>
+              <span style="font-size: 11px; opacity: 0.7;">📋</span>
+            </span>
+          </span>
+        </div>
+        
+        <!-- แถวรหัสผ่านที่กดดูได้จริง -->
+        <div class="detail-item-row">
+          <span class="detail-label-text">🔒 รหัสผ่านสมาชิก</span>
+          <span class="detail-val-text">
+            <span class="password-display-pill">
+              <span id="valPassword" style="font-family: monospace; letter-spacing: 1px;">••••••••</span>
+              <button class="password-eye-btn" id="btnTogglePassword" title="ดู/ซ่อนรหัสผ่าน">👁️</button>
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <!-- ปุ่มออกจากระบบล่างสุด -->
+      <button class="btn-profile-signout" id="btnLogoutPage">
+        <span>🚪 ออกจากระบบบัญชีนี้</span>
+      </button>
+
+    </div>
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer-themed">
+    <div class="footer-wave-top">
+      <svg viewBox="0 0 1200 40" preserveAspectRatio="none">
+        <path fill="var(--accent-rose, #d9577a)" d="M 0,40 L 0,20 Q 300,40 600,20 T 1200,20 L 1200,40 Z"></path>
+      </svg>
+    </div>
+
+    <div class="footer-inner">
+      <div class="container footer-centered-container">
+        <div class="footer-columns-balanced">
+          
+          <div class="footer-col-item">
+            <div class="col-head">
+              <span class="brand-text">Dorm Space</span>
+              <div class="live-pill">
+                <span class="live-pulse-dot"></span>
+                <span>ONLINE</span>
+              </div>
+            </div>
+            <p class="col-desc">
+              แพลตฟอร์มค้นหาและเปรียบเทียบหอพักรอบมหาวิทยาลัยแม่โจ้ <br />
+              เพื่อให้เด็กแม่โจ้ได้อยู่หอพักที่สบายใจที่สุด
+            </p>
+
+            <div class="footer-nav-icons">
+              <a href="mailto:DormSpace.official@mju.com" class="icon-link-circle" title="ส่งอีเมลหาเรา">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              </a>
+              <a href="tel:053873000" class="icon-link-circle" title="โทรหาเรา">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+              </a>
+              <a href="https://lin.ee/uOEUb7G" target="_blank" rel="noopener noreferrer" class="icon-link-circle" title="ติดต่อผ่าน Line">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M12 2C6.48 2 2 5.92 2 10.75c0 2.97 1.7 5.6 4.34 7.22-.19.7-.68 2.54-.78 2.93-.12.49.18.48.38.35.26-.18 3.58-2.43 4.14-2.82.61.08 1.25.12 1.92.12 5.52 0 10-3.92 10-8.75S17.52 2 12 2zm-3.5 11h-1.5c-.28 0-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v3.5h1c.28 0 .5.22.5.5s-.22.5-.5.5zm2.5-.5c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v4zm4.5.5h-1c-.28 0-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v2.8l1.65-2.97c.1-.19.3-.33.53-.33.28 0 .5.22.5.5v4c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-2.8l-1.68 3zm4-1.5h-1v-2h1c.28 0 .5-.22.5-.5s-.22-.5-.5-.5h-1.5c-.28 0-.5.22-.5.5v4c0 .28.22.5.5.5H20c.28 0 .5-.22.5-.5s-.22-.5-.5-.5z"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="footer-col-item">
+            <div class="col-head">
+              <h4 class="col-title">เวลาทำการ</h4>
+            </div>
+            <div class="col-info-block">
+              <p class="info-text">
+                <strong>จันทร์ - ศุกร์:</strong> 08:30 - 16:30 น.<br />
+                <small>(ปิดทำการเสาร์ - อาทิตย์ และวันหยุด)</small>
+              </p>
+            </div>
+            <div class="online-24h-tag">
+              🌐 ค้นหาหอพักออนไลน์ได้ตลอด 24 ชม.
+            </div>
+          </div>
+
+          <div class="footer-col-item">
+            <div class="col-head">
+              <h4 class="col-title">ที่ตั้งสำนักงาน</h4>
+            </div>
+            <div class="col-info-block">
+              <p class="info-text">สำนักบริหารและพัฒนาวิชาการ<br />มหาวิทยาลัยแม่โจ้ จ.เชียงใหม่ 50290</p>
+              <span class="info-sub">🏛 อาคารอำนวย ยศสุข</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="footer-bottom-bar-center">
+          <p>© 2026 Dorm Space • Maejo Community Living Platform</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const SUPABASE_URL = 'https://auivtzjrgurdrohibexh.supabase.co';
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF1aXZ0empyZ3VyZHJvaGliZXhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEwMDg3NzcsImV4cCI6MjEwNjU4NDc3N30.95xqR45D0g61DGiAbh02AvwhRf9IwEJfmU5j7uIitNY';
+
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+    // 1. Mouse Glow
+    const glow = document.getElementById("cursorGlow");
+    if (glow) {
+      window.addEventListener("mousemove", (e) => {
+        glow.style.left = `${e.clientX}px`;
+        glow.style.top = `${e.clientY}px`;
+      });
+    }
+
+    // 2. Interactive Avatar Switcher
+    const userAvatar = document.getElementById('userAvatar');
+    const btnEditAvatar = document.getElementById('btnEditAvatar');
+    const avatarPicker = document.getElementById('avatarPicker');
+
+    const savedAvatar = localStorage.getItem('dorm_user_avatar') || '🌸';
+    userAvatar.textContent = savedAvatar;
+
+    const togglePicker = () => avatarPicker.classList.toggle('open');
+    userAvatar.addEventListener('click', togglePicker);
+    btnEditAvatar.addEventListener('click', togglePicker);
+
+    document.querySelectorAll('.picker-opt').forEach(opt => {
+      opt.addEventListener('click', () => {
+        const emoji = opt.getAttribute('data-emoji');
+        userAvatar.textContent = emoji;
+        localStorage.setItem('dorm_user_avatar', emoji);
+        avatarPicker.classList.remove('open');
+      });
+    });
+
+    // 3. One-Click Copy Email
+    const copyEmailBtn = document.getElementById('copyEmailBtn');
+    copyEmailBtn.addEventListener('click', () => {
+      const email = document.getElementById('valEmail').textContent;
+      if (email && email !== '-') {
+        navigator.clipboard.writeText(email).then(() => {
+          alert('✓ คัดลอกอีเมลเรียบร้อยแล้วค่ะ!');
+        });
+      }
+    });
+
+    // 4. ระบบกดดู/ซ่อนรหัสผ่านจริง
+    let isPasswordRevealed = false;
+    const valPassword = document.getElementById('valPassword');
+    const btnTogglePassword = document.getElementById('btnTogglePassword');
+
+    btnTogglePassword.addEventListener('click', () => {
+      const actualPassword = sessionStorage.getItem('dorm_active_pass') || 'dormspace123';
+      
+      isPasswordRevealed = !isPasswordRevealed;
+      if (isPasswordRevealed) {
+        valPassword.textContent = actualPassword;
+        btnTogglePassword.textContent = '🔒';
+        btnTogglePassword.title = 'ซ่อนรหัสผ่าน';
+      } else {
+        valPassword.textContent = '••••••••';
+        btnTogglePassword.textContent = '👁️';
+        btnTogglePassword.title = 'ดูรหัสผ่าน';
+      }
+    });
+
+    // 5. โหลดข้อมูลผู้ใช้
+    async function loadUserProfile() {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+
+      if (!session || !session.user) {
+        window.location.href = 'auth.html';
+        return;
+      }
+
+      const user = session.user;
+      let fullName = 'นักศึกษาแม่โจ้';
+      let nickname = user.user_metadata?.nickname || 'เพื่อน';
+      let email = user.email || '-';
+
+      const { data: profile } = await supabaseClient
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+
+      if (profile) {
+        if (profile.full_name) fullName = profile.full_name;
+        if (profile.nickname) nickname = profile.nickname;
+        if (profile.email) email = profile.email;
+      }
+
+      document.getElementById('dispFullName').textContent = fullName;
+      document.getElementById('dispNickname').textContent = `ชื่อเล่น: ${nickname}`;
+      document.getElementById('valFullName').textContent = fullName;
+      document.getElementById('valNickname').textContent = nickname;
+      document.getElementById('valEmail').textContent = email;
+
+      document.getElementById('btnLogoutPage').addEventListener('click', async () => {
+        sessionStorage.removeItem('dorm_active_pass');
+        await supabaseClient.auth.signOut();
+        window.location.href = 'index.html';
+      });
+    }
+
+    loadUserProfile();
+  </script>
+
+  <script src="js/script.js"></script>
+  <script src="js/sound02.js"></script>
+</body>
+</html>

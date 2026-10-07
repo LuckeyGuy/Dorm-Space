@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>มายเฮาส์ 5 @แม่โจ้ — Dorm Space</title>
+
+  <!-- ==================== GOOGLE FONTS ==================== -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fragment+Mono&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- ==================== STYLESHEETS ==================== -->
+  <link rel="stylesheet" href="../css/style.css" />
+
+  <!-- ==================== SUPABASE JS LIBRARY ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- ==================== CUSTOM CSS STYLES ==================== -->
+  <style>
+    .detail-main { padding-top: 130px; padding-bottom: 70px; }
+    .detail-container { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+    .detail-top-grid { display: grid; grid-template-columns: 1fr 380px; gap: 36px; align-items: start; margin-bottom: 24px; }
+    .detail-bottom-grid { display: grid; grid-template-columns: 1fr 380px; gap: 36px; align-items: start; }
+    .detail-gallery-box { width: 100%; background: #ffffff; border: 2px solid var(--border-color); border-radius: 36px; padding: 16px; box-shadow: 0 14px 40px rgba(59, 42, 47, 0.05); display: flex; flex-direction: column; gap: 16px; }
+    .main-preview-wrapper { width: 100%; height: 380px; border-radius: 24px; overflow: hidden; background: #fdfaf6; }
+    .main-preview-wrapper img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+    .thumbnails-row { display: flex; gap: 10px; }
+    .thumb-img-item { width: calc(25% - 8px); height: 85px; object-fit: cover; border-radius: 14px; cursor: pointer; border: 2px solid transparent; transition: all 0.25s ease; }
+    .thumb-img-item:hover, .thumb-img-item.active { border-color: var(--accent-rose); transform: translateY(-2px); }
+    .image-nav-menu-bar { background: transparent; border: none; box-shadow: none; padding: 0 0 0 16px; margin: 20px 0 36px 0; display: flex; justify-content: flex-start; gap: 40px; align-items: center; width: 100%; box-sizing: border-box; }
+    .image-nav-btn { background: transparent; border: none; font-size: 15px; font-weight: 700; color: var(--text-secondary); cursor: pointer; padding: 6px 0; transition: all 0.25s ease; font-family: inherit; position: relative; }
+    .image-nav-btn:hover, .image-nav-btn.active { color: var(--accent-rose); }
+    .image-nav-btn.active::after { content: ''; position: absolute; left: 0; bottom: -4px; width: 100%; height: 2.5px; background-color: var(--accent-rose); border-radius: 999px; }
+    .info-card-box { background: #ffffff; border: none; border-radius: 32px; padding: 32px 28px; margin-bottom: 24px; box-shadow: 0 16px 40px rgba(217, 87, 122, 0.18), 0 0 20px rgba(217, 87, 122, 0.1); scroll-margin-top: 140px; }
+    .info-card-box h3 { font-family: var(--font-heading); font-size: 20px; color: var(--text-primary); margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+    .drag-hint-pill { display: inline-flex; align-items: center; gap: 6px; background: #ffffff; border: 1.5px solid var(--border-color); padding: 5px 16px; border-radius: 999px; font-size: 11.5px; font-weight: 600; color: var(--text-secondary); box-shadow: 0 2px 8px rgba(59, 42, 47, 0.04); margin-top: 6px; margin-bottom: 12px; }
+    .rope-carousel-viewport { position: relative; width: 100%; height: 310px; overflow: hidden; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%); margin-top: 8px; }
+    .rope-carousel-viewport:active { cursor: grabbing; }
+    .rope-svg-line { position: absolute; top: 22px; left: 0; width: 100%; height: 75px; pointer-events: none; z-index: 1; opacity: 0.9; }
+    .rope-track-stage { position: relative; width: 100%; height: 100%; }
+    .hanging-card-item { position: absolute; top: 40px; left: 50%; width: 295px; margin-left: -147.5px; will-change: transform; transform-origin: 50% -30px; transition: box-shadow 0.3s ease; z-index: 2; }
+    .hanging-strap { position: absolute; top: -32px; left: 50%; transform: translateX(-50%); width: 20px; height: 42px; z-index: 10; pointer-events: none; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)); }
+    .hanging-card-back-sheet { position: absolute; inset: 0; border-radius: 4px; transform: rotate(4deg) scale(0.97); box-shadow: 0 8px 20px rgba(59, 42, 47, 0.08); z-index: 1; background-image: radial-gradient(rgba(0,0,0,0.04) 1px, transparent 0); background-size: 8px 8px; }
+    .hanging-card-face { border-radius: 4px; padding: 24px 22px; text-align: left; position: relative; box-shadow: 0 10px 30px rgba(59, 42, 47, 0.1); transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1); z-index: 2; overflow: hidden; background-image: radial-gradient(rgba(0,0,0,0.035) 1px, transparent 0); background-size: 8px 8px; }
+    .hanging-card-face::after { content: ''; position: absolute; right: 0; bottom: 0; width: 24px; height: 24px; background: linear-gradient(135deg, transparent 50%, rgba(0,0,0,0.12) 50%); border-bottom-right-radius: 4px; box-shadow: -2px -2px 4px rgba(0,0,0,0.04); }
+    .hanging-card-item:hover .hanging-card-face { transform: translateY(-6px) scale(1.02); box-shadow: 0 18px 40px rgba(59, 42, 47, 0.15); }
+    .book-turn-container { perspective: 1500px; width: 100%; }
+    .book-turn-stage { position: relative; width: 100%; transform-style: preserve-3d; }
+    .book-page-front { position: relative; width: 100%; backface-visibility: hidden; transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1); transform-origin: left center; z-index: 2; }
+    .book-turn-container.is-turned .book-page-front { transform: rotateY(-180deg); }
+    .book-page-back { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; border-radius: 32px; box-sizing: border-box; backface-visibility: hidden; transform: rotateY(180deg); transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1); z-index: 1; display: flex; flex-direction: column; justify-content: center; }
+    .book-turn-container.is-turned .book-page-back { transform: rotateY(0deg); z-index: 3; }
+    .star-rating-picker { display: flex; gap: 6px; font-size: 28px; cursor: pointer; margin-top: 4px; }
+    .star-item { color: #d1d5db; transition: color 0.2s ease, transform 0.2s ease; }
+    .star-item:hover { transform: scale(1.15); }
+    .star-item.selected { color: var(--accent-rose); }
+    .right-column-wrapper { display: flex; flex-direction: column; gap: 16px; width: 100%; }
+    .flip-card-container { perspective: 1000px; width: 100%; }
+    .flip-card-inner { position: relative; width: 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }
+    .flip-card-container.is-flipped .flip-card-inner { transform: rotateY(180deg); }
+    .flip-card-front, .flip-card-back { position: relative; width: 100%; top: 0; left: 0; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+    .flip-card-back { position: absolute; transform: rotateY(180deg); }
+    .info-side-widget, .booking-sidebar-widget { background: #ffffff; border: none; border-radius: 32px; padding: 24px; box-shadow: 0 16px 40px rgba(217, 87, 122, 0.18), 0 0 20px rgba(217, 87, 122, 0.1); text-align: left; position: relative; }
+    .rating-badge-top-right { position: absolute; top: 24px; right: 24px; background: #fff9fa; border: 1.5px solid var(--accent-rose); padding: 4px 12px; border-radius: 999px; font-size: 13.5px; font-weight: 700; color: var(--accent-rose); display: flex; align-items: center; gap: 4px; box-shadow: 0 4px 12px rgba(217, 87, 122, 0.15); }
+    .external-floating-social-row { display: flex; gap: 12px; justify-content: center; transition: opacity 0.3s ease, visibility 0.3s ease, height 0.3s ease; }
+    .external-floating-social-row.hidden { opacity: 0; visibility: hidden; height: 0; margin: 0; overflow: hidden; pointer-events: none; }
+    .social-floating-btn { width: 48px; height: 48px; background: #ffffff; border: 1.5px solid var(--border-color); border-radius: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 6px 20px rgba(59, 42, 47, 0.05); transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); position: relative; }
+    .social-floating-btn svg { width: 22px; height: 22px; fill: var(--text-primary); transition: fill 0.2s; }
+    .social-floating-btn:hover { transform: translateY(-3px) scale(1.05); border-color: var(--accent-rose); background: #fff9fa; }
+    .social-floating-btn:hover svg { fill: var(--accent-rose); }
+    .tab-action-header { display: flex; background: var(--bg-main); border-radius: 999px; padding: 4px; margin-bottom: 16px; border: 1.5px solid var(--border-color); }
+    .tab-action-btn { flex: 1; background: transparent; border: none; padding: 8px; border-radius: 999px; font-size: 13px; font-weight: 700; color: var(--text-secondary); cursor: pointer; transition: all 0.25s ease; font-family: inherit; }
+    .tab-action-btn.active { background: var(--text-primary); color: #ffffff; box-shadow: 0 4px 12px rgba(45, 36, 38, 0.15); }
+    .form-group-item { margin-bottom: 12px; text-align: left; }
+    .form-group-item label { display: block; font-size: 12px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+    .form-group-item input, .form-group-item select { width: 100%; padding: 9px 14px; background: var(--bg-main); border: 1.5px solid var(--border-color); border-radius: 12px; font-size: 13px; font-family: inherit; color: var(--text-primary); outline: none; transition: border-color 0.2s; }
+    .form-group-item select { padding-right: 32px; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233b2a2f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 12px center; background-size: 14px; }
+    .form-group-item input:focus, .form-group-item select:focus { border-color: var(--accent-rose); }
+    
+    .btn-to-booking { width: 100%; background: var(--accent-rose); color: #ffffff; border: none; padding: 11px; border-radius: 999px; font-size: 13.5px; font-weight: 700; cursor: pointer; box-shadow: 0 6px 18px rgba(217, 87, 122, 0.25); transition: all 0.25s ease; font-family: inherit; margin-top: 4px; }
+    .btn-to-booking:hover { filter: brightness(0.95); transform: translateY(-2px); }
+
+    .btn-submit-action { width: 100%; background: var(--accent-rose); color: #ffffff; border: none; padding: 11px; border-radius: 999px; font-size: 13.5px; font-weight: 700; cursor: pointer; box-shadow: 0 6px 18px rgba(217, 87, 122, 0.25); transition: all 0.25s ease; font-family: inherit; margin-top: 4px; }
+    .btn-submit-action:hover, .btn-submit-action:active { background: #10B981 !important; box-shadow: 0 6px 18px rgba(16, 185, 129, 0.3) !important; transform: translateY(-2px); }
+
+    .btn-pink-fixed { width: auto; padding: 8px 18px; font-size: 13px; background: var(--accent-rose); color: #ffffff; border: none; border-radius: 999px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 14px rgba(217, 87, 122, 0.25); transition: all 0.25s ease; font-family: inherit; display: inline-flex; align-items: center; gap: 6px; }
+    .btn-pink-fixed:hover, .btn-pink-fixed:active { background: var(--accent-rose) !important; filter: brightness(0.95); transform: translateY(-2px); }
+
+    .action-form-panel { display: none; }
+    .action-form-panel.active { display: block; }
+    .custom-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(45, 36, 38, 0.5); backdrop-filter: blur(4px); z-index: 1000; justify-content: center; align-items: center; }
+    .custom-modal-box { background: #ffffff; padding: 28px; border-radius: 28px; width: 340px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.15); border: 2px solid var(--border-color); }
+    @media (max-width: 900px) { .detail-top-grid, .detail-bottom-grid { grid-template-columns: 1fr; } .right-column-wrapper { position: static; } }
+  </style>
+</head>
+<body>
+
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <!-- ==================== NAVBAR ==================== -->
+  <header class="navbar-wrapper">
+    <nav class="pill-navbar">
+      <a href="../index.html" class="brand-logo">
+        <div class="logo-mark"><span class="mark-circle blush"></span><span class="mark-circle butter"></span></div>
+        <span class="brand-text">Dorm Space</span>
+      </a>
+      <div class="nav-links">
+        <a href="../catalog.html" class="nav-link"></a>
+        <a href="../zone01.html" class="nav-link" style="color: var(--accent-rose);"></a>
+        <a href="../zone02.html" class="nav-link"></a>
+        <a href="../zone03.html" class="nav-link"></a>
+      </div>
+      <div class="nav-actions">
+        <a href="../catalog.html" class="btn-primary"><span>ย้อนกลับ</span><div class="btn-arrow">➜</div></a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="detail-main">
+    <div class="detail-container" id="dormDetailWrapper">
+      <p style="text-align: center; padding: 60px; color: var(--text-secondary);">กำลังโหลดข้อมูลหอพัก...</p>
+    </div>
+  </main>
+
+  <!-- ==================== MODAL: LINE COPY ==================== -->
+  <div id="lineModal" class="custom-modal-overlay">
+    <div class="custom-modal-box">
+      <div style="font-size: 2.2em; margin-bottom: 10px;">💬</div>
+      <h3 style="font-family: var(--font-heading); margin-bottom: 8px; color: var(--text-primary);">ติดต่อผ่าน Line Official</h3>
+      <p style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 16px;">คลิกเพื่อคัดลอกไอดี หรือเปิดแอปพลิเคชัน</p>
+      <div style="background: var(--bg-main); padding: 12px; border-radius: 12px; font-weight: bold; font-size: 1.1em; color: var(--accent-rose); margin-bottom: 16px; border: 1.5px dashed var(--border-color);" id="modalLineIdText">@DormSpaceMJU</div>
+      <div style="display: flex; gap: 10px;">
+        <button id="copyLineBtn" style="flex: 1; background: var(--text-primary); color: #fff; border: none; padding: 10px; border-radius: 999px; font-weight: bold; cursor: pointer;">คัดลอกไอดี</button>
+        <a id="openLineLink" href="#" target="_blank" style="flex: 1; background: #06C755; color: #fff; text-decoration: none; padding: 10px; border-radius: 999px; font-weight: bold; display: flex; align-items: center; justify-content: center;">เปิด Line</a>
+      </div>
+      <button id="closeLineModal" style="background: none; border: none; margin-top: 14px; color: var(--text-secondary); font-size: 0.9em; cursor: pointer;">ปิดหน้าต่าง</button>
+    </div>
+  </div>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer-themed" id="contact-footer">
+    <div class="footer-wave-top">
+      <svg viewBox="0 0 1200 40" preserveAspectRatio="none">
+        <path fill="#d9577a" d="M 0,40 L 0,20 Q 300,40 600,20 T 1200,20 L 1200,40 Z"></path>
+      </svg>
+    </div>
+
+    <div class="footer-inner">
+      <div class="container footer-centered-container">
+        <div class="footer-columns-balanced">
+          
+          <div class="footer-col-item">
+            <div class="col-head">
+              <span class="brand-text">Dorm Space</span>
+              <div class="live-pill">
+                <span class="live-pulse-dot"></span>
+                <span>ONLINE</span>
+              </div>
+            </div>
+            <p class="col-desc">
+              แพลตฟอร์มค้นหาและเปรียบเทียบหอพักรอบมหาวิทยาลัยแม่โจ้ <br/>
+              เพื่อให้เด็กแม่โจ้ได้อยู่หอพักที่สบายใจที่สุด 🏡✨
+            </p>
+
+            <div class="footer-nav-icons">
+              <a href="mailto:DormSpace.official@mju.com" class="icon-link-circle" title="ส่งอีเมลหาเรา" aria-label="Mail">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              </a>
+              <a href="tel:053873000" class="icon-link-circle" title="โทรหาเรา" aria-label="Phone">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+              </a>
+              <a href="https://lin.ee/uOEUb7G" target="_blank" rel="noopener noreferrer" class="icon-link-circle" title="ติดต่อผ่าน Line" aria-label="Line">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M12 2C6.48 2 2 5.92 2 10.75c0 2.97 1.7 5.6 4.34 7.22-.19.7-.68 2.54-.78 2.93-.12.49.18.48.38.35.26-.18 3.58-2.43 4.14-2.82.61.08 1.25.12 1.92.12 5.52 0 10-3.92 10-8.75S17.52 2 12 2zm-3.5 11h-1.5c-.28 0-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v3.5h1c.28 0 .5.22.5.5s-.22.5-.5.5zm2.5-.5c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v4zm4.5.5h-1c-.28 0-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v2.8l1.65-2.97c.1-.19.3-.33.53-.33.28 0 .5.22.5.5v4c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-2.8l-1.68 3zm4-1.5h-1v-2h1c.28 0 .5-.22.5-.5s-.22-.5-.5-.5h-1.5c-.28 0-.5.22-.5.5v4c0 .28.22.5.5.5H20c.28 0 .5-.22.5-.5s-.22-.5-.5-.5z"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="footer-col-item">
+            <div class="col-head">
+              <h4 class="col-title">เวลาทำการ</h4>
+            </div>
+            <div class="col-info-block">
+              <p class="info-text">
+                <strong>จันทร์ - ศุกร์:</strong> 08:30 - 16:30 น.<br />
+                <small class="text-muted">(ปิดทำการเสาร์ - อาทิตย์ และวันหยุด)</small>
+              </p>
+            </div>
+            <div class="online-24h-tag">
+              🌐 ค้นหาหอพักออนไลน์ได้ตลอด 24 ชม.
+            </div>
+          </div>
+
+          <div class="footer-col-item">
+            <div class="col-head">
+              <h4 class="col-title">ที่ตั้งสำนักงาน</h4>
+            </div>
+            <div class="col-info-block">
+              <p class="info-text">สำนักบริหารและพัฒนาวิชาการ<br />มหาวิทยาลัยแม่โจ้ จ.เชียงใหม่ 50290</p>
+              <span class="info-sub">🏛️ อาคารอำนวย ยศสุข</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="footer-bottom-bar-center">
+          <p>© 2026 Dorm Space • Maejo Community Living Platform</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+  <script src="../dorm_data/data_11.js"></script>
+
+  <script>
+    const SUPABASE_URL = 'https://auivtzjrgurdrohibexh.supabase.co';
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF1aXZ0empyZ3VyZHJvaGliZXhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEwMDg3NzcsImV4cCI6MjEwNjU4NDc3N30.95xqR45D0g61DGiAbh02AvwhRf9IwEJfmU5j7uIitNY';
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      const currentDormId = "dorm_11";
+
+      const dorm = dormsData11.find(d => d.id === currentDormId) || dormsData11[0];
+      const wrapper = document.getElementById("dormDetailWrapper");
+
+      if (!dorm) {
+        wrapper.innerHTML = `<h2 style="text-align:center; padding: 50px;">ไม่พบข้อมูลหอพักนี้ค่ะ 🥲</h2>`;
+        return;
+      }
+
+      const resolveImg = (img) => img ? (img.startsWith('../') ? img : '../' + img) : '../assets/image/11_1.jpg';
+      const img1 = resolveImg(dorm.images[0]);
+      const img2 = resolveImg(dorm.images[1]);
+      const img3 = resolveImg(dorm.images[2]);
+      const img4 = resolveImg(dorm.images[3]);
+
+      const isAirAvailable = true;
+
+      wrapper.innerHTML = `
+        <div class="detail-top-grid">
+          
+          <div class="detail-gallery-box">
+            <div class="main-preview-wrapper">
+              <img id="mainImageDisplay" src="${img1}" alt="${dorm.name}" />
+            </div>
+            <div class="thumbnails-row">
+              <img src="${img1}" class="thumb-img-item active" onclick="changeMainImage(this, '${img1}')" />
+              <img src="${img2}" class="thumb-img-item" onclick="changeMainImage(this, '${img2}')" />
+              <img src="${img3}" class="thumb-img-item" onclick="changeMainImage(this, '${img3}')" />
+              <img src="${img4}" class="thumb-img-item" onclick="changeMainImage(this, '${img4}')" />
+            </div>
+          </div>
+
+          <div class="right-column-wrapper">
+            
+            <div class="flip-card-container" id="flipCardContainer">
+              <div class="flip-card-inner">
+                
+                <div class="flip-card-front">
+                  <div class="info-side-widget">
+                    <div class="rating-badge-top-right" id="topRatingBadge">
+                      ⭐ ยังไม่มีรีวิว
+                    </div>
+
+                    <div style="margin-bottom: 10px; padding-right: 50px;">
+                      <h3 style="font-size: 1.15em; font-weight: 800; color: var(--text-primary); margin: 0 0 4px 0;">✨ ${dorm.name}</h3>
+                      <p style="font-size: 0.88em; color: var(--text-secondary); margin: 0;">หอพักดีไซน์ทันสมัย สไตล์คอนโดหรู <br/> อาคารแฝด 8 ชั้น  บรรยากาศดี วิวสวย </p>
+                    </div>
+
+                    <div style="background: var(--bg-main); border-left: 3.5px solid var(--accent-rose); padding: 8px 12px; border-radius: 0 8px 8px 0; margin-bottom: 12px;">
+                      <span style="font-size: 0.85em; font-weight: bold; color: var(--text-primary);">📍 ${dorm.distance}</span>
+                      <span style="font-size: 0.78em; color: var(--text-secondary); display: block;">ซอย 1 ทุ่งหมื่นน้อย</span>
+                    </div>
+
+                    <div style="border-radius: 16px; overflow: hidden; border: 1.5px solid var(--border-color); margin-bottom: 14px;">
+                      <iframe src="${dorm.mapEmbed}" width="100%" height="160" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                    </div>
+
+                    <button type="button" class="btn-to-booking" id="flipToBookingBtn">
+                      🏡 ไปยังหน้าจองห้องพักและนัดหมาย →
+                    </button>
+                  </div>
+                </div>
+
+                <div class="flip-card-back">
+                  <div class="booking-sidebar-widget">
+                    <div class="tab-action-header">
+                      <button class="tab-action-btn active" id="tabVisitBtn">📅 นัดดูห้องจริง</button>
+                      <button class="tab-action-btn" id="tabBookBtn">🏡 ส่งคำขอจอง</button>
+                    </div>
+
+                    <form id="appointmentForm" class="action-form-panel active">
+                      <div class="form-group-item">
+                        <label>📅 วันที่ต้องการเข้าดูห้อง</label>
+                        <input type="date" id="apptDate" required />
+                      </div>
+                      <div class="form-group-item">
+                        <label>⏰ ช่วงเวลาที่สะดวก</label>
+                        <select id="apptTime" required>
+                          <option value="เลือกเวลานัดหมาย">-- เลือกเวลานัดหมาย --</option>
+                          <option value="11:00 - 11:30 น.">11:00 - 11:30 น.</option>
+                          <option value="11:30 - 12:00 น.">11:30 - 12:00 น.</option>
+                          <option value="13:00 - 13:30 น.">13:00 - 13:30 น.</option>
+                          <option value="13:30 - 14:00 น.">13:30 - 14:00 น.</option>
+                          <option value="14:00 - 14:30 น.">14:00 - 14:30 น.</option>
+                          <option value="14:30 - 15:00 น.">14:30 - 15:00 น.</option>
+                          <option value="15:00 - 15:30 น.">15:00 - 15:30 น.</option>
+                          <option value="15:30 - 16:00 น.">15:30 - 16:00 น.</option>
+                          <option value="16:00 - 16:30 น.">16:00 - 16:30 น.</option>
+                          <option value="16:30 - 17:00 น.">16:30 - 17:00 น.</option>
+                        </select>
+                      </div>
+                      <div class="form-group-item">
+                        <label>📞 เบอร์โทรศัพท์ติดต่อ</label>
+                        <input type="tel" id="apptPhone" placeholder="(+66) XX-XXX-XXXX" required />
+                      </div>
+                      <div class="form-group-item">
+                        <label>💬 Line ID (ถ้ามี)</label>
+                        <input type="text" id="apptLine" placeholder="@line123" />
+                      </div>
+                      <button type="submit" class="btn-submit-action">ยืนยันการนัดหมาย</button>
+                    </form>
+
+                    <form id="bookingForm" class="action-form-panel">
+                      <div class="form-group-item">
+                        <label>🛏️ เลือกประเภทห้องพัก</label>
+                        <select id="bookRoomType" required>
+                          <option value="" disabled selected>-- กรุณาเลือกประเภทห้องพัก --</option>
+                          <option value="ห้องแอร์ (25 ตรม.)" data-price="${dorm.priceAir}">
+                            ห้องแอร์
+                          </option>
+                        </select>
+                      </div>
+                      <div class="form-group-item">
+                        <label>📦 วันที่ต้องการย้ายเข้าอยู่</label>
+                        <input type="date" id="bookMoveDate" required />
+                      </div>
+                      <div class="form-group-item">
+                        <label>💵 ยอดเงินมัดจำชำระล่วงหน้า</label>
+                        <input type="text" id="bookDepositDisplay" value="กรุณาเลือกประเภทห้องพักก่อน" disabled style="opacity: 0.85; cursor: not-allowed; font-weight: 700; color: var(--accent-rose);" />
+                      </div>
+                      <button type="submit" class="btn-submit-action">ส่งคำขอจองห้องพัก</button>
+                    </form>
+
+                    <button type="button" id="flipBackBtn" style="background: none; border: none; margin-top: 10px; width: 100%; color: var(--text-secondary); font-size: 0.85em; cursor: pointer; font-weight: 600;">
+                      ← กลับไปดูข้อมูลหอพักและแผนที่
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="external-floating-social-row" id="externalSocialRow">
+              <button class="social-floating-btn" id="floatingLineBtn" title="ติดต่อผ่าน Line">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 5.92 2 10.75c0 2.97 1.7 5.6 4.34 7.22-.19.7-.68 2.54-.78 2.93-.12.49.18.48.38.35.26-.18 3.58-2.43 4.14-2.82.61.08 1.25.12 1.92.12 5.52 0 10-3.92 10-8.75S17.52 2 12 2z"/></svg>
+              </button>
+              <a href="mailto:${dorm.contact.email}" class="social-floating-btn" title="ส่งอีเมลหาหอพัก">
+                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              </a>
+              <button class="social-floating-btn" id="floatingPhoneBtn" title="คัดลอกเบอร์โทรศัพท์">
+                <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="image-nav-menu-bar">
+          <button class="image-nav-btn active" id="nav-detail" onclick="handleNavClick('section-detail', 'nav-detail')">รายละเอียด</button>
+          <button class="image-nav-btn" id="nav-pricing" onclick="handleNavClick('section-pricing', 'nav-pricing')">ประเภทห้อง</button>
+          <button class="image-nav-btn" id="nav-amenities" onclick="handleNavClick('section-amenities', 'nav-amenities')">สิ่งอำนวยความสะดวก</button>
+          <button class="image-nav-btn" id="nav-reviews" onclick="handleNavClick('section-reviews', 'nav-reviews')">รีวิว</button>
+        </div>
+
+        <div class="detail-bottom-grid">
+          <div class="detail-left-info" style="grid-column: 1 / -1;">
+            
+            <div class="info-card-box" id="section-detail">
+              <h2 style="font-family: var(--font-heading); font-size: 24px; font-weight: 800; color: var(--text-primary); margin: 0 0 12px 0;">✨ ${dorm.name} – เปิดใหม่ สไตล์คอนโดหรู สูงสุดในแม่โจ้!</h2>
+              <p style="font-size: 0.98em; color: var(--text-secondary); line-height: 1.8;">อพาร์ทเม้นท์เปิดใหม่ อาคารแฝดสูง 8 ชั้น สูงที่สุดในย่านแม่โจ้ บรรยากาศดี วิวสวย<br/> ตกแต่งด้วยเฟอร์นิเจอร์ Built-in สไตล์ Minimal ตอบโจทย์ชีวิตยุคใหม่ใกล้มหาวิทยาลัยเพียง 500 เมตร</p>
+                <br/>
+              <h4 style="margin: 0 0 12px 0; color: var(--text-primary); font-size: 1.15em; font-weight: bold; display: flex; align-items: center; gap: 8px;">📍 ทำเลที่ตั้ง</h4>
+                <ul style="margin: 0; padding-left: 20px; color: var(--text-secondary); font-size: 0.92em; line-height: 1.8;">
+                  <li>ห่างจากมหาวิทยาลัยแม่โจ้เพียง 500 เมตร</li>
+                  <li>ตั้งอยู่ ${dorm.address}</li>
+                  <li>ใกล้แหล่งของกินและสิ่งอำนวยความสะดวกครบครัน</li>
+                </ul>
+              </div>
+
+            <div class="info-card-box" id="section-pricing">
+              <h3 style="margin-bottom: 16px;">💰 รายละเอียดค่าเช่าและประเภทห้องพัก</h3>
+              <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 20px;">
+                
+                <div class="detail-card-box" style="flex: 1; min-width: 240px; background: #ffffff; border: 1.5px solid var(--border-color); border-radius: 18px; padding: 22px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <b style="font-size: 1.1em; color: var(--text-primary);">ห้องแอร์</b>
+                    <span style="background: #10B981; color: #fff; font-size: 0.75em; font-weight: bold; padding: 3px 10px; border-radius: 12px;">● ว่าง</span>
+                  </div>
+                  <p style="font-size: 1.3em; font-weight: 800; color: var(--accent-rose); margin: 0 0 8px 0;">฿${dorm.priceAir.toLocaleString()} <span style="font-size: 0.65em; font-weight: normal; color: var(--text-secondary);">บาท/เดือน</span></p>
+                  <div style="font-size: 0.85em; color: var(--text-secondary); border-top: 1px dashed var(--border-color); padding-top: 10px; margin-top: 10px;">เงินประกัน: <b>${dorm.utilities.deposit}</b> | สัญญา: <b>1 ปี</b></div>
+                </div>
+
+              </div>
+
+              <div style="background: var(--bg-main); border-left: 4px solid var(--accent-rose); padding: 14px 18px; border-radius: 0 12px 12px 0; font-size: 0.9em; color: var(--text-primary);">
+                <b>⚡ ค่าไฟฟ้า:</b> ${dorm.utilities.electricity} | <b>💧 ค่าน้ำ:</b> ${dorm.utilities.water} | <b>✅ จ่ายล่วงหน้า:</b> ${dorm.utilities.advance}
+              </div>
+            </div>
+
+            <div class="info-card-box" id="section-amenities">
+              <h3>🛋 สิ่งอำนวยความสะดวก</h3>
+              <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 240px; background: var(--bg-main); border: 1.5px solid var(--border-color); border-radius: 16px; padding: 20px;">
+                  <b style="display: block; font-size: 0.95em; color: var(--text-primary); margin-bottom: 10px; border-bottom: 2px solid var(--accent-rose); padding-bottom: 6px; width: fit-content;">ภายในห้องพัก</b>
+                  <ul style="margin: 0; padding-left: 18px; color: var(--text-secondary); font-size: 0.88em; line-height: 1.8;">
+                    ${dorm.amenities.inRoom.map(item => `<li>${item}</li>`).join('')}
+                  </ul>
+                </div>
+                <div style="flex: 1; min-width: 240px; background: var(--bg-main); border: 1.5px solid var(--border-color); border-radius: 16px; padding: 20px;">
+                  <b style="display: block; font-size: 0.95em; color: var(--text-primary); margin-bottom: 10px; border-bottom: 2px solid var(--accent-rose); padding-bottom: 6px; width: fit-content;">บริการส่วนกลาง</b>
+                  <ul style="margin: 0; padding-left: 18px; color: var(--text-secondary); font-size: 0.88em; line-height: 1.8;">
+                    ${dorm.amenities.public.map(item => `<li>${item}</li>`).join('')}
+                  </ul>
+                </div>
+              </div>
+              <br/>  
+              <div style="background: #fff0f0; border: 1.5px solid #ffcdd2; border-radius: 16px; padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px;">
+                <span style="font-size: 1.3em;">🚫</span>
+                <div><b style="color: #c62828; font-size: 0.95em;">ข้อกำหนดหอพัก :</b> <span style="color: #b71c1c; font-size: 0.9em;">${dorm.rules.pets}</span></div>
+              </div>
+            </div>
+
+            <div class="book-turn-container" id="section-reviews">
+              <div class="book-turn-stage">
+                
+                <div class="book-page-front">
+                  <div class="info-card-box" style="margin-bottom: 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                      <h3 style="margin: 0;">💬 รีวิวจากผู้เข้าพักจริง</h3>
+                      <button type="button" class="btn-pink-fixed" id="flipToReviewFormBtn">✍️ เขียนรีวิวของคุณ</button>
+                    </div>
+
+                    <div style="text-align: center;">
+                      <span class="drag-hint-pill">👈 เลื่อนเพื่อดูรีวิว 👉</span>
+                    </div>
+
+                    <div class="rope-carousel-viewport" id="ropeReviewCarousel">
+                      <svg class="rope-svg-line" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                        <path d="M 0,25 Q 600,105 1200,25" fill="none" stroke="rgba(217, 87, 122, 0.65)" stroke-width="3" stroke-dasharray="6,4"></path>
+                      </svg>
+
+                      <div class="rope-track-stage" id="ropeReviewTrack">
+                        <!-- โหลดรีวิว -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="book-page-back">
+                  <div class="info-card-box" style="margin-bottom: 0; height: 100%; display: flex; flex-direction: column; justify-content: center; box-shadow: none;">
+                    <h3 style="margin-bottom: 16px;">✍️ เขียนรีวิวและความประทับใจ</h3>
+                    <form id="submitReviewForm">
+                      <div class="form-group-item">
+                        <label>⭐ ให้คะแนนดาว</label>
+                        <div class="star-rating-picker" id="starPicker">
+                          <span class="star-item" data-value="1">★</span>
+                          <span class="star-item" data-value="2">★</span>
+                          <span class="star-item" data-value="3">★</span>
+                          <span class="star-item" data-value="4">★</span>
+                          <span class="star-item" data-value="5">★</span>
+                        </div>
+                        <input type="hidden" id="selectedRatingVal" value="0" required />
+                      </div>
+                      <div class="form-group-item" style="margin-top: 14px;">
+                        <label>💬 ความคิดเห็นของคุณ</label>
+                        <textarea id="newReviewComment" rows="4" placeholder="พิมพ์รีวิวของคุณที่นี่..." required style="width: 100%; padding: 12px 16px; background: var(--bg-main); border: 1.5px solid var(--border-color); border-radius: 14px; font-size: 13.5px; font-family: inherit; color: var(--text-primary); outline: none;"></textarea>
+                      </div>
+                      <button type="submit" class="btn-submit-action" style="margin-top: 12px;">โพสต์รีวิว</button>
+                      <button type="button" id="flipBackReviewBtn" style="background: none; border: none; width: 100%; margin-top: 14px; color: var(--text-secondary); font-size: 0.9em; cursor: pointer; font-weight: 600;">
+                        ← กลับไปหน้าดูรีวิว
+                      </button>
+                    </form>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      `;
+
+      window.changeMainImage = function(thumbElement, imgUrl) {
+        document.getElementById("mainImageDisplay").src = imgUrl;
+        document.querySelectorAll(".thumb-img-item").forEach(el => el.classList.remove("active"));
+        thumbElement.classList.add("active");
+      };
+
+      const pastelPaperPairs = [
+        { strap: "#d9577a", frontBg: "#fff5f7", backBg: "#f9d0db", border: "#f6b8c4", starColor: "#c53050" },
+        { strap: "#eab308", frontBg: "#fefce8", backBg: "#fef08a", border: "#fde047", starColor: "#ca8a04" },
+        { strap: "#10b981", frontBg: "#f0fdf4", backBg: "#bbf7d0", border: "#86efac", starColor: "#047857" },
+        { strap: "#8b5cf6", frontBg: "#faf5ff", backBg: "#e9d5ff", border: "#d8b4fe", starColor: "#7c3aed" },
+        { strap: "#ec4899", frontBg: "#fdf2f8", backBg: "#fbcfe8", border: "#f472b6", starColor: "#db2777" },
+        { strap: "#3b82f6", frontBg: "#eff6ff", backBg: "#bfdbfe", border: "#93c5fd", starColor: "#2563eb" }
+      ];
+
+      const loadReviewsFromSupabase = async () => {
+        const ropeTrack = document.getElementById("ropeReviewTrack");
+        const topRatingBadge = document.getElementById("topRatingBadge");
+        if (!ropeTrack) return;
+
+        let reviewsToDisplay = [];
+        try {
+          const { data, error } = await supabaseClient
+            .from("reviews")
+            .select("*")
+            .eq("dorm_id", currentDormId)
+            .order("created_at", { ascending: false });
+
+          if (!error && data && data.length > 0) {
+            reviewsToDisplay = data.map(r => ({
+              author_name: r.author_name,
+              rating: r.rating,
+              comment: r.comment
+            }));
+          }
+        } catch (err) {}
+
+        if (reviewsToDisplay.length === 0) {
+          if (topRatingBadge) topRatingBadge.innerHTML = `⭐ ยังไม่มีรีวิว`;
+          ropeTrack.innerHTML = `<div style="text-align: center; padding: 60px; color: var(--text-secondary); width: 100%;"><br/><br/>ยังไม่มีรีวิวสำหรับหอพักนี้ เป็นคนแรกที่รีวิวเลยสิคะ! ✍️✨</div>`;
+          return;
+        }
+
+        let totalRating = 0;
+        reviewsToDisplay.forEach(r => totalRating += r.rating);
+        const avgRating = (totalRating / reviewsToDisplay.length).toFixed(1);
+        if (topRatingBadge) topRatingBadge.innerHTML = `⭐ ${avgRating}`;
+
+        ropeTrack.innerHTML = "";
+        reviewsToDisplay.forEach((rev, index) => {
+          const starsStr = "★".repeat(rev.rating);
+          const theme = pastelPaperPairs[index % pastelPaperPairs.length];
+          const card = document.createElement("div");
+          card.className = "hanging-card-item";
+          card.innerHTML = `
+            <svg class="hanging-strap" viewBox="0 0 18 50">
+              <path d="M4 0 H14 A2 2 0 0 1 16 2 V47 A3 3 0 0 1 13 50 H5 A3 3 0 0 1 2 47 V2 A2 2 0 0 1 4 0 Z" fill="${theme.strap}"/>
+              <rect x="0.5" y="19" width="17" height="6" rx="2" fill="#fae498"/>
+            </svg>
+            <div class="hanging-card-back-sheet" style="background-color: ${theme.backBg};"></div>
+            <div class="hanging-card-face" style="background-color: ${theme.frontBg}; border-color: ${theme.border};">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <b style="font-size: 14.5px; color: var(--text-primary);">${rev.author_name}</b>
+                <span style="color: ${theme.starColor}; font-size: 13px; letter-spacing: 1px;">${starsStr}</span>
+              </div>
+              <p style="font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; margin: 0;">${rev.comment}</p>
+            </div>
+          `;
+          ropeTrack.appendChild(card);
+        });
+
+        initRopeReviews();
+      };
+
+      const initRopeReviews = () => {
+        const reviewViewport = document.getElementById("ropeReviewCarousel");
+        const reviewCards = Array.from(document.querySelectorAll("#ropeReviewTrack .hanging-card-item"));
+        if (!reviewViewport || reviewCards.length === 0) return;
+
+        const CARD_W = 310;
+        const DEPTH = 35;
+        let revScroll = 0;
+        let revTarget = 0;
+        let isRevDragging = false;
+        let revLastX = 0;
+        let revVelocity = 0;
+
+        const updateReviewPositions = () => {
+          revScroll += (revTarget - revScroll) * 0.12;
+          const vpCenter = reviewViewport.offsetWidth / 2;
+
+          reviewCards.forEach((card, idx) => {
+            const cardX = (idx * CARD_W) - revScroll;
+            const normDist = cardX / (vpCenter * 0.95);
+            const cardY = Math.pow(normDist, 2) * -DEPTH;
+            const cardRot = normDist * 12;
+            const scale = Math.max(0.88, 1 - Math.abs(normDist) * 0.1);
+            const opacity = Math.max(0.5, 1 - Math.abs(normDist) * 0.5);
+
+            card.style.transform = `translate3d(${cardX}px, ${cardY}px, 0) rotate(${cardRot}deg) scale(${scale})`;
+            card.style.opacity = opacity;
+          });
+
+          requestAnimationFrame(updateReviewPositions);
+        };
+        updateReviewPositions();
+
+        const maxRopeScroll = (reviewCards.length - 1) * CARD_W;
+        const clampRope = (val) => Math.max(-50, Math.min(val, maxRopeScroll + 50));
+
+        reviewViewport.onpointerdown = (e) => {
+          isRevDragging = true;
+          revLastX = e.clientX;
+          revVelocity = 0;
+        };
+
+        window.onpointermove = (e) => {
+          if (!isRevDragging) return;
+          const deltaX = e.clientX - revLastX;
+          revLastX = e.clientX;
+          revVelocity = deltaX;
+          revTarget = clampRope(revTarget - deltaX * 1.3);
+        };
+
+        window.onpointerup = () => {
+          if (!isRevDragging) return;
+          isRevDragging = false;
+          revTarget = clampRope(revTarget - revVelocity * 5);
+          if (revTarget < 0) revTarget = 0;
+          if (revTarget > maxRopeScroll) revTarget = maxRopeScroll;
+        };
+
+        reviewViewport.onwheel = (e) => {
+          const delta = e.deltaX !== 0 ? e.deltaX : e.deltaY;
+          revTarget = clampRope(revTarget + delta * 0.85);
+          if (revTarget < 0) revTarget = 0;
+          if (revTarget > maxRopeScroll) revTarget = maxRopeScroll;
+        };
+      };
+
+      await loadReviewsFromSupabase();
+
+      const bookContainer = document.getElementById("section-reviews");
+      const flipToReviewFormBtn = document.getElementById("flipToReviewFormBtn");
+      const flipBackReviewBtn = document.getElementById("flipBackReviewBtn");
+
+      if (flipToReviewFormBtn) {
+        flipToReviewFormBtn.addEventListener("click", async () => {
+          const { data: { session } } = await supabaseClient.auth.getSession();
+          if (!session) {
+            alert("กรุณาเข้าสู่ระบบก่อนเขียนรีวิวและความคิดเห็นค่ะ ✨");
+            window.location.href = "../auth.html";
+            return;
+          }
+          bookContainer.classList.add("is-turned");
+        });
+      }
+
+      if (flipBackReviewBtn) {
+        flipBackReviewBtn.addEventListener("click", () => {
+          bookContainer.classList.remove("is-turned");
+        });
+      }
+
+      const stars = document.querySelectorAll("#starPicker .star-item");
+      const selectedRatingValInput = document.getElementById("selectedRatingVal");
+
+      stars.forEach(star => {
+        star.addEventListener("click", (e) => {
+          const val = parseInt(e.target.getAttribute("data-value"));
+          selectedRatingValInput.value = val;
+          stars.forEach(s => {
+            if (parseInt(s.getAttribute("data-value")) <= val) {
+              s.classList.add("selected");
+            } else {
+              s.classList.remove("selected");
+            }
+          });
+        });
+      });
+
+      const submitReviewForm = document.getElementById("submitReviewForm");
+      if (submitReviewForm) {
+        submitReviewForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const { data: { session } } = await supabaseClient.auth.getSession();
+          if (!session) {
+            alert("กรุณาเข้าสู่ระบบก่อนโพสต์รีวิวค่ะ ✨");
+            window.location.href = "../auth.html";
+            return;
+          }
+
+          const ratingVal = parseInt(selectedRatingValInput.value);
+          if (!ratingVal || ratingVal < 1) {
+            alert("กรุณาให้คะแนนดาวก่อนส่งรีวิวค่ะ ⭐");
+            return;
+          }
+
+          const commentText = document.getElementById("newReviewComment").value;
+          
+          let authorDisplay = "นิวเยียร์ ✨";
+          try {
+            const { data: profileData } = await supabaseClient
+              .from("profiles")
+              .select("nickname, full_name")
+              .eq("id", session.user.id)
+              .single();
+            if (profileData) {
+              if (profileData.nickname) {
+                const nick = profileData.nickname.trim();
+                if (nick.includes("กล้วยหอม")) authorDisplay = "กล้วยหอม 🍌";
+                else if (nick.includes("แมวดำ")) authorDisplay = "แมวดำ 🐈‍⬛";
+                else authorDisplay = nick + " ✨";
+              } else if (profileData.full_name) {
+                authorDisplay = profileData.full_name + " ✨";
+              }
+            }
+          } catch(err) {}
+
+          const { error } = await supabaseClient.from("reviews").insert({
+            user_id: session.user.id,
+            dorm_id: currentDormId,
+            author_name: authorDisplay,
+            rating: ratingVal,
+            comment: commentText
+          });
+
+          if (error) {
+            alert("เกิดข้อผิดพลาดในการบันทึกรีวิว: " + error.message);
+          } else {
+            alert("✓ โพสต์รีวิวสำเร็จแล้วค่ะ ระบบได้บันทึกข้อมูลเรียบร้อย!");
+            submitReviewForm.reset();
+            stars.forEach(s => s.classList.remove("selected"));
+            selectedRatingValInput.value = "0";
+            bookContainer.classList.remove("is-turned");
+            await loadReviewsFromSupabase();
+          }
+        });
+      }
+
+      const flipCardContainer = document.getElementById("flipCardContainer");
+      const flipToBookingBtn = document.getElementById("flipToBookingBtn");
+      const flipBackBtn = document.getElementById("flipBackBtn");
+      const externalSocialRow = document.getElementById("externalSocialRow");
+
+      if (flipToBookingBtn) {
+        flipToBookingBtn.addEventListener("click", () => {
+          flipCardContainer.classList.add("is-flipped");
+          if (externalSocialRow) externalSocialRow.classList.add("hidden");
+        });
+      }
+      if (flipBackBtn) {
+        flipBackBtn.addEventListener("click", () => {
+          flipCardContainer.classList.remove("is-flipped");
+          if (externalSocialRow) externalSocialRow.classList.remove("hidden");
+        });
+      }
+
+      window.handleNavClick = function(sectionId, navId) {
+        document.querySelectorAll('.image-nav-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(navId).classList.add('active');
+        const el = document.getElementById(sectionId);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      };
+
+      const lineModal = document.getElementById("lineModal");
+      const floatingLineBtn = document.getElementById("floatingLineBtn");
+      const closeLineModal = document.getElementById("closeLineModal");
+      const copyLineBtn = document.getElementById("copyLineBtn");
+      const openLineLink = document.getElementById("openLineLink");
+      const modalLineIdText = document.getElementById("modalLineIdText");
+      const floatingPhoneBtn = document.getElementById("floatingPhoneBtn");
+
+      modalLineIdText.innerText = dorm.contact.line;
+      openLineLink.href = "https://line.me/ti/p/~" + dorm.contact.line.replace('@','');
+
+      if (floatingLineBtn) floatingLineBtn.addEventListener("click", () => { lineModal.style.display = "flex"; });
+      if (closeLineModal) closeLineModal.addEventListener("click", () => { lineModal.style.display = "none"; });
+
+      if (copyLineBtn) {
+        copyLineBtn.addEventListener("click", () => {
+          navigator.clipboard.writeText(dorm.contact.line);
+          copyLineBtn.innerText = "✓ คัดลอกสำเร็จ!";
+          setTimeout(() => { copyLineBtn.innerText = "คัดลอกไอดี"; }, 2000);
+        });
+      }
+
+      if (floatingPhoneBtn) {
+        floatingPhoneBtn.addEventListener("click", () => {
+          navigator.clipboard.writeText(dorm.contact.phone);
+          alert(`✓ คัดลอกเบอร์โทรศัพท์ (${dorm.contact.phone}) เรียบร้อยแล้วครับ!`);
+        });
+      }
+
+      const tabVisitBtn = document.getElementById("tabVisitBtn");
+      const tabBookBtn = document.getElementById("tabBookBtn");
+      const appointmentForm = document.getElementById("appointmentForm");
+      const bookingForm = document.getElementById("bookingForm");
+
+      if (tabVisitBtn) {
+        tabVisitBtn.addEventListener("click", () => {
+          tabVisitBtn.classList.add("active");
+          tabBookBtn.classList.remove("active");
+          appointmentForm.classList.add("active");
+          bookingForm.classList.remove("active");
+        });
+      }
+
+      if (tabBookBtn) {
+        tabBookBtn.addEventListener("click", () => {
+          tabBookBtn.classList.add("active");
+          tabVisitBtn.classList.remove("active");
+          bookingForm.classList.add("active");
+          appointmentForm.classList.remove("active");
+        });
+      }
+
+      const bookRoomTypeSelect = document.getElementById("bookRoomType");
+      const bookDepositDisplay = document.getElementById("bookDepositDisplay");
+      
+      if (bookRoomTypeSelect) {
+        bookRoomTypeSelect.addEventListener("change", (e) => {
+          const selectedOption = e.target.options[e.target.selectedIndex];
+          const price = selectedOption.getAttribute("data-price");
+          if (price) {
+            bookDepositDisplay.value = `${Number(price).toLocaleString()} บาท`;
+          } else {
+            bookDepositDisplay.value = "กรุณาเลือกประเภทห้องพักก่อน";
+          }
+        });
+      }
+
+      if (appointmentForm) {
+        appointmentForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const { data: { session } } = await supabaseClient.auth.getSession();
+          if (!session) {
+            alert("กรุณาเข้าสู่ระบบก่อนทำรายการนัดหมายค่ะ ✨");
+            window.location.href = "../auth.html";
+            return;
+          }
+
+          const date = document.getElementById("apptDate").value;
+          const time = document.getElementById("apptTime").value;
+          const phone = document.getElementById("apptPhone").value;
+          const line = document.getElementById("apptLine").value;
+
+          const { error } = await supabaseClient.from("appointments").insert({
+            user_id: session.user.id,
+            dorm_id: dorm.id,
+            dorm_name: dorm.name,
+            appointment_date: date,
+            time_slot: time,
+            contact_phone: phone,
+            contact_line: line
+          });
+
+          if (error) {
+            alert("เกิดข้อผิดพลาด: " + error.message);
+          } else {
+            alert("✓ บันทึกการนัดหมายดูห้องสำเร็จแล้วค่ะ เจ้าหน้าที่จะติดต่อกลับเร็วๆ นี้!");
+            appointmentForm.reset();
+          }
+        });
+      }
+
+      if (bookingForm) {
+        bookingForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const { data: { session } } = await supabaseClient.auth.getSession();
+          if (!session) {
+            alert("กรุณาเข้าสู่ระบบก่อนทำรายการจองห้องพักค่ะ ✨");
+            window.location.href = "../auth.html";
+            return;
+          }
+
+          const roomTypeSelect = document.getElementById("bookRoomType");
+          const selectedOption = roomTypeSelect.options[roomTypeSelect.selectedIndex];
+          const roomType = selectedOption.value;
+          const depositVal = selectedOption.getAttribute("data-price");
+
+          if (!depositVal) {
+            alert("กรุณาเลือกประเภทห้องพักก่อนส่งคำขอจองค่ะ ✨");
+            return;
+          }
+
+          const moveDate = document.getElementById("bookMoveDate").value;
+          if (!moveDate) {
+            alert("กรุณาเลือกวันที่ต้องการย้ายเข้าอยู่ด้วยค่ะ 📦");
+            return;
+          }
+
+          // แพ็คข้อมูลทั้งหมดใส่ URL เพื่อส่งไปหน้า booking.html (ไม่มีการ insert ลงตาราง bookings ในหน้านี้แล้ว)
+          const queryParams = new URLSearchParams({
+            dorm_id: dorm.id,
+            dorm_name: dorm.name,
+            room_type: roomType,
+            move_date: moveDate,
+            deposit: depositVal
+          });
+
+          window.location.href = `../booking.html?${queryParams.toString()}`;
+        });
+      }
+
+    });
+  </script>
+
+  <!-- ==================== SOUND EFFECT SCRIPT ==================== -->
+  <script>
+    document.addEventListener("click", (e) => {
+      const target = e.target.closest("button, a, .thumb-img-item, .image-nav-btn, .tab-action-btn, input, select, .star-item");
+      if (target) {
+        const audio = new Audio('../assets/sound/click01.mp3');
+        audio.volume = 1.0;
+        audio.play().catch(() => {});
+      }
+    });
+  </script>
+</body>
+</html>
+```[cite: 33]
