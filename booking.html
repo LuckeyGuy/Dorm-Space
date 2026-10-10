@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ยืนยันคำขอจองห้องพัก — Dorm Space</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Noto+Sans+Thai:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    .booking-container { max-width: 1050px; margin: 140px auto 60px; padding: 0 20px; font-family: 'Noto Sans Thai', sans-serif; }
+    .booking-grid { display: grid; grid-template-columns: 1fr 380px; gap: 28px; align-items: start; }
+    .booking-card, .summary-card { background: #ffffff; border: 1.5px solid var(--border-color); border-radius: 32px; padding: 32px; box-shadow: 0 16px 40px rgba(217, 87, 122, 0.12); }
+    .summary-card { position: sticky; top: 120px; }
+    .form-group { margin-bottom: 18px; text-align: left; }
+    .form-group label { display: block; font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+    .form-group input { width: 100%; padding: 11px 16px; background: var(--bg-main); border: 1.5px solid var(--border-color); border-radius: 14px; font-size: 14px; font-family: inherit; color: var(--text-primary); outline: none; box-sizing: border-box; }
+    
+    .form-group select {
+      width: 100%;
+      padding: 11px 40px 11px 16px;
+      background: var(--bg-main);
+      border: 1.5px solid var(--border-color);
+      border-radius: 14px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--text-primary);
+      outline: none;
+      box-sizing: border-box;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233b2a2f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      background-size: 16px;
+    }
+
+    .form-group input:focus, .form-group select:focus { border-color: var(--accent-rose); }
+    .form-group input:disabled { background: #f3f4f6; color: #6b7280; cursor: not-allowed; }
+    .bank-info-box { background: #fff5f7; border: 1.5px dashed var(--accent-rose); border-radius: 14px; padding: 14px 18px; margin-top: 8px; font-size: 0.9em; color: var(--text-primary); display: none; }
+    .slip-upload-group { background: #fcf9f6; border: 1.5px dashed var(--accent-rose); border-radius: 14px; padding: 14px; margin-top: 10px; display: none; }
+    .discount-notice { font-size: 0.78em; color: #c62828; margin-top: 6px; line-height: 1.5; font-weight: 600; }
+    .btn-confirm { width: 100%; background: var(--accent-rose); color: #fff; border: none; padding: 13px; border-radius: 999px; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 6px 18px rgba(217, 87, 122, 0.25); transition: 0.2s; margin-top: 16px; }
+    .btn-confirm:hover { filter: brightness(0.92); transform: translateY(-2px); }
+    .btn-apply-code { background: var(--text-primary); color: #fff; border: none; padding: 10px 16px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; margin-top: 8px; transition: 0.2s; }
+    .btn-apply-code:hover { background: var(--accent-rose); }
+    @media (max-width: 900px) { .booking-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="navbar-wrapper">
+    <nav class="pill-navbar">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-mark"><span class="mark-circle blush"></span><span class="mark-circle butter"></span></div>
+        <span class="brand-text">Dorm Space</span>
+      </a>
+      <div class="nav-actions">
+        <a href="catalog.html" class="btn-primary"><span>ย้อนกลับ</span><div class="btn-arrow">➜</div></a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="booking-container">
+    <div class="booking-grid">
+      
+      <!-- ฝั่งซ้าย: ฟอร์มข้อมูลการชำระเงินและข้อมูลส่วนตัว -->
+      <div class="booking-card">
+        <h1 style="font-family: var(--font-heading); font-size: 1.6em; color: var(--text-primary); margin-bottom: 6px; text-align: center;">🏡 ยืนยันคำขอจองห้องพัก</h1>
+        <p style="text-align: center; color: var(--text-secondary); font-size: 0.92em; margin-bottom: 24px;" id="dormTitleHeader">กำลังโหลดข้อมูลหอพัก...</p>
+
+        <form id="finalBookingForm">
+          <div class="form-group">
+            <label>💳 กรุณาเลือกวิธี/วันชำระเงิน</label>
+            <select id="paymentMethod" required>
+              <option value="" disabled selected>-- กรุณาเลือกวิธีชำระเงิน --</option>
+              <option value="ชำระ ณ ที่พัก">ชำระ ณ ที่พัก</option>
+              <option value="โอนบัญชีธนาคาร">โอนบัญชีธนาคาร</option>
+            </select>
+            <div id="bankDetailsBox" class="bank-info-box">
+              🏦 <b>ธนาคารไทยพาณิชย์ เลขที่บัญชี: 885-2143-490</b><br/>
+              ชื่อบัญชี: หจก. ดอร์ม สเปซ เพื่อที่พักอาศัย
+            </div>
+            
+            <div id="slipUploadGroup" class="slip-upload-group">
+              <label style="font-size: 12.5px; color: var(--accent-rose); margin-bottom: 4px;">📸 แนบหลักฐานการโอนเงิน (สลิปโอนเงิน)</label>
+              <input type="file" id="slipFileInput" accept="image/*" />
+            </div>
+
+            <p class="discount-notice">
+              *สำคัญ: **จองที่พักกับเรา รับสิทธิ์ใช้โค้ดส่วนลดจากหน้า <a href="news.html" target="_blank" style="color: var(--accent-rose);">ข่าวสาร</a> 🎁
+            </p>
+          </div>
+
+          <div class="form-group">
+            <label>👤 ชื่อ - นามสกุล</label>
+            <input type="text" id="fullName" disabled />
+          </div>
+
+          <div class="form-group">
+            <label>😊 ชื่อเล่น</label>
+            <input type="text" id="nickName" disabled />
+          </div>
+
+          <div class="form-group">
+            <label>✉️ อีเมลสมาชิก</label>
+            <input type="email" id="memberEmail" disabled />
+          </div>
+
+          <div class="form-group">
+            <label>📞 หมายเลขโทรศัพท์ (กรุณากรอกข้อมูล)</label>
+            <input type="tel" id="phoneNumber" placeholder="08X-XXX-XXXX" required />
+          </div>
+        </form>
+      </div>
+
+      <!-- ฝั่งขวา: กรอบสรุปยอดและโค้ดส่วนลดตามสั่ง -->
+      <div class="summary-card">
+        <h3 style="font-family: var(--font-heading); font-size: 1.2em; color: var(--text-primary); margin-bottom: 16px; border-bottom: 2px solid var(--accent-rose); padding-bottom: 8px;">📋 สรุปยอดชำระเงิน</h3>
+        
+        <div style="font-size: 0.92em; color: var(--text-secondary); margin-bottom: 12px;">
+          <p style="margin: 8px 0;">ประเภทห้องพัก: <b id="summaryRoomType" style="color: var(--text-primary);">-</b></p>
+          <p style="margin: 8px 0;">ยอดเงินมัดจำชำระล่วงหน้า: <b id="summaryDeposit" style="color: var(--text-primary);">-</b></p>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label>🎁 โค้ดส่วนลด (NewCustomer10.10)</label>
+          <input type="text" id="discountCodeInput" placeholder="กรอกรหัสส่วนลดที่นี่" />
+          <button type="button" class="btn-apply-code" id="applyCodeBtn">ใช้โค้ดส่วนลด</button>
+          <p id="promoMessage" style="font-size: 0.82em; margin-top: 6px; font-weight: 600;"></p>
+        </div>
+
+        <div style="background: var(--bg-main); border: 1.5px solid var(--border-color); border-radius: 16px; padding: 14px; margin-bottom: 16px;">
+          <p style="margin: 4px 0; font-size: 0.9em; color: var(--text-secondary);">ส่วนลด: <span id="summaryDiscountText" style="font-weight: bold; color: #10B981;">฿0</span></p>
+          <p style="margin: 6px 0 0 0; font-size: 1.05em; font-weight: bold; color: var(--text-primary);">ราคาหลังหักส่วนลด (ยอดสุทธิ): <br/><span id="summaryFinalTotal" style="color: var(--accent-rose); font-size: 1.35em;">-</span></p>
+        </div>
+
+        <button type="button" class="btn-confirm" id="submitBookingBtn">ยืนยันการจองห้องพัก</button>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    const SUPABASE_URL = 'https://auivtzjrgurdrohibexh.supabase.co';
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF1aXZ0empyZ3VyZHJvaGliZXhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEwMDg3NzcsImV4cCI6MjEwNjU4NDc3N30.95xqR45D0g61DGiAbh02AvwhRf9IwEJfmU5j7uIitNY';
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const dormId = urlParams.get('dorm_id') || 'dorm_01';
+    const dormName = urlParams.get('dorm_name') || 'หอพักตัวอย่าง';
+    const roomType = urlParams.get('room_type') || 'ห้องพัดลม';
+    const moveDate = urlParams.get('move_date') || '';
+    const baseDeposit = Number(urlParams.get('deposit') || 3000);
+
+    let appliedDiscount = 0;
+    let finalAmountToPay = baseDeposit;
+    let appliedCodeName = null;
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      document.getElementById("dormTitleHeader").innerText = `${dormName} (${roomType})`;
+      document.getElementById("summaryRoomType").innerText = roomType;
+      document.getElementById("summaryDeposit").innerText = `฿${baseDeposit.toLocaleString()}`;
+      updateFinalDisplay();
+
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (!session) {
+        alert("กรุณาเข้าสู่ระบบก่อนทำการจองค่ะ ✨");
+        window.location.href = "auth.html";
+        return;
+      }
+
+      const user = session.user;
+      document.getElementById("memberEmail").value = user.email || '';
+
+      try {
+        const { data: profileData } = await supabaseClient
+          .from("profiles")
+          .select("*")
+          .eq("id", user.id)
+          .single();
+
+        if (profileData) {
+          document.getElementById("fullName").value = profileData.full_name || '-';
+          document.getElementById("nickName").value = profileData.nickname || '-';
+          if (profileData.phone) {
+            document.getElementById("phoneNumber").value = profileData.phone;
+          }
+        }
+      } catch (err) {}
+
+      const paymentSelect = document.getElementById("paymentMethod");
+      const bankBox = document.getElementById("bankDetailsBox");
+      const slipUploadGroup = document.getElementById("slipUploadGroup");
+
+      paymentSelect.addEventListener("change", (e) => {
+        if (e.target.value === "โอนบัญชีธนาคาร") {
+          bankBox.style.display = "block";
+          slipUploadGroup.style.display = "block";
+        } else {
+          bankBox.style.display = "none";
+          slipUploadGroup.style.display = "none";
+        }
+      });
+
+      // ปุ่มตรวจสอบและใช้โค้ดส่วนลด
+      const applyCodeBtn = document.getElementById("applyCodeBtn");
+      const promoMessage = document.getElementById("promoMessage");
+
+      applyCodeBtn.addEventListener("click", async () => {
+        const codeInput = document.getElementById("discountCodeInput").value.trim();
+        const paymentVal = paymentSelect.value;
+
+        if (!codeInput) {
+          promoMessage.style.color = "#c62828";
+          promoMessage.innerText = "❌ กรุณากรอกรหัสโค้ดส่วนลดก่อนกดใช้งานค่ะ";
+          return;
+        }
+
+        if (paymentVal === "ชำระ ณ ที่พัก") {
+          promoMessage.style.color = "#c62828";
+          promoMessage.innerText = "❌ หากชำระ ณ ที่พัก จะไม่สามารถใช้ส่วนลดได้ค่ะ";
+          return;
+        }
+
+        if (baseDeposit < 3500) {
+          promoMessage.style.color = "#c62828";
+          promoMessage.innerText = "❌ ยอดจองขั้นต่ำต้อง 3,500 บาทขึ้นไปจึงจะใช้ส่วนลดนี้ได้ค่ะ";
+          return;
+        }
+
+        // ดึงข้อมูลคูปองจากตาราง coupons ใน Supabase
+        const { data: couponData, error: couponErr } = await supabaseClient
+          .from("coupons")
+          .select("*")
+          .eq("code", codeInput)
+          .eq("is_active", true)
+          .single();
+
+        if (couponErr || !couponData) {
+          promoMessage.style.color = "#c62828";
+          promoMessage.innerText = "❌ รหัสโค้ดส่วนลดไม่ถูกต้องหรือหมดอายุแล้วค่ะ";
+          appliedDiscount = 0;
+          appliedCodeName = null;
+          updateFinalDisplay();
+          return;
+        }
+
+        // ตรวจสอบจำนวนสิทธิ์จากตาราง coupons (จำกัด 10 ท่าน)
+        if (couponData.times_used >= couponData.usage_limit) {
+          promoMessage.style.color = "#c62828";
+          promoMessage.innerText = "❌ โค้ดส่วนลดนี้ถูกใช้ครบ 10 ท่านแรกเต็มจำนวนแล้วค่ะ";
+          return;
+        }
+
+        // ผ่านเงื่อนไขทั้งหมด คำนวณส่วนลด
+        appliedDiscount = (baseDeposit * couponData.discount_percent) / 100;
+        finalAmountToPay = baseDeposit - appliedDiscount;
+        appliedCodeName = couponData.code;
+
+        promoMessage.style.color = "#10B981";
+        promoMessage.innerText = `✓ ใช้โค้ดส่วนลดสำเร็จ! ลด ${couponData.discount_percent}% ทันที`;
+        updateFinalDisplay();
+      });
+
+      // ปุ่มยืนยันการจองห้องพัก
+      const submitBtn = document.getElementById("submitBookingBtn");
+      submitBtn.addEventListener("click", async () => {
+        const paymentMethod = paymentSelect.value;
+        if (!paymentMethod) {
+          alert("กรุณาเลือกวิธีชำระเงินก่อนค่ะ ✨");
+          paymentSelect.focus();
+          return;
+        }
+
+        const phoneNumber = document.getElementById("phoneNumber").value;
+        if (!phoneNumber) {
+          alert("กรุณากรอกหมายเลขโทรศัพท์ติดต่อด้วยค่ะ 📞");
+          document.getElementById("phoneNumber").focus();
+          return;
+        }
+
+        const slipInput = document.getElementById("slipFileInput");
+        let slipBase64 = null;
+        if (paymentMethod === "โอนบัญชีธนาคาร" && slipInput.files && slipInput.files[0]) {
+          const file = slipInput.files[0];
+          slipBase64 = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (uploadEvent) => resolve(uploadEvent.target.result);
+            reader.readAsDataURL(file);
+          });
+        }
+
+        // ถ้ามีการใช้โค้ดส่วนลด ให้บวกจำนวน times_used ในตาราง coupons เพิ่มขึ้น 1 ครั้ง
+        if (appliedCodeName) {
+          const { data: currentCoupon } = await supabaseClient
+            .from("coupons")
+            .select("id, times_used")
+            .eq("code", appliedCodeName)
+            .single();
+
+          if (currentCoupon) {
+            await supabaseClient
+              .from("coupons")
+              .update({ times_used: currentCoupon.times_used + 1 })
+              .eq("id", currentCoupon.id);
+          }
+        }
+
+        // บันทึกลงตาราง bookings ด้วยชื่อฟิลด์ deposit_amount ให้ตรงกับ Supabase
+        const { error } = await supabaseClient.from("bookings").insert({
+          user_id: user.id,
+          dorm_id: dormId,
+          dorm_name: dormName,
+          room_type: roomType,
+          move_in_date: moveDate || new Date().toISOString().split('T')[0],
+          deposit_amount: finalAmountToPay, // เปลี่ยนจาก deposit เป็น deposit_amount
+          deposit: finalAmountToPay,        // ใส่เผื่อไว้ทั้งสองชื่อเพื่อความปลอดภัย
+          payment_method: paymentMethod,
+          phone_number: phoneNumber,
+          slip_image: slipBase64,
+          discount_code: appliedCodeName,
+          discount_amount: appliedDiscount,
+          status: 'active'
+        });
+
+        if (error) {
+          // เช็คว่าถ้า Error เป็นเรื่องจองซ้ำ (duplicate key) ให้แสดงข้อความเตือนแบบนี้
+          if (error.message.includes("unique_active_booking") || error.code === "23505") {
+            alert("⚠️ ท่านได้มีรายการจองหอพักหรือสถานะกำลังดำเนินการอยู่แล้วค่ะ <br/>ไม่สามารถจองซ้ำได้ในขณะนี้");
+          } else {
+            // Error กรณีอื่นๆ ทั่วไป ให้นิวเขียนข้อความเองได้เลย
+            alert("❌ ขออภัยค่ะ ไม่สามารถบันทึกการจองได้ในขณะนี้ กรุณาลองใหม่อีกครั้งนะคะ");
+          }
+        } else {
+          // ✅ ส่วนนี้จะทำงานเฉพาะตอนที่บันทึกข้อมูลสำเร็จจริงๆ เท่านั้น
+          alert("✓ ส่งคำขอจองห้องพักสำเร็จแล้วค่ะ!");
+          window.location.href = "appointment.html";
+        }
+      });
+    });
+
+    function updateFinalDisplay() {
+      finalAmountToPay = baseDeposit - appliedDiscount;
+      document.getElementById("summaryDiscountText").innerText = `฿${appliedDiscount.toLocaleString()}`;
+      document.getElementById("summaryFinalTotal").innerText = `฿${finalAmountToPay.toLocaleString()}`;
+    }
+  </script>
+</body>
+</html>

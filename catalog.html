@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>รายชื่อหอพัก — Dorm Space</title>
+  <!-- ==================== GOOGLE FONTS ==================== -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fragment+Mono&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- ==================== CSS เดิม ==================== -->
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- ==================== SUPABASE ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- =========================================================
+       CSS
+       ========================================================= -->
+  <style>
+    .catalog-main { padding-top: 130px; padding-bottom: 70px; }
+    .catalog-container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+    .catalog-layout { display: grid; grid-template-columns: 1fr 280px; gap: 32px; align-items: start; }
+    /* =====================================================
+       SIDEBAR
+       ===================================================== */
+    .catalog-sidebar-wrapper { display: flex; flex-direction: column; height: 100%; justify-content: space-between; }
+    .filter-sidebar { background: #ffffff; border: 1.5px solid var(--border-color); border-radius: 24px; padding: 24px; box-shadow: 0 6px 20px rgba(59, 42, 47, 0.03); }
+    .filter-group { margin-bottom: 24px; }
+    .filter-group:last-child { margin-bottom: 0; }
+    .filter-title { font-family: var(--font-heading); font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+    .filter-checkbox-label { display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: var(--text-secondary); margin-bottom: 10px; cursor: pointer; }
+    .filter-checkbox-label input { width: 16px; height: 16px; accent-color: var(--accent-rose); cursor: pointer; }
+    /* =====================================================
+       🔎 SEARCH BOX
+       ===================================================== */
+    .dorm-search-area { margin-bottom: 22px; }
+    .dorm-search-label { display: block; font-family: var(--font-heading); font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 9px; }
+    .dorm-search-row { display: flex; align-items: center; gap: 8px; width: 100%; }
+    .dorm-search-input-wrapper { position: relative; flex: 1; min-width: 0; }
+    .dorm-search-input { width: 100%; height: 44px; box-sizing: border-box; padding: 0 16px; border: 1.5px solid var(--border-color); border-radius: 999px; background: #ffffff; font-family: inherit; font-size: 13.5px; color: var(--text-primary); outline: none; transition: border-color 0.25s ease, box-shadow 0.25s ease; box-shadow: 0 4px 12px rgba(59, 42, 47, 0.03); }
+    .dorm-search-input::placeholder { color: #a79a9f; }
+    .dorm-search-input:focus { border-color: var(--accent-rose); box-shadow: 0 0 0 4px rgba(217, 87, 122, 0.15), 0 4px 14px rgba(217, 87, 122, 0.12); }
+    .dorm-search-button { height: 44px; padding: 0 16px; border: none; border-radius: 999px; background: var(--accent-rose); color: #ffffff; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(217, 87, 122, 0.22); }
+    .dorm-search-button:hover { filter: brightness(0.94); transform: translateY(-1px); box-shadow: 0 6px 16px rgba(217, 87, 122, 0.28); }
+    .dorm-search-button:active { transform: translateY(0); }
+    /* =====================================================
+       DORM GRID
+       ===================================================== */
+    .dorms-grid-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .dorm-card-item { background: #ffffff; border: 1.5px solid var(--border-color); border-radius: 24px; overflow: hidden; box-shadow: 0 6px 20px rgba(59, 42, 47, 0.04); transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column; position: relative; }
+    .dorm-card-item:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(217, 87, 122, 0.12); border-color: var(--accent-rose); }
+    .dorm-img-wrapper { position: relative; width: 100%; height: 180px; }
+    .dorm-card-img { width: 100%; height: 100%; object-fit: cover; }
+    .dorm-rating-badge { position: absolute; top: 12px; right: 12px; background: #ffffff; color: var(--accent-rose); padding: 4px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.12); display: flex; align-items: center; gap: 4px; border: 1px solid var(--border-color); }
+    .dorm-card-body { padding: 18px; display: flex; flex-direction: column; flex: 1; }
+    .dorm-card-title { font-family: var(--font-heading); font-size: 16px; font-weight: 800; color: var(--text-primary); margin: 0 0 6px 0; }
+    .dorm-card-desc { font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 14px; flex: 1; }
+    .dorm-card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border-color); padding-top: 12px; margin-top: auto; }
+    .dorm-price-tag { font-size: 13.5px; font-weight: 800; color: var(--accent-rose); }
+    .dorm-detail-link { background: var(--bg-main); border: 1px solid var(--border-color); padding: 6px 14px; border-radius: 999px; font-size: 12px; font-weight: 700; color: var(--text-primary); text-decoration: none; transition: all 0.2s; }
+    .dorm-detail-link:hover { background: var(--accent-rose); color: #fff; border-color: var(--accent-rose); }
+    /* =====================================================
+       PAGINATION
+       ===================================================== */
+    .pagination-box { display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1.5px solid var(--border-color); border-radius: 20px; padding: 14px 18px; box-shadow: 0 6px 20px rgba(59, 42, 47, 0.04); margin-top: 24px; }
+    .page-btn { background: var(--accent-rose); border: none; padding: 10px 20px; border-radius: 999px; font-size: 13.5px; font-weight: 700; color: #ffffff; cursor: pointer; transition: all 0.25s ease; white-space: nowrap; font-family: inherit; box-shadow: 0 4px 14px rgba(217, 87, 122, 0.25); }
+    .page-btn:hover:not(:disabled) { filter: brightness(0.92); transform: translateY(-1px); }
+    .page-btn:disabled { background: #e5e7eb; color: #9ca3af; box-shadow: none; cursor: not-allowed; }
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+    @media (max-width: 1100px) {
+      .dorms-grid-list { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 850px) {
+      .catalog-layout { grid-template-columns: 1fr; }
+      .dorms-grid-list { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 500px) {
+      .dorm-search-row { flex-direction: column; align-items: stretch; }
+      .dorm-search-button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <!-- =====================================================
+       NAVBAR
+       ===================================================== -->
+  <header class="navbar-wrapper">
+    <nav class="pill-navbar">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-mark">
+          <span class="mark-circle blush"></span>
+          <span class="mark-circle butter"></span>
+        </div>
+        <span class="brand-text">Dorm Space</span>
+      </a>
+      <div class="nav-links">
+        <a href="zone01.html" class="nav-link">โซนหน้ามอ</a>
+        <a href="zone02.html" class="nav-link">โซนประตูวิศวะ</a>
+        <a href="zone03.html" class="nav-link">โซนหลิ่งหมื่น</a>
+      </div>
+      <div class="nav-actions">
+        <a href="index.html" class="btn-primary">
+          <span>กลับหน้าหลัก</span>
+          <div class="btn-arrow">➜</div>
+        </a>
+      </div>
+    </nav>
+  </header>
+  <!-- =====================================================
+       MAIN CONTENT
+       ===================================================== -->
+  <main class="catalog-main">
+    <div class="catalog-container">
+      <div style="text-align: center; margin-bottom: 36px;">
+        <h1 style="font-family: var(--font-heading); font-size: 2.2em; color: var(--text-primary); margin-bottom: 8px;">รายชื่อหอพักรอบมหาวิทยาลัยแม่โจ้</h1>
+        <p style="color: var(--text-secondary); font-size: 0.95em;">เลือกหอพักที่ตรงใจ ตรวจสอบราคา และนัดหมายดูห้องหรือจองได้ทันที</p>
+      </div>
+      <div class="catalog-layout">
+        <!-- =================================================
+             ฝั่งซ้าย : รายการหอพัก
+             ================================================= -->
+        <section>
+          <div class="dorms-grid-list" id="dormsGridContainer"></div>
+        </section>
+        <!-- =================================================
+             ฝั่งขวา : FILTER
+             ================================================= -->
+        <div class="catalog-sidebar-wrapper">
+          <aside class="filter-sidebar">
+            <!-- =================================================
+                 🔎 SEARCH (อยู่เหนือ 📍 โซนทำเลที่ตั้ง)
+                 ================================================= -->
+            <div class="dorm-search-area">
+              <label class="dorm-search-label" for="dormSearchInput">🔎 ค้นหาหอพัก</label>
+              <div class="dorm-search-row">
+                <div class="dorm-search-input-wrapper">
+                  <input type="text" id="dormSearchInput" class="dorm-search-input" placeholder="พิมพ์ชื่อหอพัก..." autocomplete="off">
+                </div>
+                <button type="button" id="dormSearchButton" class="dorm-search-button">ค้นหา</button>
+              </div>
+            </div>
+            <hr style="border: none; border-top: 1px dashed var(--border-color); margin: 20px 0;" />
+            <!-- =================================================
+                 📍 โซนทำเลที่ตั้ง
+                 ================================================= -->
+            <div class="filter-group">
+              <h3 class="filter-title">📍 โซนทำเลที่ตั้ง</h3>
+              <label class="filter-checkbox-label">
+                <input type="checkbox" class="zone-filter" value="zone-front" checked />
+                โซนประตูหน้ามอ
+              </label>
+              <label class="filter-checkbox-label">
+                <input type="checkbox" class="zone-filter" value="zone-eng" checked />
+                โซนประตูวิศวะ
+              </label>
+              <label class="filter-checkbox-label">
+                <input type="checkbox" class="zone-filter" value="zone-ling" checked />
+                โซนหลิ่งหมื่น
+              </label>
+            </div>
+            <hr style="border: none; border-top: 1px dashed var(--border-color); margin: 20px 0;" />
+            <!-- =================================================
+                 🛋 สิ่งอำนวยความสะดวก
+                 ================================================= -->
+            <div class="filter-group">
+              <h3 class="filter-title">🛋 สิ่งอำนวยความสะดวก</h3>
+              <label class="filter-checkbox-label">
+                <input type="checkbox" class="amenity-filter" value="เครื่องปรับอากาศ" />
+                เครื่องปรับอากาศ
+              </label>
+              <label class="filter-checkbox-label">
+                <input type="checkbox" class="amenity-filter" value="พัดลม" />
+                พัดลม
+              </label>
+              <label class="filter-checkbox-label">
+                <input type="checkbox" class="amenity-filter" value="เฟอร์นิเจอร์ครบชุด" />
+                เฟอร์นิเจอร์ครบชุด
+              </label>
+              <label class="filter-checkbox-label">
+                <input type="checkbox" class="amenity-filter" value="เครื่องทำน้ำอุ่น" />
+                เครื่องทำน้ำอุ่น
+              </label>
+              <label class="filter-checkbox-label">
+                <input type="checkbox" class="amenity-filter" value="ตู้เย็น" />
+                ตู้เย็น
+              </label>
+              <label class="filter-checkbox-label">
+                <input type="checkbox" class="amenity-filter" value="ไมโครเวฟ" />
+                ไมโครเวฟ
+              </label>
+              <label class="filter-checkbox-label">
+                <input type="checkbox" class="amenity-filter" value="ระเบียงส่วนตัว" />
+                ระเบียงส่วนตัว
+              </label>
+              <label class="filter-checkbox-label">
+                <input type="checkbox" class="amenity-filter" value="อนุญาตให้เลี้ยงสัตว์" />
+                อนุญาตให้เลี้ยงสัตว์
+              </label>
+            </div>
+          </aside>
+          <!-- =================================================
+               PAGINATION
+               ================================================= -->
+          <div class="pagination-box" id="paginationBox">
+            <button class="page-btn" id="prevPageBtn">← ก่อนหน้า</button>
+            <button class="page-btn" id="nextPageBtn">ถัดไป →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- =====================================================
+       FOOTER
+       ===================================================== -->
+  <footer class="footer-themed" id="contact-footer">
+    <div class="footer-wave-top">
+      <svg viewBox="0 0 1200 40" preserveAspectRatio="none">
+        <path fill="#d9577a" d="M 0,40 L 0,20 Q 300,40 600,20 T 1200,20 L 1200,40 Z"></path>
+      </svg>
+    </div>
+    <div class="footer-inner">
+      <div class="container footer-centered-container">
+        <div class="footer-columns-balanced">
+          <div class="footer-col-item">
+            <div class="col-head">
+              <span class="brand-text">Dorm Space</span>
+              <div class="live-pill">
+                <span class="live-pulse-dot"></span>
+                <span>ONLINE</span>
+              </div>
+            </div>
+            <p class="col-desc">
+              แพลตฟอร์มค้นหาและเปรียบเทียบหอพักรอบมหาวิทยาลัยแม่โจ้ <br/>
+              เพื่อให้เด็กแม่โจ้ได้อยู่หอพักที่สบายใจที่สุด 🏡✨
+            </p>
+            <div class="footer-nav-icons">
+              <a href="mailto:DormSpace.official@mju.com" class="icon-link-circle" title="ส่งอีเมลหาเรา" aria-label="Mail">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              </a>
+              <a href="tel:053873000" class="icon-link-circle" title="โทรหาเรา" aria-label="Phone">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+              </a>
+              <a href="https://lin.ee/uOEUb7G" target="_blank" rel="noopener noreferrer" class="icon-link-circle" title="ติดต่อผ่าน Line" aria-label="Line">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M12 2C6.48 2 2 5.92 2 10.75c0 2.97 1.7 5.6 4.34 7.22-.19.7-.68 2.54-.78 2.93-.12.49.18.48.38.35.26-.18 3.58-2.43 4.14-2.82.61.08 1.25.12 1.92.12 5.52 0 10-3.92 10-8.75S17.52 2 12 2zm-3.5 11h-1.5c-.28 0-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v3.5h1c.28 0 .5.22.5.5s-.22.5-.5.5zm2.5-.5c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v4zm4.5.5h-1c-.28 0-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v2.8l1.65-2.97c.1-.19.3-.33.53-.33.28 0 .5.22.5.5v4c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-2.8l-1.68 3zm4-1.5h-1v-2h1c.28 0 .5-.22.5-.5s-.22-.5-.5-.5h-1.5c-.28 0-.5.22-.5.5v4c0 .28.22.5.5.5H20c.28 0 .5-.22.5-.5s-.22-.5-.5-.5z"/></svg>
+              </a>
+            </div>
+          </div>
+          <div class="footer-col-item">
+            <div class="col-head">
+              <h4 class="col-title">เวลาทำการ</h4>
+            </div>
+            <div class="col-info-block">
+              <p class="info-text">
+                <strong>จันทร์ - ศุกร์:</strong> 08:30 - 16:30 น.<br />
+                <small class="text-muted">(ปิดทำการเสาร์ - อาทิตย์ และวันหยุด)</small>
+              </p>
+            </div>
+            <div class="online-24h-tag">
+              🌐 ค้นหาหอพักออนไลน์ได้ตลอด 24 ชม.
+            </div>
+          </div>
+          <div class="footer-col-item">
+            <div class="col-head">
+              <h4 class="col-title">ที่ตั้งสำนักงาน</h4>
+            </div>
+            <div class="col-info-block">
+              <p class="info-text">สำนักบริหารและพัฒนาวิชาการ<br />มหาวิทยาลัยแม่โจ้ จ.เชียงใหม่ 50290</p>
+              <span class="info-sub">🏛️ อาคารอำนวย ยศสุข</span>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom-bar-center">
+          <p>© 2026 Dorm Space • Maejo Community Living Platform</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- =====================================================
+       DATA หอพักเดิม
+       ⚠️ ไม่แก้ไขข้อมูล
+       ===================================================== -->
+  <script src="dorm_data/data_01.js"></script>
+  <script src="dorm_data/data_02.js"></script>
+  <script src="dorm_data/data_03.js"></script>
+  <script src="dorm_data/data_04.js"></script>
+  <script src="dorm_data/data_05.js"></script>
+  <script src="dorm_data/data_06.js"></script>
+  <script src="dorm_data/data_07.js"></script>
+  <script src="dorm_data/data_08.js"></script>
+  <script src="dorm_data/data_09.js"></script>
+  <script src="dorm_data/data_10.js"></script>
+  <script src="dorm_data/data_11.js"></script>
+  <script src="dorm_data/data_12.js"></script>
+  <script src="dorm_data/data_13.js"></script>
+  <!-- =====================================================
+       JAVASCRIPT
+       ===================================================== -->
+  <script>
+    /* =====================================================
+       SUPABASE
+       ===================================================== */
+    const SUPABASE_URL = 'https://auivtzjrgurdrohibexh.supabase.co';
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF1aXZ0empyZ3VyZHJvaGliZXhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEwMDg3NzcsImV4cCI6MjEwNjU4NDc3N30.95xqR45D0g61DGiAbh02AvwhRf9IwEJfmU5j7uIitNY';
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    /* =====================================================
+       DOM READY
+       ===================================================== */
+    document.addEventListener("DOMContentLoaded", async () => {
+      /* =================================================
+         รวมข้อมูลหอพักเดิมทั้งหมด
+         ================================================= */
+      const allDorms = [
+        ...(typeof dormsData01 !== 'undefined' ? dormsData01 : []),
+        ...(typeof dormsData02 !== 'undefined' ? dormsData02 : []),
+        ...(typeof dormsData03 !== 'undefined' ? dormsData03 : []),
+        ...(typeof dormsData04 !== 'undefined' ? dormsData04 : []),
+        ...(typeof dormsData05 !== 'undefined' ? dormsData05 : []),
+        ...(typeof dormsData06 !== 'undefined' ? dormsData06 : []),
+        ...(typeof dormsData07 !== 'undefined' ? dormsData07 : []),
+        ...(typeof dormsData08 !== 'undefined' ? dormsData08 : []),
+        ...(typeof dormsData09 !== 'undefined' ? dormsData09 : []),
+        ...(typeof dormsData10 !== 'undefined' ? dormsData10 : []),
+        ...(typeof dormsData11 !== 'undefined' ? dormsData11 : []),
+        ...(typeof dormsData12 !== 'undefined' ? dormsData12 : []),
+        ...(typeof dormsData13 !== 'undefined' ? dormsData13 : [])
+      ];
+      /* =================================================
+         RATING
+         ================================================= */
+      const dormRatings = {};
+      try {
+        const { data: reviewsData } = await supabaseClient.from("reviews").select("dorm_id, rating");
+        if (reviewsData && reviewsData.length > 0) {
+          const ratingGroup = {};
+          reviewsData.forEach(r => {
+            if (!ratingGroup[r.dorm_id]) {
+              ratingGroup[r.dorm_id] = { sum: 0, count: 0 };
+            }
+            ratingGroup[r.dorm_id].sum += r.rating;
+            ratingGroup[r.dorm_id].count += 1;
+          });
+          Object.keys(ratingGroup).forEach(id => {
+            dormRatings[id] = (ratingGroup[id].sum / ratingGroup[id].count).toFixed(1);
+          });
+        }
+      } catch (err) {}
+      /* =================================================
+         DOM ELEMENTS
+         ================================================= */
+      const dormsGridContainer = document.getElementById("dormsGridContainer");
+      const dormSearchInput = document.getElementById("dormSearchInput");
+      const dormSearchButton = document.getElementById("dormSearchButton");
+      const zoneCheckboxes = document.querySelectorAll(".zone-filter");
+      const amenityCheckboxes = document.querySelectorAll(".amenity-filter");
+      const prevPageBtn = document.getElementById("prevPageBtn");
+      const nextPageBtn = document.getElementById("nextPageBtn");
+      /* =================================================
+         PAGINATION
+         ================================================= */
+      let currentPage = 1;
+      const itemsPerPage = 6;
+      /* =================================================
+         SEARCH
+         ================================================= */
+      let searchTerm = "";
+      /* =================================================
+         RENDER DORMS
+         ================================================= */
+      const renderDorms = () => {
+        /* ===============================================
+           ZONE
+           =============================================== */
+        const selectedZones = Array.from(zoneCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
+        /* ===============================================
+           AMENITIES
+           =============================================== */
+        const selectedAmenities = Array.from(amenityCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
+        /* ===============================================
+           FILTER
+           =============================================== */
+        const filteredDorms = allDorms.filter(dorm => {
+          /* =========================================
+             SEARCH NAME
+             ========================================= */
+          const dormName = String(dorm.name || "").toLowerCase();
+          const matchSearch = searchTerm === "" || dormName.includes(searchTerm);
+          /* =========================================
+             ZONE
+             ========================================= */
+          const matchZone = dorm.zone.some(z => selectedZones.includes(z));
+          /* =========================================
+             AMENITIES
+             ========================================= */
+          const matchAmenities = selectedAmenities.every(amenity =>
+            dorm.amenities.rawList && dorm.amenities.rawList.includes(amenity)
+          );
+          return matchSearch && matchZone && matchAmenities;
+        });
+        /* ===============================================
+           TOTAL PAGES
+           =============================================== */
+        const totalPages = Math.ceil(filteredDorms.length / itemsPerPage) || 1;
+        if (currentPage > totalPages) {
+          currentPage = totalPages;
+        }
+        /* ===============================================
+           CURRENT PAGE
+           =============================================== */
+        const startIdx = (currentPage - 1) * itemsPerPage;
+        const currentDormsPage = filteredDorms.slice(startIdx, startIdx + itemsPerPage);
+        /* ===============================================
+           PAGINATION BUTTON
+           =============================================== */
+        prevPageBtn.disabled = currentPage === 1;
+        nextPageBtn.disabled = currentPage === totalPages || totalPages === 0;
+        /* ===============================================
+           NO RESULT
+           =============================================== */
+        if (filteredDorms.length === 0) {
+          dormsGridContainer.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 60px; color: var(--text-secondary);">
+              <h3>ไม่พบหอพักที่ตรงกับเงื่อนไขการค้นหาค่ะ 🥲</h3>
+              <p style="margin-top: 8px; font-size: 13px;">ลองค้นหาด้วยชื่อหอพักอื่น</p>
+            </div>
+          `;
+          return;
+        }
+        /* ===============================================
+           CREATE DORM CARDS
+           =============================================== */
+        dormsGridContainer.innerHTML = currentDormsPage.map(dorm => {
+          let fileId = dorm.id.replace('-', '_');
+          let detailPage = `dorm_detail/${fileId}.html`;
+          let ratingDisplay = dormRatings[dorm.id] ? `⭐ ${dormRatings[dorm.id]}` : `⭐ ยังไม่มีรีวิว`;
+          return `
+            <div class="dorm-card-item">
+              <div class="dorm-img-wrapper">
+                <img src="${dorm.images[0]}" class="dorm-card-img" alt="${dorm.name}" />
+                <div class="dorm-rating-badge">${ratingDisplay}</div>
+              </div>
+              <div class="dorm-card-body">
+                <h3 class="dorm-card-title">${dorm.name}</h3>
+                <p class="dorm-card-desc">
+                  📍 ${dorm.distance}
+                  <br/>
+                  อบอุ่นเหมือนอยู่บ้าน ใกล้ของกินเพียบ
+                </p>
+                <div class="dorm-card-footer">
+                  <span class="dorm-price-tag">เริ่มต้น ฿${dorm.priceFan.toLocaleString()}</span>
+                  <a href="${detailPage}" class="dorm-detail-link">ดูรายละเอียดหอพัก →</a>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      };
+      /* =================================================
+         🔍 FUNCTION SEARCH
+         ================================================= */
+      const performSearch = () => {
+        searchTerm = dormSearchInput.value.trim().toLowerCase();
+        currentPage = 1;
+        renderDorms();
+      };
+      /* =================================================
+         🔍 กดปุ่มค้นหา
+         ================================================= */
+      dormSearchButton.addEventListener("click", performSearch);
+      /* =================================================
+         ⌨️️ กด ENTER ในช่องค้นหา
+         ================================================= */
+      dormSearchInput.addEventListener("keydown", event => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          performSearch();
+        }
+      });
+      /* =================================================
+         PREVIOUS
+         ================================================= */
+      prevPageBtn.addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage--;
+          renderDorms();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+      /* =================================================
+         NEXT
+         ================================================= */
+      nextPageBtn.addEventListener("click", () => {
+        currentPage++;
+        renderDorms();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+      /* =================================================
+         ZONE FILTER
+         ================================================= */
+      zoneCheckboxes.forEach(cb => {
+        cb.addEventListener("change", () => {
+          currentPage = 1;
+          renderDorms();
+        });
+      });
+      /* =================================================
+         AMENITY FILTER
+         ================================================= */
+      amenityCheckboxes.forEach(cb => {
+        cb.addEventListener("change", () => {
+          currentPage = 1;
+          renderDorms();
+        });
+      });
+      /* =================================================
+         INITIAL RENDER
+         ================================================= */
+      renderDorms();
+    });
+  </script>
+  <!-- =====================================================
+       SOUND EFFECT SCRIPT
+       ===================================================== -->
+  <script>
+    const clickSound = new Audio('assets/sound/click01.mp3');
+    clickSound.volume = 1.0;
+    document.addEventListener("click", (e) => {
+      const link = e.target.closest("a");
+      if (link && link.href && !link.getAttribute('target') && link.hostname === window.location.hostname) {
+        e.preventDefault();
+        clickSound.currentTime = 0;
+        clickSound.play().catch(() => {});
+        setTimeout(() => {
+          window.location.href = link.href;
+        }, 180);
+      } else {
+        clickSound.currentTime = 0;
+        clickSound.play().catch(() => {});
+      }
+    });
+  </script>
+</body>
+</html>

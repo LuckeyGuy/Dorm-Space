@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>เข้าสู่ระบบ / สมัครสมาชิก — Dorm Space</title>
+  
+  <!-- Google Fonts: Fraunces + DM Sans + Noto Sans Thai -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/style.css" />
+
+  <style>
+    .auth-page-body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow-x: hidden;
+      background-color: var(--bg-main);
+    }
+
+    .auth-glow-bg {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.65;
+    }
+
+    .auth-glow-1 {
+      width: 460px;
+      height: 460px;
+      background-color: var(--pastel-pink);
+      top: 10%;
+      left: -100px;
+    }
+
+    .auth-glow-2 {
+      width: 480px;
+      height: 480px;
+      background-color: var(--pastel-yellow);
+      bottom: 5%;
+      right: -100px;
+    }
+
+    .auth-container-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 110px 20px 50px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .auth-cookie-card {
+      background: #ffffff;
+      border: 2px solid rgba(240, 223, 216, 0.9);
+      border-radius: 40px;
+      padding: 40px 36px 36px;
+      width: 100%;
+      max-width: 460px;
+      box-shadow: 
+        0 4px 6px -1px rgba(59, 42, 47, 0.03),
+        0 14px 32px -4px rgba(59, 42, 47, 0.08),
+        0 28px 54px -12px rgba(217, 87, 122, 0.12);
+      text-align: center;
+      position: relative;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .auth-cookie-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .auth-card-header {
+      margin-bottom: 24px;
+    }
+
+    .auth-badge-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--accent-rose);
+      margin-bottom: 12px;
+    }
+
+    .auth-title {
+      font-family: var(--font-heading);
+      font-size: 26px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .auth-subtitle {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+    }
+
+    .auth-pill-tabs {
+      display: flex;
+      gap: 6px;
+      background: var(--bg-main);
+      padding: 6px;
+      border-radius: 999px;
+      border: 1.5px solid var(--border-color);
+      margin-bottom: 24px;
+    }
+
+    .auth-tab-btn {
+      flex: 1;
+      padding: 9px 16px;
+      border: none;
+      border-radius: 999px;
+      font-size: 13.5px;
+      font-weight: 600;
+      font-family: inherit;
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .auth-tab-btn.active {
+      background: #ffffff;
+      color: var(--text-primary);
+      box-shadow: 0 4px 12px rgba(59, 42, 47, 0.09);
+    }
+
+    .auth-form-body {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      text-align: left;
+    }
+
+    .form-group-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group-item label {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .form-input-field {
+      width: 100%;
+      padding: 11px 18px;
+      border-radius: 16px;
+      border: 1.5px solid var(--border-color);
+      font-family: inherit;
+      font-size: 14px;
+      background: #fffbf8;
+      color: var(--text-primary);
+      outline: none;
+      transition: all 0.25s ease;
+    }
+
+    .form-input-field:focus {
+      border-color: var(--accent-rose);
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(217, 87, 122, 0.1);
+    }
+
+    .form-input-field::placeholder {
+      color: rgba(59, 42, 47, 0.4);
+      font-size: 13.5px;
+    }
+
+    .btn-auth-submit {
+      margin-top: 8px;
+      width: 100%;
+      padding: 12px 24px;
+      background: var(--text-primary);
+      color: #ffffff;
+      border: none;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(59, 42, 47, 0.15);
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-auth-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(59, 42, 47, 0.22);
+      opacity: 0.94;
+    }
+
+    .auth-feedback-box {
+      margin-top: 14px;
+      font-size: 13px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      text-align: center;
+      display: none;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body class="auth-page-body">
+
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <div class="auth-glow-bg auth-glow-1"></div>
+  <div class="auth-glow-bg auth-glow-2"></div>
+
+  <!-- ==================== FLOATING PILL NAVBAR ==================== -->
+  <header class="navbar-wrapper">
+    <nav class="pill-navbar">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-mark">
+          <span class="mark-circle blush"></span>
+          <span class="mark-circle butter"></span>
+        </div>
+        <span class="brand-text">dorm space</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="index.html#zones">โซนยอดฮิต</a>
+        <a href="news.html">ข่าวสาร & โปร</a>
+        <a href="aboutus.html">เกี่ยวกับเรา</a>
+      </div>
+
+      <div class="nav-actions">
+        <a href="index.html" class="btn-primary">
+          <span>กลับหน้าหลัก</span>
+          <div class="btn-arrow">➜</div>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ==================== MAIN AUTH CARD ==================== -->
+  <main class="auth-container-wrap">
+    <div class="auth-cookie-card">
+      
+      <div class="auth-card-header">
+        <div class="auth-badge-live">
+          <span>✿ MAEJO MEMBER PORTAL</span>
+        </div>
+        <h1 class="auth-title">Dorm Space</h1>
+        <p class="auth-subtitle">ระบบสมาชิกค้นหาหอพัก มหาวิทยาลัยแม่โจ้</p>
+      </div>
+
+      <div class="auth-pill-tabs">
+        <button class="auth-tab-btn active" id="tabLoginBtn">เข้าสู่ระบบ</button>
+        <button class="auth-tab-btn" id="tabRegisterBtn">สมัครสมาชิก</button>
+      </div>
+
+      <!-- 1. ฟอร์มเข้าสู่ระบบ -->
+      <form id="loginForm" class="auth-form-body">
+        <div class="form-group-item">
+          <label>✉ อีเมลผู้ใช้</label>
+          <input type="email" id="loginEmail" class="form-input-field" placeholder="example@gmail.com" required />
+        </div>
+        <div class="form-group-item">
+          <label>🔒 รหัสผ่าน</label>
+          <input type="password" id="loginPassword" class="form-input-field" placeholder="••••••••" required />
+        </div>
+        <button type="submit" class="btn-auth-submit">
+          <span>เข้าสู่ระบบ</span>
+          <span>➜</span>
+        </button>
+      </form>
+
+      <!-- 2. ฟอร์มสมัครสมาชิก -->
+      <form id="registerForm" class="auth-form-body" style="display: none;">
+        <div class="form-group-item">
+          <label>👤 ชื่อ - นามสกุลจริง</label>
+          <input type="text" id="regFullName" class="form-input-field" placeholder="เช่น ปาลิดา ณัฐพงษ์พาณิช" required />
+        </div>
+        <div class="form-group-item">
+          <label>🏷️ ชื่อเล่น (แสดงทักทายบนหน้าหลัก)</label>
+          <input type="text" id="regNickname" class="form-input-field" placeholder="เช่น กล้วยหอม" required />
+        </div>
+        <div class="form-group-item">
+          <label>✉️ อีเมลสำหรับการสมัคร</label>
+          <input type="email" id="regEmail" class="form-input-field" placeholder="example@gmail.com" required />
+        </div>
+        <div class="form-group-item">
+          <label>🔒 ตั้งรหัสผ่าน (อย่างน้อย 6 ตัวอักษร)</label>
+          <input type="password" id="regPassword" class="form-input-field" placeholder="••••••••" minlength="6" required />
+        </div>
+        <button type="submit" class="btn-auth-submit">
+          <span>ยืนยันสมัครสมาชิก</span>
+          <span>✿</span>
+        </button>
+      </form>
+
+      <div id="authMessage" class="auth-feedback-box"></div>
+      
+    </div>
+  </main>
+
+  <footer class="footer-themed">
+    <div class="footer-wave-top">
+      <svg viewBox="0 0 1200 40" preserveAspectRatio="none">
+        <path fill="var(--pastel-pink)" d="M 0,40 L 0,20 Q 300,40 600,20 T 1200,20 L 1200,40 Z"></path>
+      </svg>
+    </div>
+    <div class="footer-inner">
+      <div class="container footer-centered-container">
+        <div class="footer-bottom-bar-center">
+          <p>© 2026 Dorm Space • Maejo Community Living Platform</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { supabase } from './js/supabaseClient.js';
+
+    const glow = document.getElementById("cursorGlow");
+    if (glow) {
+      window.addEventListener("mousemove", (e) => {
+        glow.style.left = `${e.clientX}px`;
+        glow.style.top = `${e.clientY}px`;
+      });
+    }
+
+    const tabLoginBtn = document.getElementById('tabLoginBtn');
+    const tabRegisterBtn = document.getElementById('tabRegisterBtn');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const authMessage = document.getElementById('authMessage');
+
+    const showMsg = (text, isError = false) => {
+      authMessage.style.display = 'block';
+      authMessage.style.background = isError ? '#fee2e2' : '#dcfce7';
+      authMessage.style.color = isError ? '#b91c1c' : '#15803d';
+      authMessage.textContent = text;
+    };
+
+    tabLoginBtn.addEventListener('click', () => {
+      tabLoginBtn.classList.add('active');
+      tabRegisterBtn.classList.remove('active');
+      loginForm.style.display = 'flex';
+      registerForm.style.display = 'none';
+      authMessage.style.display = 'none';
+    });
+
+    tabRegisterBtn.addEventListener('click', () => {
+      tabRegisterBtn.classList.add('active');
+      tabLoginBtn.classList.remove('active');
+      loginForm.style.display = 'none';
+      registerForm.style.display = 'flex';
+      authMessage.style.display = 'none';
+    });
+
+    // 1. สมัครสมาชิกพร้อมจำรหัสผ่าน
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('regEmail').value.trim();
+      const password = document.getElementById('regPassword').value;
+      const fullName = document.getElementById('regFullName').value.trim();
+      const nickname = document.getElementById('regNickname').value.trim();
+
+      showMsg('กำลังลงทะเบียนบัญชี...');
+
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { nickname }
+        }
+      });
+
+      if (error) {
+        showMsg(error.message, true);
+        return;
+      }
+
+      if (data?.user) {
+        // บันทึกลงตาราง profiles
+        await supabase.from('profiles').insert([
+          {
+            id: data.user.id,
+            full_name: fullName,
+            nickname: nickname,
+            email: email
+          }
+        ]);
+
+        // จำรหัสผ่านไว้ใน Session ของเครื่องเพื่อใช้แสดงในหน้าโปรไฟล์
+        sessionStorage.setItem('dorm_active_pass', password);
+
+        showMsg('✨ สมัครสมาชิกสำเร็จ! กำลังพากลับสู่หน้าหลัก...');
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 1000);
+      }
+    });
+
+    // 2. เข้าสู่ระบบพร้อมจำรหัสผ่าน
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+
+      showMsg('กำลังตรวจสอบข้อมูล...');
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) {
+        showMsg(error.message, true);
+        return;
+      }
+
+      // จำรหัสผ่านไว้ใน Session
+      sessionStorage.setItem('dorm_active_pass', password);
+
+      showMsg('✨ เข้าสู่ระบบสำเร็จ! ยินดีต้อนรับกลับมาค่ะ');
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 800);
+    });
+  </script>
+
+    <script src="js/script.js"></script>
+    <script src="js/sound01.js"></script>
+
+</body>
+</html>
