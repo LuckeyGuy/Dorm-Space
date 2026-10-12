@@ -365,9 +365,10 @@
       </a>
 
       <div class="nav-links">
-        <a href="zone01.html" class="nav-link">โซนยอดฮิต</a>
-        <a href="news.html" class="nav-link">ข่าวสาร</a>
-        <a href="aboutus.html" class="nav-link">เกี่ยวกับเรา</a>
+        <a href="roommate.html" class="nav-link"><strong>ค้นหารูมเมท</strong></a>
+        <a href="zone01.html" class="nav-link"><strong>โซนยอดฮิต</strong></a>
+        <a href="news.html" class="nav-link"><strong>ข่าวสาร</strong></a>
+        <a href="aboutus.html" class="nav-link"><strong>เกี่ยวกับเรา</strong></a>
       </div>
 
       <div class="nav-actions" id="userArea">
@@ -829,6 +830,423 @@
       </div>
     </section>
 
+    <style>/* ==================== 💬 ROOMMATE CAROUSEL (PASTEL & SWIPEABLE) ==================== */
+    .roommate-carousel-section {
+      width: 100%;
+      min-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #faf9f6;
+      color: #2d2426;
+      padding: 60px 0;
+      overflow: hidden;
+    }
+    .carousel-wrapper-inner {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      padding: 0 20px;
+    }
+    .carousel-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+    .carousel-title-area .sub-title-tag {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: #d9577a;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .carousel-title-area h2 {
+      font-family: 'DM Sans', 'Noto Sans Thai', sans-serif;
+      font-size: 34px;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin: 0;
+      color: #2d2426;
+    }
+    .carousel-nav-buttons {
+      display: flex;
+      gap: 8px;
+    }
+    .carousel-arrow-btn {
+      width: 44px;
+      height: 44px;
+      border: 0;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #2d2426;
+      color: #ffffff;
+      cursor: pointer;
+      transition: transform 160ms, background 160ms;
+    }
+    .carousel-arrow-btn:hover {
+      background: #d9577a;
+      transform: translateY(-2px);
+    }
+    
+    /* สเตจ Carousel และการลาก (Swipe/Drag) ได้อย่างอิสระ เต็มทรง */
+    .carousel-track-container {
+      position: relative;
+      width: 100%;
+      height: 440px;
+      margin: 10px 0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: grab;
+      touch-action: pan-y;
+      mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+    }
+    .carousel-track-container:active {
+      cursor: grabbing;
+    }
+    
+    /* การ์ดดีไซน์เต็มทรง ไม่มีขอบกั้นแข็งๆ สีพาสเทลละมุนเข้ากับเว็บ */
+    .roommate-riff-card {
+      position: absolute;
+      width: 440px;
+      height: 380px;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-radius: 32px;
+      box-shadow: 0 20px 40px -15px rgba(59, 42, 47, 0.12);
+      transition: transform 0.5s cubic-bezier(.22, 1, .36, 1), opacity 0.5s ease;
+      user-select: none;
+    }
+    .card-top-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13.5px;
+      font-weight: 700;
+      opacity: 0.85;
+    }
+    .card-middle-body {
+      margin: 12px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+      justify-content: center;
+    }
+    .card-quote-text {
+      font-family: 'DM Sans', 'Noto Sans Thai', sans-serif;
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 1.5;
+      margin: 0;
+      white-space: pre-line;
+      overflow-wrap: anywhere;
+    }
+    .card-price-info {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #0d9488;
+      margin-top: 6px;
+    }
+    .card-footer-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+    }
+    .author-avatar-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.8);
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    }
+    .author-name-text {
+      font-size: 14.5px;
+      font-weight: 700;
+    }
+    .author-date-text {
+      font-size: 12px;
+      opacity: 0.65;
+      margin-top: 2px;
+    }
+
+    .carousel-footer-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      margin-top: 10px;
+    }
+    .carousel-dots-group {
+      display: flex;
+      gap: 6px;
+    }
+    .dot-indicator {
+      width: 6px;
+      height: 6px;
+      border-radius: 99px;
+      background: #e2dbd5;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      transition: width 0.4s ease, background 0.3s;
+    }
+    .dot-indicator.active {
+      width: 24px;
+      background: #2d2426;
+    }
+
+    @media (max-width: 992px) {
+      .hero-split-grid { grid-template-columns: 1fr !important; gap: 36px !important; text-align: center !important; }
+      .roommate-riff-card { width: 90% !important; max-width: 360px; }
+    }
+    </style>
+
+     <!-- แสงไฟเคลื่อนไหวตามเมาส์ -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+   <!-- ==================== 💬 ROOMMATE CAROUSEL (PASTEL & SWIPEABLE) ==================== -->
+    <section class="roommate-carousel-section" aria-roledescription="carousel">
+      <div class="carousel-wrapper-inner">
+        
+        <header class="carousel-header">
+          <div class="carousel-title-area">
+            <span class="sub-title-tag">FIND YOUR ROOMMATE CAROUSEL</span>
+            <h2>หาเพื่อนร่วมหอรู้ใจ ใกล้มหาวิทยาลัยแม่โจ้ ✨</h2>
+            <a href="roommate.html" style="font-size: 14px; font-weight: 600; color: #7a6e71; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='#d9577a'" onmouseout="this.style.color='#7a6e71'">สำรวจประกาศหารูมเมททั้งหมด ➜</a>
+          </div>
+          <div class="carousel-nav-buttons" role="group" aria-label="Carousel navigation">
+            <button type="button" class="carousel-arrow-btn" id="prevCardBtn" aria-label="Previous">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="transform:rotate(180deg)"><path d="M4 12h15M12 5l7 7-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button type="button" class="carousel-arrow-btn" id="nextCardBtn" aria-label="Next">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 12h15M12 5l7 7-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </header>
+
+        <!-- Carousel Track (รองรับการลากเมาส์ / ปัดหน้าจอ Swipe) -->
+        <div class="carousel-track-container" id="roommateCarouselTrack">
+          
+          <!-- Card 1: สีเหลืองพาสเทลละมุน (Butter Pastel) -->
+          <article class="roommate-riff-card" data-index="0" style="background: #fef9c3; color: #422006;">
+            <div class="card-top-header">
+              <span>🏠 หอพัก: หอพักสุรศักดิ์</span>
+              <span>🛏️ เตียงคู่ / แอร์</span>
+            </div>
+            <div class="card-middle-body">
+              <blockquote class="card-quote-text">“กำลังมองหารูมเมทมาแชร์ห้องด้วยกันค้าา 🤭 <br/>ห้องพักกว้างขวาง อยู่สบาย ไม่อึดอัด...”</blockquote>
+              <div class="card-price-info">💰 ราคา: 5,000 บาท/เดือน</div>
+            </div>
+            <div class="card-footer-author">
+              <div class="author-avatar-circle">🧸</div>
+              <div>
+                <div class="author-name-text">ไข่ดาวฟองโต</div>
+                <div class="author-date-text">12 ต.ค. 2569</div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 2: สีม่วงพาสเทลละมุน (Lavender Pastel) -->
+          <article class="roommate-riff-card" data-index="1" style="background: #f3e8ff; color: #3b0764;">
+            <div class="card-top-header">
+              <span>🏠 หอพัก: หอพักพวงมาลัย</span>
+              <span>🛏️ ห้องพัดลม</span>
+            </div>
+            <div class="card-middle-body">
+              <blockquote class="card-quote-text">“กำลังหาเพื่อนหารค่าห้องค่า 🏡 <br/>ต่างคนต่างมีเวลาส่วนตัว อยู่ด้วยกันแบบสบาย ๆ...”</blockquote>
+              <div class="card-price-info">💰 ราคา: 3,500 บาท/เดือน</div>
+            </div>
+            <div class="card-footer-author">
+              <div class="author-avatar-circle">🐱</div>
+              <div>
+                <div class="author-name-text">ลูกแม่เดือน</div>
+                <div class="author-date-text">12 ต.ค. 2569</div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 3: สีเขียวพาสเทลละมุน (Mint Pastel) -->
+          <article class="roommate-riff-card" data-index="2" style="background: #ecfdf5; color: #064e3b;">
+            <div class="card-top-header">
+              <span>🏠 หอพัก: หอพักปรีชากร</span>
+              <span>🛏️ ห้องแอร์</span>
+            </div>
+            <div class="card-middle-body">
+              <blockquote class="card-quote-text">“กำลังหารูมเมทมาแชร์ห้องค่า 🫶🏻 <br/>หอมีผีนะคะ แจ้งไว้ก่อน 5555555 <br/>งบน้อย เลยต้องหารค่าห้อง...”</blockquote>
+              <div class="card-price-info">💰 ราคา: 4,100 บาท/เดือน</div>
+            </div>
+            <div class="card-footer-author">
+              <div class="author-avatar-circle">👻</div>
+              <div>
+                <div class="author-name-text">สายรีวิวตัวแม่</div>
+                <div class="author-date-text">12 ต.ค. 2569</div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 4: สีชมพูโรสพาสเทล (Blush Rose Pastel) -->
+          <article class="roommate-riff-card" data-index="3" style="background: #ffe4e6; color: #4c0519;">
+            <div class="card-top-header">
+              <span>🏠 หอพัก: หอพักสีชมพู</span>
+              <span>🛏️ ห้องแอร์</span>
+            </div>
+            <div class="card-middle-body">
+              <blockquote class="card-quote-text">“หารเมทหารค่าห้อง มีแมว 1 ตัว <br/>ขอคนรักสัตว์และช่วยกันดูแลห้องค่ะ...”</blockquote>
+              <div class="card-price-info">💰 ราคา: 3,500 บาท/เดือน</div>
+            </div>
+            <div class="card-footer-author">
+              <div class="author-avatar-circle">🧸</div>
+              <div>
+                <div class="author-name-text">โป้งเหน่ง</div>
+                <div class="author-date-text">13 ต.ค. 2569</div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 5: สีฟ้าพาสเทลละมุน (Sky Blue Pastel) -->
+          <article class="roommate-riff-card" data-index="4" style="background: #e0f2fe; color: #082f49;">
+            <div class="card-top-header">
+              <span>🏠 หอพัก: หอพักบ้านสวนแม่โจ้</span>
+              <span>🛏️ ห้องแอร์</span>
+            </div>
+            <div class="card-middle-body">
+              <blockquote class="card-quote-text">“กำลังหาคนมาแชร์ค่าห้องด้วยกันค่ะ 🏡 <br/>อยากหารูมเมทเพื่อช่วยแบ่งเบาค่าใช้จ่าย...”</blockquote>
+              <div class="card-price-info">💰 ราคา: 3,500 บาท/เดือน</div>
+            </div>
+            <div class="card-footer-author">
+              <div class="author-avatar-circle">🍌</div>
+              <div>
+                <div class="author-name-text">กล้วยหอม</div>
+                <div class="author-date-text">11 ต.ค. 2569</div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <footer class="carousel-footer-bar">
+          <span id="carouselCounterText" style="font-family: Arial, sans-serif; font-size: 12px; color: rgb(119, 118, 111); font-variant-numeric: tabular-nums;">01 / 05</span>
+          <div class="carousel-dots-group" id="carouselDotsContainer">
+            <button type="button" class="dot-indicator active" data-index="0" aria-label="Slide 1"></button>
+            <button type="button" class="dot-indicator" data-index="1" aria-label="Slide 2"></button>
+            <button type="button" class="dot-indicator" data-index="2" aria-label="Slide 3"></button>
+            <button type="button" class="dot-indicator" data-index="3" aria-label="Slide 4"></button>
+            <button type="button" class="dot-indicator" data-index="4" aria-label="Slide 5"></button>
+          </div>
+        </footer>
+
+      </div>
+    </section>
+
+    <!-- Script ควบคุม Carousel พร้อมรองรับการลากเมาส์ / ปัดหน้าจอ (Drag & Swipe) -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const cards = document.querySelectorAll(".roommate-riff-card");
+        const dots = document.querySelectorAll(".dot-indicator");
+        const prevBtn = document.getElementById("prevCardBtn");
+        const nextBtn = document.getElementById("nextCardBtn");
+        const counterText = document.getElementById("carouselCounterText");
+        const trackContainer = document.getElementById("roommateCarouselTrack");
+        
+        let currentIndex = 0;
+        const totalCards = cards.length;
+
+        function updateCarousel(index) {
+          currentIndex = (index + totalCards) % totalCards;
+          
+          cards.forEach((card, i) => {
+            if (i === currentIndex) {
+              card.style.transform = "translate3d(0px, 0px, 0) rotate(0deg) scale(1)";
+              card.style.opacity = "1";
+              card.style.zIndex = "10";
+            } else if (i === (currentIndex + 1) % totalCards) {
+              card.style.transform = "translate3d(300px, 35px, 0) rotate(6deg) scale(0.88)";
+              card.style.opacity = "0.75";
+              card.style.zIndex = "9";
+            } else if (i === (currentIndex - 1 + totalCards) % totalCards) {
+              card.style.transform = "translate3d(-300px, 35px, 0) rotate(-6deg) scale(0.88)";
+              card.style.opacity = "0.75";
+              card.style.zIndex = "9";
+            } else {
+              card.style.transform = "translate3d(550px, 70px, 0) rotate(12deg) scale(0.75)";
+              card.style.opacity = "0";
+              card.style.zIndex = "1";
+            }
+          });
+
+          dots.forEach((dot, idx) => {
+            if (idx === currentIndex) dot.classList.add("active");
+            else dot.classList.remove("active");
+          });
+
+          counterText.innerText = `0${currentIndex + 1} / 0${totalCards}`;
+        }
+
+        nextBtn.addEventListener("click", () => updateCarousel(currentIndex + 1));
+        prevBtn.addEventListener("click", () => updateCarousel(currentIndex - 1));
+
+        dots.forEach(dot => {
+          dot.addEventListener("click", (e) => {
+            updateCarousel(parseInt(e.target.getAttribute("data-index")));
+          });
+        });
+
+        cards.forEach((card, idx) => {
+          card.addEventListener("click", () => updateCarousel(idx));
+        });
+
+        // รองรับการลากเมาส์ / ปัดนิ้วมือ (Drag & Swipe Support)
+        let startX = 0;
+        let isDragging = false;
+
+        trackContainer.addEventListener("pointerdown", (e) => {
+          startX = e.clientX;
+          isDragging = true;
+        });
+
+        trackContainer.addEventListener("pointermove", (e) => {
+          if (!isDragging) return;
+        });
+
+        trackContainer.addEventListener("pointerup", (e) => {
+          if (!isDragging) return;
+          const diffX = e.clientX - startX;
+          if (diffX > 50) {
+            updateCarousel(currentIndex - 1); // ปัดขวา -> การ์ดก่อนหน้า
+          } else if (diffX < -50) {
+            updateCarousel(currentIndex + 1); // ปัดซ้าย -> การ์ดถัดไป
+          }
+          isDragging = false;
+        });
+
+        trackContainer.addEventListener("pointerleave", () => {
+          isDragging = false;
+        });
+
+        updateCarousel(0);
+      });
+    </script>
+    
     <!-- ==================== 5. MAP SECTION ==================== -->
     <section class="map-section" id="map">
       <div class="container">

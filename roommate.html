@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dorm Space — คอมมูนิตี้หาเพื่อนรูมเมท</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css" />
+
+  <style>
+    .roommate-container {
+      max-width: 820px;
+      margin: 120px auto 60px;
+      padding: 0 20px;
+      position: relative;
+    }
+
+    /* ซ่อน Sidebar แบบเดิมเพื่อเปลี่ยนเป็น FAB เมนูสวยๆ */
+    .roommate-sidebar {
+      display: none;
+    }
+
+    /* FAB เมนูโปรไฟล์ลอยที่มุมซ้ายล่าง พร้อม Dropdown เมนู */
+    .roommate-fab-wrapper {
+      position: fixed;
+      left: 30px;
+      bottom: 30px;
+      z-index: 1000;
+    }
+
+    .roommate-fab-btn {
+      width: 58px;
+      height: 58px;
+      background: #ffffff;
+      border: 2px solid #f0dfd8;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(45, 36, 38, 0.15);
+      transition: all 0.25s ease;
+    }
+    .roommate-fab-btn:hover {
+      transform: scale(1.1);
+      border-color: #d9577a;
+      box-shadow: 0 14px 30px rgba(217, 87, 122, 0.25);
+    }
+
+    /* Dropdown เมนูที่ปรากฏเมื่อคลิก FAB */
+    .fab-dropdown-menu {
+      position: absolute;
+      left: 0;
+      bottom: 72px;
+      width: 260px;
+      background: #ffffff;
+      border: 1.5px solid #f0dfd8;
+      border-radius: 24px;
+      padding: 18px;
+      box-shadow: 0 10px 30px rgba(59, 42, 47, 0.12);
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      animation: popUpFabMenu 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-origin: bottom left;
+    }
+    @keyframes popUpFabMenu {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .sidebar-profile-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #f0dfd8;
+      margin-bottom: 4px;
+    }
+    .sidebar-avatar {
+      width: 44px; height: 44px; background: #ffdce5; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-size: 18px; border: 1px solid #f0dfd8;
+    }
+    .sidebar-name { font-size: 14.5px; font-weight: 700; color: #2d2426; }
+    .sidebar-email { font-size: 11.5px; color: #7a6e71; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 160px; }
+
+    .sidebar-menu { display: flex; flex-direction: column; gap: 8px; }
+    .sidebar-link {
+      display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+      border-radius: 12px; font-size: 13.5px; font-weight: 600; color: #7a6e71;
+      background: #fcf9f6; border: 1px solid transparent; cursor: pointer; text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .sidebar-link:hover, .sidebar-link.active {
+      background: #fff5f7; color: #d9577a; border-color: #f0dfd8;
+    }
+
+    .roommate-main-content { min-width: 0; }
+    .roommate-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .roommate-header h1 {
+      font-family: 'DM Sans', 'Noto Sans Thai', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      color: #2d2426;
+      margin-bottom: 8px;
+    }
+    .roommate-header p {
+      font-size: 14.5px;
+      color: #7a6e71;
+    }
+
+    /* กล่องสร้างโพสต์สไตล์ Facebook */
+    .fb-create-trigger-card {
+      background: #ffffff;
+      border: 1.5px solid #f0dfd8;
+      border-radius: 24px;
+      padding: 18px 24px;
+      box-shadow: 0 6px 20px rgba(59, 42, 47, 0.04);
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .fb-create-trigger-card:hover {
+      border-color: #d9577a;
+      box-shadow: 0 8px 24px rgba(217, 87, 122, 0.1);
+    }
+    .fb-avatar {
+      width: 44px;
+      height: 44px;
+      background: #ffdce5;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      overflow: hidden;
+      border: 1px solid #f0dfd8;
+    }
+    .fb-fake-input {
+      flex: 1;
+      background: #fcf9f6;
+      border: 1.5px solid #f0dfd8;
+      padding: 12px 20px;
+      border-radius: 999px;
+      font-size: 14px;
+      color: #7a6e71;
+      font-family: 'Noto Sans Thai', sans-serif;
+      font-weight: 500;
+    }
+
+    /* Modal กล่องทั่วไป */
+    .modal-backdrop {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(45, 36, 38, 0.5); backdrop-filter: blur(4px);
+      z-index: 2000; display: none; justify-content: center; align-items: center; padding: 20px;
+    }
+    .modal-card {
+      background: #ffffff; border: 1.5px solid #f0dfd8; border-radius: 28px;
+      width: 100%; max-width: 520px; padding: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      position: relative; animation: popUpModal 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      max-height: 90vh; overflow-y: auto;
+    }
+    @keyframes popUpModal {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .modal-header {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
+      border-bottom: 1px solid #f0dfd8; padding-bottom: 12px;
+    }
+    .modal-title { font-size: 17px; font-weight: 700; color: #2d2426; }
+    .modal-close-btn { background: #fcf9f6; border: 1px solid #f0dfd8; width: 32px; height: 32px; border-radius: 50%; font-size: 14px; cursor: pointer; color: #7a6e71; }
+    .modal-close-btn:hover { background: #fee2e2; color: #b91c1c; }
+
+    /* ฟอร์มภายใน Modal */
+    .form-group { margin-bottom: 16px; text-align: left; }
+    .form-label { display: block; font-size: 13px; font-weight: 700; color: #2d2426; margin-bottom: 6px; }
+    .form-label span.required { color: #d9577a; }
+    .form-label span.optional { font-weight: 400; color: #7a6e71; font-size: 11.5px; }
+    .form-control {
+      width: 100%; padding: 12px 16px; border: 1.5px solid #f0dfd8; border-radius: 14px;
+      font-size: 14px; font-family: 'Noto Sans Thai', sans-serif; background: #fffdf9; color: #2d2426; outline: none; transition: all 0.2s ease;
+    }
+    .form-control:focus { border-color: #d9577a; background: #ffffff; box-shadow: 0 0 0 4px rgba(217, 87, 122, 0.1); }
+    textarea.form-control { resize: vertical; min-height: 80px; }
+    .btn-post-submit {
+      width: 100%; background: #2d2426; color: #ffffff; border: none; padding: 14px;
+      border-radius: 999px; font-weight: 700; font-size: 14.5px; cursor: pointer;
+      transition: all 0.2s ease; box-shadow: 0 4px 14px rgba(45, 36, 38, 0.15); margin-top: 10px;
+    }
+    .btn-post-submit:hover { background: #d9577a; transform: translateY(-1px); }
+
+    /* ฟีดแสดงโพสต์ */
+    .posts-feed { display: flex; flex-direction: column; gap: 20px; }
+    .post-card {
+      background: #ffffff; border: 1.5px solid #f0dfd8; border-radius: 28px; padding: 24px 28px 20px 28px;
+      box-shadow: 0 6px 20px rgba(59, 42, 47, 0.04); transition: transform 0.2s ease;
+      position: relative;
+    }
+    
+    /* เส้นตรงใต้ชื่อผู้ประกาศ */
+    .post-header { 
+      display: flex; justify-content: space-between; align-items: flex-start; 
+      margin-bottom: 16px; border-bottom: 1.5px solid #f4e3dd; padding-bottom: 16px; 
+    }
+    .post-author-info { display: flex; align-items: center; gap: 12px; }
+    .author-name { font-size: 15px; font-weight: 700; color: #2d2426; }
+    .post-time { font-size: 12px; color: #7a6e71; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    
+    .status-badge { padding: 5px 14px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+    .status-searching { background: #d1fae5; color: #065f46; }
+    .status-matched { background: #fee2e2; color: #991b1b; }
+    .status-closed { background: #f3f4f6; color: #4b5563; }
+
+    /* กรอบรวมข้อมูลราคา หอพัก และประเภทห้อง */
+    .post-price-box {
+      background: #fffdf9;
+      border: 1.5px solid #f0dfd8;
+      border-left: 4px solid #d9577a;
+      padding: 14px 16px;
+      font-size: 13.5px;
+      color: #d9577a;
+      margin-bottom: 16px;
+      border-radius: 0 14px 14px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .post-price-inline-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .post-dorm-tag-inline {
+      font-weight: 700;
+      color: #d9577a;
+    }
+    .post-room-tag-inline {
+      font-weight: 700;
+      color: #d9577a;
+    }
+    .price-number-green {
+      font-weight: 700;
+      color: #0d9448;
+    }
+
+    .post-content { font-size: 14.5px; color: #2d2426; line-height: 1.7; margin-bottom: 16px; }
+
+    .post-footer-actions { display: flex; flex-direction: column; gap: 6px; }
+    
+    .contact-svg-btn {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+      opacity: 0.85;
+    }
+    .contact-svg-btn:hover {
+      transform: scale(1.15);
+      opacity: 1;
+    }
+    .contact-svg-btn svg {
+      width: 22px;
+      height: 22px;
+      fill: #d9577a;
+      display: block;
+    }
+
+    .view-count-badge {
+      background: #fffdf9; border: 1px solid #f0dfd8; padding: 8px 16px; border-radius: 12px;
+      display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #d9577a;
+      align-self: flex-start; margin-top: 4px;
+    }
+
+    .interested-item-row { background: #ffffff; padding: 8px 12px; border-radius: 10px; border: 1px solid #f0dfd8; margin-top: 6px; text-align: left; color: #2d2426; font-weight: 600; }
+
+    /* โซนปุ่มด้านล่าง */
+    .social-buttons-bar {
+      display: flex; 
+      gap: 15px; 
+      padding: 10px 0 2px 0; 
+      margin-bottom: 0px; 
+      position: relative; 
+      align-items: center; 
+      justify-content: space-between;
+      border-top: 1.5px solid #f4e3dd;
+    }
+    .social-buttons-left {
+      display: flex; 
+      gap: 20px; 
+      align-items: center; 
+      flex-wrap: wrap;
+    }
+    .social-action-btn-clean {
+      background: none; 
+      border: none; 
+      font-size: 14px; 
+      font-weight: 600; 
+      color: #7a6e71; 
+      cursor: pointer; 
+      display: inline-flex; 
+      align-items: center; 
+      gap: 6px; 
+      padding: 0; 
+      vertical-align: middle;
+      transition: color 0.2s;
+    }
+    .social-action-btn-clean:hover { color: #d9577a; }
+
+    .contact-icons-row-inline {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    /* ป๊อปอัปอีโมจิไลค์ */
+    .reaction-popup {
+      position: absolute; bottom: 40px; left: 0; background: #ffffff; border: 1.5px solid #f0dfd8;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15); border-radius: 999px; padding: 6px 14px; display: none; gap: 10px; z-index: 50;
+    }
+    .reaction-popup span { font-size: 22px; cursor: pointer; transition: transform 0.2s; }
+    .reaction-popup span:hover { transform: scale(1.3); }
+    .social-buttons-left:hover .reaction-popup { display: flex; }
+
+    .comments-section-wrapper { display: none; margin-top: 8px; flex-direction: column; gap: 10px; }
+    .comments-container { display: flex; flex-direction: column; gap: 10px; }
+    .comment-item { background: #fcf9f6; border: 1px solid #f0dfd8; padding: 10px 14px; border-radius: 14px; font-size: 13px; color: #2d2426; }
+    .comment-header-row { display: flex; justify-content: space-between; font-weight: 700; color: #d9577a; margin-bottom: 4px; }
+    .reply-item { background: #ffffff; border: 1px solid #f0dfd8; padding: 8px 12px; border-radius: 10px; margin-top: 6px; margin-left: 20px; font-size: 12.5px; }
+    
+    .comment-input-row { display: flex; gap: 8px; margin-top: 10px; }
+    .comment-input { flex: 1; padding: 8px 14px; border: 1px solid #f0dfd8; border-radius: 999px; font-size: 13px; outline: none; background: #fffdf9; }
+    .comment-input:focus { border-color: #d9577a; background: #ffffff; }
+    .btn-send-comment { background: #2d2426; color: #fff; border: none; padding: 8px 16px; border-radius: 999px; font-size: 12.5px; font-weight: 600; cursor: pointer; }
+    .btn-send-comment:hover { background: #d9577a; }
+
+    .btn-reply-toggle { background: none; border: none; color: #7a6e71; font-size: 11.5px; cursor: pointer; font-weight: 600; margin-top: 4px; padding: 0; }
+    .btn-reply-toggle:hover { color: #d9577a; text-decoration: underline; }
+
+    .reply-form-box { display: none; margin-top: 6px; margin-left: 20px; gap: 6px; }
+
+    .btn-edit-post {
+      background: #ffffff; border: 1.5px solid #f0dfd8; padding: 6px 16px; border-radius: 999px;
+      font-size: 12.5px; font-weight: 600; color: #2d2426; cursor: pointer; transition: all 0.2s;
+      display: inline-flex; align-items: center; gap: 6px; text-decoration: none;
+    }
+    .btn-edit-post:hover { background: #fff5f7; border-color: #d9577a; color: #d9577a; }
+
+    /* ข้อความ "แนบข้อมูลติดต่อ" ขีดเส้นใต้ อยู่เหนือเส้นขอบของ icon contact พอดีเป๊ะ */
+    .post-text-contact-btn {
+      background: none;
+      border: none;
+      padding: 0 0 6px 0;
+      cursor: pointer;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #d9577a;
+      text-decoration: underline;
+      font-family: 'Noto Sans Thai', sans-serif;
+      transition: color 0.2s ease, transform 0.2s ease;
+      display: block;
+      text-align: right;
+    }
+    .post-text-contact-btn:hover {
+      color: #b91c1c;
+      transform: translateY(-1px);
+    }
+
+    .filter-bar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .view-title-indicator { font-size: 16px; font-weight: 700; color: #2d2426; }
+    .btn-reset-filter { font-size: 13px; color: #d9577a; background: none; border: none; cursor: pointer; font-weight: 600; text-decoration: underline; display: none; }
+  </style>
+</head>
+<body>
+
+  <!-- FAB เมนูโปรไฟล์ลอยที่มุมซ้ายล่าง พร้อม Dropdown เมนู -->
+  <div class="roommate-fab-wrapper">
+    <button class="roommate-fab-btn" id="roommateFabAvatarBtn" onclick="toggleFabDropdown()" title="เมนูโปรไฟล์">
+      🌸
+    </button>
+    <div class="fab-dropdown-menu" id="roommateFabDropdown">
+      <div class="sidebar-profile-header">
+        <div class="sidebar-avatar" id="fabDropdownAvatar">🌸</div>
+        <div>
+          <div class="sidebar-name" id="fabDropdownName">กำลังโหลด...</div>
+          <div class="sidebar-email" id="fabDropdownEmail">สมาชิก Dorm Space</div>
+        </div>
+      </div>
+      <div class="sidebar-menu">
+        <a href="javascript:void(0);" class="sidebar-link active" onclick="selectFabMenu('all', this)">🏠 ประกาศทั้งหมด</a>
+        <a href="javascript:void(0);" class="sidebar-link" onclick="selectFabMenu('my', this)">📌 โพสต์ของฉัน</a>
+        <a href="javascript:void(0);" class="sidebar-link" onclick="selectFabMenu('saved', this)">🔖 รายการที่บันทึกไว้</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVBAR หลัก -->
+  <header class="navbar-wrapper">
+    <nav class="pill-navbar">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-mark">
+          <span class="mark-circle blush"></span>
+          <span class="mark-circle butter"></span>
+        </div>
+        <span class="brand-text">Dorm Space</span>
+      </a>
+      <div class="nav-links">
+        <a href="zone01.html" class="nav-link"></a>
+        <a href="news.html" class="nav-link"></a>
+        <a href="aboutus.html" class="nav-link"></a>
+      </div>
+      <div class="nav-actions" id="userArea">
+        <a href="index.html" class="btn-primary" id="btnAuth">
+          <span>ย้อนกลับ</span>
+          <div class="btn-arrow">➜</div>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="roommate-container">
+      
+      <!-- Sidebar ถูกซ่อนไว้เนื่องจากเปลี่ยนเป็น FAB เมนูแล้ว -->
+      <aside class="roommate-sidebar" style="display: none;"></aside>
+
+      <div class="roommate-main-content">
+        <div class="roommate-header">
+          <h1>🏡 หาเพื่อนแชร์ห้อง หารูมเมท</h1>
+          <p>พื้นที่สำหรับคนที่กำลังมองหารูมเมท แชร์ค่าห้อง และหาคนอยู่ด้วยกันรอบมหาวิทยาลัยแม่โจ้</p>
+        </div>
+
+        <!-- กรอบเปิด Modal สร้างโพสต์ -->
+        <div class="fb-create-trigger-card" id="openModalCard" onclick="openCreateModal()">
+          <div class="fb-avatar" id="userTriggerAvatar" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: #ffdce5; border-radius: 50%;">🧑‍🎓</div>
+          <div class="fb-fake-input" id="fbInputText">คุณกำลังหารรูมเมทอยู่ใช่ไหม...</div>
+        </div>
+
+        <div class="filter-bar-header">
+          <div class="view-title-indicator" id="feedTitleIndicator">📋 ฟีดประกาศทั้งหมด</div>
+          <button class="btn-reset-filter" id="btnResetFilter" onclick="resetToAllFeed()">← กลับไปดูฟีดทั้งหมด</button>
+        </div>
+
+        <!-- ฟีดแสดงโพสต์ -->
+        <div class="posts-feed" id="postsFeedContainer">
+          <p style="text-align: center; color: #7a6e71;">กำลังโหลดประกาศ...</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== MODAL สร้าง/แก้ไขโพสต์ ==================== -->
+  <div class="modal-backdrop" id="createPostModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span class="modal-title" id="modalTitleText">✍️ สร้างประกาศหารูมเมทใหม่</span>
+        <button class="modal-close-btn" onclick="closeCreateModal()">✕</button>
+      </div>
+      <form id="roommateForm">
+        <input type="hidden" id="editPostId" value="" />
+        <div class="form-group">
+          <label class="form-label">ชื่อหอพัก <span class="required">*</span></label>
+          <input type="text" id="postDormName" class="form-control" placeholder="เช่น 2B Place หรือ หอพักบ้านสวน" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">ประเภทห้อง <span class="required">*</span></label>
+          <input type="text" id="postRoomType" class="form-control" placeholder="เช่น ห้องแอร์ / ห้องพัดลม / เตียงคู่" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">รายละเอียดราคาที่พักหรือสัญญา <span class="required">*</span></label>
+          <input type="text" id="postPriceDetails" class="form-control" placeholder="เช่น 3,500 บาท/เดือน (หารกันคนละ 1,750)" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">รายละเอียดประกาศเพิ่มเติม <span class="required">*</span></label>
+          <textarea id="postContent" class="form-control" placeholder="ระบุรายละเอียด นิสัยรูมเมทที่ต้องการ..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">เบอร์โทรศัพท์ <span class="required">*</span></label>
+          <input type="tel" id="postPhone" class="form-control" placeholder="เช่น 0891234567" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Line ID <span class="optional">(ไม่บังคับ)</span></label>
+          <input type="text" id="postLine" class="form-control" placeholder="เช่น kluayhom_nn" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Instagram <span class="optional">(ไม่บังคับ)</span></label>
+          <input type="text" id="postIg" class="form-control" placeholder="เช่น kluayhom.ig" />
+        </div>
+        <div class="form-group" id="statusEditGroup" style="display: none;">
+          <label class="form-label">สถานะประกาศ</label>
+          <select id="postStatusSelect" class="form-control">
+            <option value="searching">🟢 กำลังหารูมเมท</option>
+            <option value="matched">🔴 ได้รูมเมทแล้ว</option>
+            <option value="closed">⚪ ปิดประกาศ</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-post-submit" id="modalSubmitBtn">เผยแพร่ประกาศ 💖</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL ฝากคอนแทคติดต่อกลับ ==================== -->
+  <div class="modal-backdrop" id="contactHelpModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span class="modal-title">💬 ฝากคอนแทคให้เจ้าของโพสต์ติดต่อกลับ</span>
+        <button class="modal-close-btn" onclick="closeContactHelpModal()">✕</button>
+      </div>
+      <div style="font-size: 13px; color: #7a6e71; line-height: 1.6; margin-bottom: 16px;">
+        คุณสามารถติดต่อรูมเมทท่านนี้ได้ผ่านข้อมูลติดต่อที่เขาแนบไว้ หรือกรอกข้อมูลติดต่อของคุณด้านล่างนี้เพื่อให้เจ้าของโพสต์ติดต่อกลับได้เลยค่ะ 🌸
+      </div>
+      <form id="contactHelpForm">
+        <div class="form-group">
+          <label class="form-label">เบอร์โทรศัพท์ <span class="required">*</span></label>
+          <input type="tel" id="helpPhone" class="form-control" placeholder="เช่น 0891234567" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Line ID <span class="optional">(ไม่บังคับ)</span></label>
+          <input type="text" id="helpLine" class="form-control" placeholder="เช่น kluayhom_nn" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Instagram <span class="optional">(ไม่บังคับ)</span></label>
+          <input type="text" id="helpIg" class="form-control" placeholder="เช่น kluayhom.ig" />
+        </div>
+        <button type="submit" class="btn-post-submit">ส่งข้อมูลติดต่อ 💖</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Script จัดการระบบทั้งหมด -->
+  <script type="module">
+    import { supabase } from './js/supabaseClient.js';
+
+    let currentUser = null;
+    let currentFilterMode = 'all'; // 'all', 'my', 'saved'
+    let selectedPostIdForHelp = null;
+    let allPostsData = [];
+
+    // ฟังก์ชันเปิด/ปิด Dropdown เมนู FAB
+    window.toggleFabDropdown = function() {
+      const dropdown = document.getElementById('roommateFabDropdown');
+      dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    // ปิด dropdown เมื่อคลิกพื้นที่อื่นนอกปุ่ม FAB
+    window.addEventListener('click', function(e) {
+      const fabWrapper = document.querySelector('.roommate-fab-wrapper');
+      if (fabWrapper && !fabWrapper.contains(e.target)) {
+        const dropdown = document.getElementById('roommateFabDropdown');
+        if (dropdown) dropdown.style.display = 'none';
+      }
+    });
+
+    window.selectFabMenu = function(mode, el) {
+      document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
+      if (el) el.classList.add('active');
+      currentFilterMode = mode;
+      loadPosts();
+      document.getElementById('roommateFabDropdown').style.display = 'none';
+    }
+
+    window.copyToClipboard = function(text, typeName) {
+      if (!text || text === '-') {
+        alert('ไม่มีข้อมูล' + typeName + 'จ้า');
+        return;
+      }
+      navigator.clipboard.writeText(text).then(() => {
+        alert(`คัดลอก ${typeName} (${text}) เรียบร้อยแล้วค่ะ! ✨`);
+      }).catch(err => {
+        alert('ไม่สามารถคัดลอกได้');
+      });
+    }
+
+    async function initPage() {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session && session.user) {
+        currentUser = session.user;
+        const currentAvatar = localStorage.getItem('dorm_user_avatar') || '🌸';
+        document.getElementById('userTriggerAvatar').innerHTML = currentAvatar;
+        document.getElementById('roommateFabAvatarBtn').innerText = currentAvatar;
+        document.getElementById('fabDropdownAvatar').innerText = currentAvatar;
+        
+        let nick = currentUser.user_metadata?.nickname || 'เพื่อนสมาชิก';
+        const { data: profile } = await supabase.from('profiles').select('nickname').eq('id', currentUser.id).single();
+        if (profile && profile.nickname) nick = profile.nickname;
+
+        document.getElementById('fabDropdownName').innerText = nick;
+        document.getElementById('fabDropdownEmail').innerText = currentUser.email || '';
+        document.getElementById('fbInputText').innerText = `${nick} ให้เราช่วยคุณค้นหารูมเมท...`;
+      } else {
+        document.getElementById('roommateFabAvatarBtn').innerText = '🌸';
+        document.getElementById('fabDropdownAvatar').innerText = '🌸';
+        document.getElementById('fabDropdownName').innerText = 'ผู้เยี่ยมชม';
+        document.getElementById('fabDropdownEmail').innerText = 'กรุณาเข้าสู่ระบบ';
+        document.getElementById('fbInputText').innerText = `กรุณาเข้าสู่ระบบก่อนโพสต์หาเมท (คลิกที่นี่)`;
+      }
+      loadPosts();
+    }
+
+    window.openCreateModal = function(editId = null) {
+      if (!currentUser) {
+        alert('กรุณาเข้าสู่ระบบก่อนใช้งานจ้า 💖');
+        window.location.href = 'auth.html';
+        return;
+      }
+
+      const form = document.getElementById('roommateForm');
+      form.reset();
+      document.getElementById('editPostId').value = '';
+
+      if (editId) {
+        const post = allPostsData.find(p => p.id === editId);
+        if (post) {
+          document.getElementById('modalTitleText').innerText = '✏️ แก้ไขประกาศหารูมเมท';
+          document.getElementById('modalSubmitBtn').innerText = 'บันทึกการแก้ไข ✨';
+          document.getElementById('editPostId').value = post.id;
+          document.getElementById('postDormName').value = post.dorm_name || '';
+          document.getElementById('postRoomType').value = post.room_type || '';
+          document.getElementById('postPriceDetails').value = post.price_details || '';
+          document.getElementById('postContent').value = post.content || '';
+          document.getElementById('postPhone').value = post.phone || '';
+          document.getElementById('postLine').value = post.line_id || '';
+          document.getElementById('postIg').value = post.instagram || '';
+          document.getElementById('postStatusSelect').value = post.status || 'searching';
+          document.getElementById('statusEditGroup').style.display = 'block';
+        }
+      } else {
+        document.getElementById('modalTitleText').innerText = '✍️ สร้างประกาศหารูมเมทใหม่';
+        document.getElementById('modalSubmitBtn').innerText = 'เผยแพร่ประกาศ 💖';
+        document.getElementById('statusEditGroup').style.display = 'none';
+      }
+
+      document.getElementById('createPostModal').style.display = 'flex';
+    }
+
+    window.closeCreateModal = function() {
+      document.getElementById('createPostModal').style.display = 'none';
+    }
+
+    window.openContactHelpModal = function(postId) {
+      if (!currentUser) return alert('กรุณาเข้าสู่ระบบก่อนใช้งาน');
+      selectedPostIdForHelp = postId;
+      document.getElementById('contactHelpModal').style.display = 'flex';
+    }
+
+    window.closeContactHelpModal = function() {
+      document.getElementById('contactHelpModal').style.display = 'none';
+      document.getElementById('contactHelpForm').reset();
+      selectedPostIdForHelp = null;
+    }
+
+    document.getElementById('contactHelpForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const phone = document.getElementById('helpPhone').value;
+      const line = document.getElementById('helpLine').value;
+      const ig = document.getElementById('helpIg').value;
+
+      if (!selectedPostIdForHelp || !phone) return;
+
+      let contactMsg = `📞 เบอร์: ${phone}`;
+      if (line) contactMsg += ` | 💬 Line: ${line}`;
+      if (ig) contactMsg += ` | 📸 IG: ${ig}`;
+
+      const { error } = await supabase.from('roommate_interested_users').insert([{
+        post_id: selectedPostIdForHelp,
+        user_id: currentUser.id,
+        contact_msg: contactMsg
+      }]);
+
+      if (error) {
+        alert('คุณได้ฝากข้อมูลติดต่อสำหรับโพสต์นี้ไปแล้วจ้า');
+      } else {
+        alert('ส่งข้อมูลติดต่อให้เจ้าของโพสต์เรียบร้อยแล้วค่ะ! 🌸');
+        closeContactHelpModal();
+        loadPosts();
+      }
+    });
+
+    async function loadPosts() {
+      const container = document.getElementById('postsFeedContainer');
+      let query = supabase.from('roommate_posts').select('*').order('created_at', { ascending: false });
+
+      if (currentFilterMode === 'my' && currentUser) {
+        query = query.eq('user_id', currentUser.id);
+        document.getElementById('feedTitleIndicator').innerText = '📌 โพสต์ของคุณทั้งหมด';
+        document.getElementById('btnResetFilter').style.display = 'inline-block';
+      } else if (currentFilterMode === 'saved' && currentUser) {
+        document.getElementById('feedTitleIndicator').innerText = '🔖 รายการโพสต์ที่บันทึกไว้';
+        document.getElementById('btnResetFilter').style.display = 'inline-block';
+      } else {
+        query = query.eq('status', 'searching');
+        document.getElementById('feedTitleIndicator').innerText = '📋 ฟีดประกาศทั้งหมด';
+        document.getElementById('btnResetFilter').style.display = 'none';
+      }
+
+      const { data: posts, error } = await query;
+      if (error) {
+        container.innerHTML = '<p style="text-align: center; color: red;">ไม่สามารถโหลดข้อมูลได้</p>';
+        return;
+      }
+
+      allPostsData = posts || [];
+
+      let bookmarkedPostIds = [];
+      if (currentUser) {
+        const { data: bmarks } = await supabase.from('roommate_bookmarks').select('post_id').eq('user_id', currentUser.id);
+        if (bmarks) bookmarkedPostIds = bmarks.map(b => b.post_id);
+      }
+
+      if (currentFilterMode === 'saved') {
+        allPostsData = allPostsData.filter(p => bookmarkedPostIds.includes(p.id));
+      }
+
+      if (!allPostsData || allPostsData.length === 0) {
+        container.innerHTML = `<p style="text-align: center; color: #7a6e71;">${currentFilterMode === 'my' ? 'คุณยังไม่มีโพสต์ประกาศหารูมเมท ลองสร้างโพสต์แรกกันเลย! 🌸' : currentFilterMode === 'saved' ? 'ยังไม่มีรายการโพสต์ที่คุณบันทึกไว้จ้า 🔖' : 'ยังไม่มีประกาศหารูมเมทในขณะนี้ เป็นคนแรกที่โพสต์เลยสิคะ! 🌸'}</p>`;
+        return;
+      }
+
+      const { data: interestedUsers } = await supabase.from('roommate_interested_users').select('*');
+      const { data: allLikes } = await supabase.from('roommate_likes').select('*');
+      const { data: allComments } = await supabase.from('roommate_comments').select('*').order('created_at', { ascending: true });
+
+      container.innerHTML = '';
+      allPostsData.forEach(post => {
+        let statusBadgeClass = 'status-searching';
+        let statusText = 'กำลังหารูมเมท';
+        if (post.status === 'matched') { statusBadgeClass = 'status-matched'; statusText = 'ได้รูมเมทแล้ว'; }
+        if (post.status === 'closed') { statusBadgeClass = 'status-closed'; statusText = 'ปิดประกาศแล้ว'; }
+
+        const isOwner = currentUser && currentUser.id === post.user_id;
+        const isSaved = bookmarkedPostIds.includes(post.id);
+
+        const postInterested = interestedUsers ? interestedUsers.filter(item => item.post_id === post.id) : [];
+        const viewCount = postInterested.length;
+
+        const postLikes = allLikes ? allLikes.filter(l => l.post_id === post.id) : [];
+        const userLike = currentUser ? postLikes.find(l => l.user_id === currentUser.id) : null;
+        
+        let likeBtnDisplay = userLike ? `${userLike.reaction_type} ถูกใจแล้ว` : '❤️ ถูกใจ';
+        let likeStatsDisplay = postLikes.length > 0 ? `${[...new Set(postLikes.map(l => l.reaction_type))].join(' ')} ${postLikes.length} ถูกใจ` : '';
+
+        const postComments = allComments ? allComments.filter(c => c.post_id === post.id) : [];
+        const parentComments = postComments.filter(c => !c.parent_id);
+
+        let commentsHtml = '';
+        parentComments.forEach(comm => {
+          const replies = postComments.filter(r => r.parent_id === comm.id);
+          let repliesHtml = replies.map(rep => `
+            <div class="reply-item">
+              <div class="comment-header-row"><span>${rep.author_name}</span></div>
+              <div>${rep.comment_text}</div>
+            </div>
+          `).join('');
+
+          commentsHtml += `
+            <div class="comment-item">
+              <div class="comment-header-row"><span>${comm.author_name}</span></div>
+              <div>${comm.comment_text}</div>
+              <button class="btn-reply-toggle" onclick="toggleReplyBox('${comm.id}')">💬 ตอบกลับ</button>
+              <div id="replyBox-${comm.id}" class="reply-form-box">
+                <div class="comment-input-row">
+                  <input type="text" id="replyInput-${comm.id}" class="comment-input" placeholder="ตอบกลับความคิดเห็น..." />
+                  <button class="btn-send-comment" onclick="submitReply('${post.id}', '${comm.id}')">ส่ง</button>
+                </div>
+              </div>
+              ${repliesHtml}
+            </div>
+          `;
+        });
+
+        let viewCountBadge = '';
+        let bottomInterestedCard = '';
+        let topHeaderBadge = '';
+        let editedNote = post.is_edited ? `<span style="font-size: 11.5px; color: #d9577a; font-weight: 500;">✏️ โพสต์นี้เคยมีการแก้ไข</span>` : '';
+
+        const isMyPostsView = (currentFilterMode === 'my' && isOwner);
+
+        if (isMyPostsView) {
+          topHeaderBadge = `
+            <button class="btn-edit-post" onclick="openCreateModal('${post.id}')">
+              <span>✏️ แก้ไข</span>
+            </button>
+          `;
+          bottomInterestedCard = postInterested.length > 0 
+            ? `<div class="interested-bottom-card" style="text-align: left;">${postInterested.map(u => `<div class="interested-item-row">🫶🏻 ผู้สนใจฝากคอนแทคไว้: <span>${u.contact_msg}</span></div><br/>`).join('')}</div>`
+            : `<div class="interested-bottom-card">📌 ยังไม่มีผู้ใช้งานท่านอื่นกดดูหรือฝากคอนแทคติดต่อกลับ</div>`;
+        } else {
+          if (isOwner) {
+            topHeaderBadge = `
+              <div style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: #d9577a; background: #fff5f7; padding: 6px 14px; border-radius: 999px; border: 1px solid #f0dfd8;">
+                <span>โพสต์ของฉัน</span>
+                <span style="font-weight: 400; color: #7a6e71;">|</span>
+                <span>👁️ ${viewCount}</span>
+              </div>
+            `;
+          } else {
+            topHeaderBadge = `<span class="status-badge ${statusBadgeClass}">${statusText}</span>`;
+          }
+        }
+
+        const phoneVal = post.phone || '-';
+        const lineVal = post.line_id || '-';
+        const igVal = post.instagram || '-';
+
+        let rawPriceDetails = post.price_details || 'ติดต่อสอบถามเพิ่มเติม';
+        let formattedPrice = rawPriceDetails.replace(/([0-9,]+\s*บาท\/เดือน[^\s]*)/g, '<span class="price-number-green">$1</span>');
+
+        const card = document.createElement('div');
+        card.className = 'post-card';
+        card.innerHTML = `
+          <div class="post-header">
+            <div class="post-author-info">
+              <div style="width: 38px; height: 38px; font-size: 16px; background: #ffdce5; border-radius: 50%; display: flex; align-items: center; justify-content: center;">🧑‍🎓</div>
+              <div>
+                <div class="author-name">${post.author_name || 'เพื่อนนักศึกษา'}</div>
+                <div class="post-time">
+                  <span>${new Date(post.created_at).toLocaleDateString('th-TH', { dateStyle: 'medium' })}</span>
+                  ${editedNote}
+                </div>
+              </div>
+            </div>
+            <div>${topHeaderBadge}</div>
+          </div>
+
+          <!-- กรอบราคาและหอพัก -->
+          <div class="post-price-box">
+            <div class="post-price-inline-row">
+              <span class="post-dorm-tag-inline">🏠 ${post.dorm_name}</span>
+              <span style="color: #d9577a;">|</span>
+              <span class="post-room-tag-inline">ประเภท : ${post.room_type || 'ห้องพักทั่วไป'}</span>
+            </div>
+            <div>
+              <span></span><span class="price-number-green">${formattedPrice}</span>
+            </div>
+          </div>
+
+          <div class="post-content">${post.content}</div>
+
+          <div class="post-footer-actions">
+            ${viewCountBadge}
+            ${bottomInterestedCard}
+
+            <!-- โซนไลค์, คอมเมนต์, บันทึก และไอคอนติดต่อใน row เดียวกัน โดยวางข้อความ "แนบข้อมูลติดต่อ" ให้อยู่เหนือเส้นขอบของ icon contact พอดีเป๊ะ -->
+            <div class="social-interactions-box">
+              ${likeStatsDisplay ? `<div class="social-stats-bar"><span>${likeStatsDisplay}</span></div>` : ''}
+              
+              ${!isOwner ? `<div style="display: flex; justify-content: flex-end; margin-bottom: 8px;"><button class="post-text-contact-btn" onclick="openContactHelpModal('${post.id}')">สนใจ</button></div>` : ''}
+
+              <div class="social-buttons-bar">
+                <div class="social-buttons-left">
+                  <div class="reaction-popup">
+                    <span onclick="toggleLike('${post.id}', '👍🏻')">👍🏻</span>
+                    <span onclick="toggleLike('${post.id}', '❤️')">❤️</span>
+                    <span onclick="toggleLike('${post.id}', '😃')">😃</span>
+                    <span onclick="toggleLike('${post.id}', '😮')">😮</span>
+                    <span onclick="toggleLike('${post.id}', '😢')">😢</span>
+                    <span onclick="toggleLike('${post.id}', '🙄')">🙄</span>
+                  </div>
+                  <button class="social-action-btn-clean" onclick="toggleLike('${post.id}', '${userLike ? userLike.reaction_type : '❤️'}')">${likeBtnDisplay}</button>
+                  <button class="social-action-btn-clean" onclick="toggleCommentsSection('${post.id}')">💬 แสดงความคิดเห็น</button>
+                  <button class="social-action-btn-clean" onclick="toggleBookmark('${post.id}')">${isSaved ? '🔖 บันทึกแล้ว' : '🔖 บันทึกโพสต์'}</button>
+                </div>
+                <!-- ไอคอนช่องทางติดต่ออยู่ฝั่งขวาใน row เดียวกัน -->
+                <div class="contact-icons-row-inline">
+                  <button class="contact-svg-btn" onclick="copyToClipboard('${phoneVal}', 'เบอร์โทรศัพท์')" title="คลิกเพื่อคัดลอกเบอร์โทร: ${phoneVal}">
+                    <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                  </button>
+                  <button class="contact-svg-btn" onclick="copyToClipboard('${lineVal}', 'Line ID')" title="คลิกเพื่อคัดลอก Line ID: ${lineVal}">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 5.92 2 10.75c0 2.97 1.7 5.6 4.34 7.22-.19.7-.68 2.54-.78 2.93-.12.49.18.48.38.35.26-.18 3.58-2.43 4.14-2.82.61.08 1.25.12 1.92.12 5.52 0 10-3.92 10-8.75S17.52 2 12 2z"/></svg>
+                  </button>
+                  <button class="contact-svg-btn" onclick="copyToClipboard('${igVal}', 'Instagram')" title="คลิกเพื่อคัดลอก Instagram: ${igVal}">
+                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ส่วนความคิดเห็น -->
+              <div id="commentsWrapper-${post.id}" class="comments-section-wrapper">
+                <div class="comments-container">
+                  ${commentsHtml}
+                  <div class="comment-input-row">
+                    <input type="text" id="commentInput-${post.id}" class="comment-input" placeholder="เขียนความคิดเห็น..." />
+                    <button class="btn-send-comment" onclick="submitComment('${post.id}')">ส่ง</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    window.toggleBookmark = async function(postId) {
+      if (!currentUser) return alert('กรุณาเข้าสู่ระบบก่อนบันทึกโพสต์จ้า 💖');
+      const { data: existing } = await supabase.from('roommate_bookmarks').select('*').eq('post_id', postId).eq('user_id', currentUser.id).single();
+      if (existing) {
+        await supabase.from('roommate_bookmarks').delete().eq('id', existing.id);
+        alert('ยกเลิกการบันทึกโพสต์แล้วค่ะ');
+      } else {
+        await supabase.from('roommate_bookmarks').insert([{ post_id: postId, user_id: currentUser.id }]);
+        alert('บันทึกโพสต์เรียบร้อยแล้ว 🔖');
+      }
+      loadPosts();
+    }
+
+    window.toggleCommentsSection = function(postId) {
+      const wrapper = document.getElementById(`commentsWrapper-${postId}`);
+      if (wrapper) wrapper.style.display = wrapper.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    window.toggleLike = async function(postId, reaction) {
+      if (!currentUser) return alert('กรุณาเข้าสู่ระบบก่อนกดไลค์');
+      const { data: existing } = await supabase.from('roommate_likes').select('*').eq('post_id', postId).eq('user_id', currentUser.id).single();
+      if (existing) {
+        if (existing.reaction_type === reaction) await supabase.from('roommate_likes').delete().eq('id', existing.id);
+        else await supabase.from('roommate_likes').update({ reaction_type: reaction }).eq('id', existing.id);
+      } else {
+        await supabase.from('roommate_likes').insert([{ post_id: postId, user_id: currentUser.id, reaction_type: reaction }]);
+      }
+      loadPosts();
+    }
+
+    window.submitComment = async function(postId) {
+      if (!currentUser) return alert('กรุณาเข้าสู่ระบบก่อนแสดงความคิดเห็น');
+      const inputEl = document.getElementById(`commentInput-${postId}`);
+      const text = inputEl.value.trim();
+      if (!text) return;
+      let nickname = currentUser.user_metadata?.nickname || 'เพื่อนสมาชิก';
+      const { data: profile } = await supabase.from('profiles').select('nickname').eq('id', currentUser.id).single();
+      if (profile && profile.nickname) nickname = profile.nickname;
+      const { error } = await supabase.from('roommate_comments').insert([{ post_id: postId, user_id: currentUser.id, author_name: nickname, comment_text: text, parent_id: null }]);
+      if (error) alert('ไม่สามารถส่งคอมเมนต์ได้');
+      else { inputEl.value = ''; loadPosts(); }
+    }
+
+    window.toggleReplyBox = function(commentId) {
+      const box = document.getElementById(`replyBox-${commentId}`);
+      box.style.display = box.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    window.submitReply = async function(postId, parentId) {
+      if (!currentUser) return alert('กรุณาเข้าสู่ระบบก่อนตอบกลับ');
+      const inputEl = document.getElementById(`replyInput-${parentId}`);
+      const text = inputEl.value.trim();
+      if (!text) return;
+      let nickname = currentUser.user_metadata?.nickname || 'เพื่อนสมาชิก';
+      const { data: profile } = await supabase.from('profiles').select('nickname').eq('id', currentUser.id).single();
+      if (profile && profile.nickname) nickname = profile.nickname;
+      const { error } = await supabase.from('roommate_comments').insert([{ post_id: postId, user_id: currentUser.id, author_name: nickname, comment_text: text, parent_id: parentId }]);
+      if (error) alert('ไม่สามารถตอบกลับได้');
+      else loadPosts();
+    }
+
+    document.getElementById('roommateForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!currentUser) return alert('กรุณาเข้าสู่ระบบก่อนโพสต์');
+      const editId = document.getElementById('editPostId').value;
+      const dorm_name = document.getElementById('postDormName').value;
+      const room_type = document.getElementById('postRoomType').value;
+      const price_details = document.getElementById('postPriceDetails').value;
+      const content = document.getElementById('postContent').value;
+      const phone = document.getElementById('postPhone').value;
+      const line_id = document.getElementById('postLine').value;
+      const instagram = document.getElementById('postIg').value;
+      const status = document.getElementById('postStatusSelect').value;
+
+      let nickname = currentUser.user_metadata?.nickname || 'เพื่อนสมาชิก';
+      const { data: profile } = await supabase.from('profiles').select('nickname').eq('id', currentUser.id).single();
+      if (profile && profile.nickname) nickname = profile.nickname;
+
+      if (editId) {
+        const { error } = await supabase.from('roommate_posts').update({ dorm_name, room_type, price_details, content, phone, line_id, instagram, status, is_edited: true }).eq('id', editId);
+        if (error) alert('แก้ไขประกาศไม่สำเร็จ: ' + error.message);
+        else { alert('อัปเดตและแก้ไขประกาศสำเร็จ! ✨'); closeCreateModal(); loadPosts(); }
+      } else {
+        const { error } = await supabase.from('roommate_posts').insert([{ user_id: currentUser.id, author_name: nickname, dorm_name, room_type, price_details, content, phone, line_id, instagram, status: 'searching', is_edited: false }]);
+        if (error) alert('เกิดข้อผิดพลาด: ' + error.message);
+        else { alert('โพสต์ประกาศหารูมเมทสำเร็จ! 💖'); document.getElementById('roommateForm').reset(); closeCreateModal(); currentFilterMode = 'all'; loadPosts(); }
+      }
+    });
+
+    window.resetToAllFeed = function() {
+      selectFabMenu('all');
+    }
+
+    initPage();
+  </script>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer-themed">
+    <div class="footer-wave-top">
+      <svg viewBox="0 0 1200 40" preserveAspectRatio="none">
+        <path fill="var(--accent-rose, #d9577a)" d="M 0,40 L 0,20 Q 300,40 600,20 T 1200,20 L 1200,40 Z"></path>
+      </svg>
+    </div>
+
+    <div class="footer-inner">
+      <div class="container footer-centered-container">
+        <div class="footer-columns-balanced">
+          
+          <div class="footer-col-item">
+            <div class="col-head">
+              <span class="brand-text">Dorm Space</span>
+              <div class="live-pill">
+                <span class="live-pulse-dot"></span>
+                <span>ONLINE</span>
+              </div>
+            </div>
+            <p class="col-desc">
+              แพลตฟอร์มค้นหาและเปรียบเทียบหอพักรอบมหาวิทยาลัยแม่โจ้ <br />
+              เพื่อให้เด็กแม่โจ้ได้อยู่หอพักที่สบายใจที่สุด
+            </p>
+
+            <div class="footer-nav-icons">
+              <a href="mailto:DormSpace.official@mju.com" class="icon-link-circle" title="ส่งอีเมลหาเรา">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              </a>
+              <a href="tel:053873000" class="icon-link-circle" title="โทรหาเรา">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+              </a>
+              <a href="https://lin.ee/uOEUb7G" target="_blank" rel="noopener noreferrer" class="icon-link-circle" title="ติดต่อผ่าน Line">
+                <svg viewBox="0 0 24 24" class="svg-icon"><path d="M12 2C6.48 2 2 5.92 2 10.75c0 2.97 1.7 5.6 4.34 7.22-.19.7-.68 2.54-.78 2.93-.12.49.18.48.38.35.26-.18 3.58-2.43 4.14-2.82.61.08 1.25.12 1.92.12 5.52 0 10-3.92 10-8.75S17.52 2 12 2zm-3.5 11h-1.5c-.28 0-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v3.5h1c.28 0 .5.22.5.5s-.22.5-.5.5zm2.5-.5c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v4zm4.5.5h-1c-.28 0-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5s.5.22.5.5v2.8l1.65-2.97c.1-.19.3-.33.53-.33.28 0 .5.22.5.5v4c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-2.8l-1.68 3zm4-1.5h-1v-2h1c.28 0 .5-.22.5-.5s-.22-.5-.5-.5h-1.5c-.28 0-.5.22-.5.5v4c0 .28.22.5.5.5H20c.28 0 .5-.22.5-.5s-.22-.5-.5-.5z"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="footer-col-item">
+            <div class="col-head">
+              <h4 class="col-title">เวลาทำการ</h4>
+            </div>
+            <div class="col-info-block">
+              <p class="info-text">
+                <strong>จันทร์ - ศุกร์:</strong> 08:30 - 16:30 น.<br />
+                <small>(ปิดทำการเสาร์ - อาทิตย์ และวันหยุด)</small>
+              </p>
+            </div>
+            <div class="online-24h-tag">
+              🌐 ค้นหาหอพักออนไลน์ได้ตลอด 24 ชม.
+            </div>
+          </div>
+
+          <div class="footer-col-item">
+            <div class="col-head">
+              <h4 class="col-title">ที่ตั้งสำนักงาน</h4>
+            </div>
+            <div class="col-info-block">
+              <p class="info-text">สำนักบริหารและพัฒนาวิชาการ<br />มหาวิทยาลัยแม่โจ้ จ.เชียงใหม่ 50290</p>
+              <span class="info-sub">🏛 อาคารอำนวย ยศสุข</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="footer-bottom-bar-center">
+          <p>© 2026 Dorm Space • Maejo Community Living Platform</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+  <script src="js/sound01.js"></script>
+
+</body>
+</html>
